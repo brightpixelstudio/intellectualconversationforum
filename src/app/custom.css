@@ -49,6 +49,13 @@ p.comment {
   font-size: 14px;
 }
 
+/* quill overrides */
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button {
+  height: 36px !important;
+  width: 10px !important;
+}
+
 /* bootstrap overrides */
 /* Custom color overrides for Bootstrap tabs */
 .nav-tabs .nav-link {

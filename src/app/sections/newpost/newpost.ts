@@ -15,10 +15,11 @@ import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'newpost',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, FormsModule, JsonPipe, QuillModule],
   templateUrl: './newpost.html',
   styleUrl: './newpost.css',
 })
