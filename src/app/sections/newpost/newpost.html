@@ -24,20 +24,19 @@
                   <option [value]="user.userid">{{ user.name }}</option>
                 }
               </select>
-              <quill-editor></quill-editor>
-              <textarea
-                type="text"
+              <br />
+              <quill-editor
+                [modules]="modules"
                 id="post"
-                rows="10"
                 maxlength="5000"
                 required
                 formControlName="post"
                 placeholder="Post..."
                 class="form-control"
-              ></textarea>
-              @if (f['post'].touched && f['post'].errors) {
-                <div class="error-message">Please provide a Post less than 5000 characters.</div>
-              }
+                class="mt-3"
+                (onContentChanged)="checkQuillLength($event)"
+              ></quill-editor>
+              <div class="character-counter">{{ currentQuillLength }} / {{ maxLimit }}</div>
               @if (f['post'].touched && f['post'].errors?.['profanity']) {
                 <div class="error-message">Please remove inappropriate language.</div>
               }

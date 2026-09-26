@@ -50,6 +50,15 @@ p.comment {
 }
 
 /* quill overrides */
+quill-editor 
+{
+  height: 200px; 
+  width: 80%;
+}
+.ql-container .ql-editor p{
+  font-size: 18px;
+  color: #000;
+}
 .ql-snow.ql-toolbar button,
 .ql-snow .ql-toolbar button {
   height: 36px !important;

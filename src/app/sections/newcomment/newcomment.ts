@@ -13,10 +13,12 @@ import { ApiServicePost } from '../../services/postservice';
 import { ApiServiceUser } from '../../services/userservice';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { GlobalService } from '../../services/globalservice';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'newcomment',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, QuillModule],
   templateUrl: './newcomment.html',
   styleUrl: './newcomment.css',
 })
@@ -28,6 +30,10 @@ export class NewComment implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // quill
+  modules: any;
+  maxLimit: number = 5000;
+  currentQuillLength: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +41,10 @@ export class NewComment implements OnInit {
     private apiServiceUser: ApiServiceUser,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
+    private globalService: GlobalService,
+  ) {
+    this.modules = this.globalService.getQuillModuleToolbar();
+  }
 
   ngOnInit(): void {
     this.commentForm = this.fb.group({
@@ -61,6 +70,18 @@ export class NewComment implements OnInit {
     const postId = this.route.snapshot.queryParamMap.get('postid');
     if (!postId) return;
     this.postId = +postId;
+  }
+
+  checkQuillLength(event: any) {
+    const quill = event.editor;
+    // Quill adds a trailing newline ('\n'), so getLength() is always text + 1
+    this.currentQuillLength = quill.getLength() - 1;
+
+    if (quill.getLength() > this.maxLimit) {
+      // Revert/delete the characters that exceed the limit
+      quill.deleteText(this.maxLimit, quill.getLength());
+      this.currentQuillLength = this.maxLimit;
+    }
   }
 
   get f() {

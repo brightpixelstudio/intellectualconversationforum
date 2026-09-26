@@ -15,6 +15,7 @@ import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
 
 @Component({
@@ -30,6 +31,10 @@ export class NewPost implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // quill
+  modules: any;
+  maxLimit: number = 5000;
+  currentQuillLength: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +43,10 @@ export class NewPost implements OnInit {
     private apiServicePost: ApiServicePost,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
+    private globalService: GlobalService,
+  ) {
+    this.modules = this.globalService.getQuillModuleToolbar();
+  }
 
   ngOnInit(): void {
     this.postForm = this.fb.group({
@@ -62,6 +70,18 @@ export class NewPost implements OnInit {
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
+  }
+
+  checkQuillLength(event: any) {
+    const quill = event.editor;
+    // Quill adds a trailing newline ('\n'), so getLength() is always text + 1
+    this.currentQuillLength = quill.getLength() - 1;
+
+    if (quill.getLength() > this.maxLimit) {
+      // Revert/delete the characters that exceed the limit
+      quill.deleteText(this.maxLimit, quill.getLength());
+      this.currentQuillLength = this.maxLimit;
+    }
   }
 
   get f() {

@@ -13,19 +13,19 @@
                   <option [value]="user.userid">{{ user.name }}</option>
                 }
               </select>
-              <textarea
-                type="text"
-                id="comment"
-                rows="10"
+              <br />
+              <quill-editor
+                [modules]="modules"
+                id="post"
                 maxlength="5000"
                 required
                 formControlName="comment"
                 placeholder="Comment..."
                 class="form-control"
-              ></textarea>
-              @if (f['comment'].touched && f['comment'].errors) {
-                <div class="error-message">Please provide a comment less than 5000 characters.</div>
-              }
+                class="mt-3"
+                (onContentChanged)="checkQuillLength($event)"
+              ></quill-editor>
+              <div class="character-counter">{{ currentQuillLength }} / {{ maxLimit }}</div>
               @if (f['comment'].touched && f['comment'].errors?.['profanity']) {
                 <div class="error-message">Please remove inappropriate language.</div>
               }

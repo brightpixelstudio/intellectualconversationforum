@@ -24,4 +24,17 @@ export class GlobalService {
     }
     return posted;
   }
+
+  getQuillModuleToolbar(): any {
+    return {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote'],
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        ['clean'], // remove formatting button
+      ],
+    };
+  }
 }
