@@ -16,10 +16,11 @@ import { GlobalService } from '../../services/globalservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'editpost',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe, DatePipe],
+  imports: [ReactiveFormsModule, FormsModule, JsonPipe, DatePipe, QuillModule],
   templateUrl: './editpost.html',
   styleUrl: './editpost.css',
 })
@@ -32,6 +33,10 @@ export class EditPost implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // quill
+  modules: any;
+  maxLimit: number = 5000;
+  currentQuillLength: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +45,9 @@ export class EditPost implements OnInit {
     private globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.modules = this.globalService.getQuillModuleToolbar();
+  }
 
   ngOnInit(): void {
     this.updatePostForm = this.fb.group({
@@ -77,6 +84,18 @@ export class EditPost implements OnInit {
       },
       error: (err) => console.error('Failed to load post', err),
     });
+  }
+
+  checkQuillLength(event: any) {
+    const quill = event.editor;
+    // Quill adds a trailing newline ('\n'), so getLength() is always text + 1
+    this.currentQuillLength = quill.getLength() - 1;
+
+    if (quill.getLength() > this.maxLimit) {
+      // Revert/delete the characters that exceed the limit
+      quill.deleteText(this.maxLimit, quill.getLength());
+      this.currentQuillLength = this.maxLimit;
+    }
   }
 
   get f() {

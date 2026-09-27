@@ -28,34 +28,30 @@
                   <option [value]="catagory.postcatagoryid">{{ catagory.catagory }}</option>
                 }
               </select>
-              <textarea
-                type="text"
+              <br />
+              <quill-editor
+                [modules]="modules"
                 id="post"
-                rows="10"
                 maxlength="5000"
                 required
                 formControlName="post"
                 placeholder="Post..."
                 class="form-control"
-              ></textarea>
-              @if (f['post'].touched && f['post'].errors) {
-                <div class="error-message">Please provide a Post less than 5000 characters.</div>
-              }
+                class="mt-3"
+                (onContentChanged)="checkQuillLength($event)"
+              ></quill-editor>
               @if (f['post'].touched && f['post'].errors?.['profanity']) {
                 <div class="error-message">Please remove inappropriate language.</div>
               }
+              <br />
 
               <!-- Disable submit button if form rules aren't met -->
-              <button
-                type="submit"
-                [disabled]="updatePostForm.invalid"
-                class="btn btn-primary mt-4"
-              >
+              <button type="submit" [disabled]="updatePostForm.invalid" class="btn btn-primary">
                 Update Post!
               </button>
 
               <a class="btn actionbtn editBtn" title="Return to Posts" [attr.href]="'/posts'">
-                <p class="return mt-5 ms-3">Return To Posts</p>
+                <p class="return mt-3 ms-3">Return To Posts</p>
               </a>
 
               @if (showSuccess == true) {
