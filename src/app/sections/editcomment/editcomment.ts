@@ -16,10 +16,11 @@ import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { GetComment } from '../../models/posts/getcomment';
 import { GlobalService } from '../../services/globalservice';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'editcomment',
-  imports: [ReactiveFormsModule, FormsModule, DatePipe],
+  imports: [ReactiveFormsModule, FormsModule, DatePipe, QuillModule],
   templateUrl: './editcomment.html',
   styleUrl: './editcomment.css',
 })
@@ -32,6 +33,10 @@ export class EditComment implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // quill
+  modules: any;
+  maxLimit: number = 5000;
+  currentQuillLength: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +45,9 @@ export class EditComment implements OnInit {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private globalService: GlobalService,
-  ) {}
+  ) {
+    this.modules = this.globalService.getQuillModuleToolbar();
+  }
 
   ngOnInit(): void {
     this.updateCommentForm = this.fb.group({
@@ -76,6 +83,10 @@ export class EditComment implements OnInit {
       },
       error: (err) => console.error('Failed to load post', err),
     });
+  }
+
+  checkQuillLength(event: any) {
+    this.currentQuillLength = this.globalService.checkQuillLength(5000, event);
   }
 
   get f() {

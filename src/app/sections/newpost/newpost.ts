@@ -73,15 +73,7 @@ export class NewPost implements OnInit {
   }
 
   checkQuillLength(event: any) {
-    const quill = event.editor;
-    // Quill adds a trailing newline ('\n'), so getLength() is always text + 1
-    this.currentQuillLength = quill.getLength() - 1;
-
-    if (quill.getLength() > this.maxLimit) {
-      // Revert/delete the characters that exceed the limit
-      quill.deleteText(this.maxLimit, quill.getLength());
-      this.currentQuillLength = this.maxLimit;
-    }
+    this.currentQuillLength = this.globalService.checkQuillLength(5000, event);
   }
 
   get f() {

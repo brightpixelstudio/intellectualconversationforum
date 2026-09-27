@@ -15,10 +15,12 @@ import {
 } from '../../utils/password-validators/password-validators';
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUser } from '../../services/userservice';
+import { GlobalService } from '../../services/globalservice';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'registration',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, FormsModule, JsonPipe, QuillModule],
   templateUrl: './registration.html',
   styleUrl: './registration.css',
 })
@@ -27,11 +29,16 @@ export class Registration implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // quill
+  modules: any;
+  maxLimit: number = 5000;
+  currentQuillLength: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private apiService: ApiServiceUser,
     private cdr: ChangeDetectorRef,
+    private globalService: GlobalService,
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +83,17 @@ export class Registration implements OnInit {
         validators: [confirmPasswordValidator('password', 'confirmPassword')],
       },
     );
+  }
+
+  checkQuillLength(event: any) {
+    const quill = event.editor;
+    this.currentQuillLength = quill.getLength() - 1;
+
+    if (quill.getLength() > this.maxLimit) {
+      // Revert/delete the characters that exceed the limit
+      quill.deleteText(this.maxLimit, quill.getLength());
+      this.currentQuillLength = this.maxLimit;
+    }
   }
 
   get f() {

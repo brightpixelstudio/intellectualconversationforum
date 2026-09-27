@@ -70,7 +70,7 @@
                             <tr>
                               <td>{{ record.catagory }}</td>
                               <td>{{ record.count }}</td>
-                              <td>{{ record.shorttext }}</td>
+                              <td><span innerHTML="{{ record.shorttext }}"></span></td>
                               <td>{{ record.dateadded | date: 'mediumDate' }}</td>
                             </tr>
                           }
@@ -103,8 +103,8 @@
                           ) {
                             <tr>
                               <td>{{ record.catagory }}</td>
-                              <td>{{ record.postshorttext }}</td>
-                              <td>{{ record.commentshorttext }}</td>
+                              <td><span innerHTML="{{ record.postshorttext }}"></span></td>
+                              <td><span innerHTML="{{ record.commentshorttext }}"></span></td>
                               <td>{{ record.dateadded | date: 'mediumDate' }}</td>
                             </tr>
                           }

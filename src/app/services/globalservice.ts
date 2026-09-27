@@ -25,6 +25,19 @@ export class GlobalService {
     return posted;
   }
 
+  checkQuillLength(maxLength: number, event: any): number {
+    const quill = event.editor;
+    let currentQuillLength: number = quill.getLength() - 1;
+
+    if (currentQuillLength > maxLength) {
+      // Revert/delete the characters that exceed the limit
+      quill.deleteText(maxLength, quill.getLength());
+      currentQuillLength = maxLength;
+    }
+
+    return currentQuillLength;
+  }
+
   getQuillModuleToolbar(): any {
     return {
       toolbar: [

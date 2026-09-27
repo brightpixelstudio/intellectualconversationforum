@@ -12,10 +12,10 @@ import {
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
-import { GlobalService } from '../../services/globalservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
+import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
 
 @Component({
@@ -42,9 +42,9 @@ export class EditPost implements OnInit {
     private fb: FormBuilder,
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
-    private globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private globalService: GlobalService,
   ) {
     this.modules = this.globalService.getQuillModuleToolbar();
   }
@@ -87,15 +87,7 @@ export class EditPost implements OnInit {
   }
 
   checkQuillLength(event: any) {
-    const quill = event.editor;
-    // Quill adds a trailing newline ('\n'), so getLength() is always text + 1
-    this.currentQuillLength = quill.getLength() - 1;
-
-    if (quill.getLength() > this.maxLimit) {
-      // Revert/delete the characters that exceed the limit
-      quill.deleteText(this.maxLimit, quill.getLength());
-      this.currentQuillLength = this.maxLimit;
-    }
+    this.currentQuillLength = this.globalService.checkQuillLength(5000, event);
   }
 
   get f() {
