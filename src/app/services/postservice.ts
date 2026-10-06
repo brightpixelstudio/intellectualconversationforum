@@ -6,13 +6,14 @@ import { GetPostsByCategoryUser } from '../models/posts/getpostsbycategoryuser';
 import { GetPost } from '../models/posts/getpost';
 import { GetComment } from '../models/posts/getcomment';
 import { GetPostComments } from '../models/posts/getpostcomments';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
 })
 export class ApiServicePost {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7043/post'; // LOCAL ONLY
+  private apiUrl = environment.apiUrl + '/post'; // Uses the API URL from environment
 
   // GET request to fetch data
   getPosts(

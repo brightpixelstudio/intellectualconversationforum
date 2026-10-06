@@ -2,13 +2,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
 })
 export class ApiServiceStatistics {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7043/statistic'; // LOCAL ONLY
+  private apiUrl = environment.apiUrl + '/statistic'; // Uses the API URL from environment
 
   // GET request to fetch data
   getStatistics(): Observable<any> {

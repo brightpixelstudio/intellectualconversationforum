@@ -8,13 +8,14 @@ import { GetMostPostsMembers } from '../models/getmostpostsmembers';
 import { GetLatestLoginsMembers } from '../models/getlatestloginsmembers';
 import { GetProfileMember } from '../models/member/getprofilemember';
 import { GetUserList } from '../models/member/getuserlist';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
 })
 export class ApiServiceUser {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7043/user'; // LOCAL ONLY
+  private apiUrl = environment.apiUrl + '/user'; // Uses the API URL from environment
 
   // GET request to fetch data
   getAllProfileMembers(): Observable<GetAllProfileMembers[]> {
