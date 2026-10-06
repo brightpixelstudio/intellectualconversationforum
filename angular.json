@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "intellectualconversationforumDB": {
+    "intellectualconversationforumintellectualconversationforum": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/intellectualconversationforumDB",
+            "outputPath": "dist/intellectualconversationforum",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -68,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "intellectualconversationforumDB:build:production"
+              "buildTarget": "intellectualconversationforum:build:production"
             },
             "development": {
-              "buildTarget": "intellectualconversationforumDB:build:development"
+              "buildTarget": "intellectualconversationforum:build:development"
             }
           },
           "defaultConfiguration": "development"

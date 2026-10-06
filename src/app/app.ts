@@ -10,5 +10,5 @@ import { Footer } from './footer/footer';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('intellectualconversationforumDB');
+  protected readonly title = signal('intellectualconversationforum');
 }
