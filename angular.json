@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "intellectualconversationforumintellectualconversationforum": {
+    "intellectualconversationforum": {
       "projectType": "application",
       "schematics": {},
       "root": "",
