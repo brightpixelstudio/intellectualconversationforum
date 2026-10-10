@@ -15,6 +15,7 @@ import {
 } from '../../utils/password-validators/password-validators';
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUser } from '../../services/userservice';
+import { ApiServiceUtility } from '../../services/utilityservice';
 import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
 
@@ -37,6 +38,7 @@ export class Registration implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiServiceUser,
+    private apiServiceUtility: ApiServiceUtility,
     private cdr: ChangeDetectorRef,
     private globalService: GlobalService,
   ) {}
@@ -60,7 +62,7 @@ export class Registration implements OnInit {
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(5),
-          Validators.pattern(/^[0-9]*$/),
+          Validators.pattern(/^[0-9]{5}$/),
         ]),
         password: [
           '',
@@ -85,6 +87,15 @@ export class Registration implements OnInit {
     );
   }
 
+  onZipcodeInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/[^0-9]/g, '').slice(0, 5);
+
+    input.value = value;
+
+    this.registerForm.get('zipcode')?.setValue(value);
+  }
+
   checkQuillLength(event: any) {
     const quill = event.editor;
     this.currentQuillLength = quill.getLength() - 1;
@@ -105,23 +116,35 @@ export class Registration implements OnInit {
     this.showError = false;
 
     if (this.registerForm.valid) {
-      // Pass the raw form values to your service
-      this.apiService.submitRegistrationForm(this.registerForm.value).subscribe({
-        next: (response) => {
-          this.registerForm.reset();
-          this.showSuccess = true;
-        },
-        error: (error: HttpErrorResponse) => {
-          // Handle Bad Request (400) or other HTTP errors
-          this.showError = true;
-          if (error.status === 400) {
-            // Fallback to error.message if the backend response didn't include a custom text message
-            this.errorMsg =
-              error.error?.message || 'Invalid data submitted. Please check your form.';
+      // Validate the zipcode
+      this.apiServiceUtility.getVerifyZipcode(this.registerForm.get('zipcode')?.value).subscribe({
+        next: (result) => {
+          if (result && result.length > 0 && result[0].isValid === 1) {
+            // submit the registration form if the zipcode is valid
+            // Pass the raw form values to your service
+            this.apiService.submitRegistrationForm(this.registerForm.value).subscribe({
+              next: (response) => {
+                this.registerForm.reset();
+                this.showSuccess = true;
+                this.cdr.detectChanges();
+              },
+              error: (error: HttpErrorResponse) => {
+                // Handle Bad Request (400) or other HTTP errors
+                this.showError = true;
+                if (error.status === 400) {
+                  // Fallback to error.message if the backend response didn't include a custom text message
+                  this.errorMsg =
+                    error.error?.message || 'Invalid data submitted. Please check your form.';
+                } else {
+                  this.errorMsg = 'An unexpected error occurred. Please try again.';
+                }
+              },
+            });
           } else {
-            this.errorMsg = 'An unexpected error occurred. Please try again.';
+            this.showError = true;
+            this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
+            this.cdr.detectChanges();
           }
-          this.cdr.detectChanges();
         },
       });
     } else {

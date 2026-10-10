@@ -15,6 +15,7 @@ import {
 } from '../../utils/password-validators/password-validators';
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUser } from '../../services/userservice';
+import { ApiServiceUtility } from '../../services/utilityservice';
 import { GetProfileMember } from '../../models/member/getprofilemember';
 import { ActivatedRoute } from '@angular/router';
 
@@ -34,6 +35,7 @@ export class EditProfile implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiServiceUser,
+    private apiServiceUtility: ApiServiceUtility,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {}
@@ -57,7 +59,7 @@ export class EditProfile implements OnInit {
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(5),
-          Validators.pattern(/^[0-9]*$/),
+          Validators.pattern(/^[0-9]{5}$/),
         ]),
         password: [
           '',
@@ -95,6 +97,15 @@ export class EditProfile implements OnInit {
     });
   }
 
+  onZipcodeInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/[^0-9]/g, '').slice(0, 5);
+
+    input.value = value;
+
+    this.updateProfileForm.get('zipcode')?.setValue(value);
+  }
+
   get f() {
     return this.updateProfileForm.controls;
   }
@@ -104,24 +115,42 @@ export class EditProfile implements OnInit {
     this.showError = false;
 
     if (this.updateProfileForm.valid) {
-      // Pass the raw form values to your service
-      this.apiService.submitUpdateProfileForm(this.userId, this.updateProfileForm.value).subscribe({
-        next: (response) => {
-          this.showSuccess = true;
-        },
-        error: (error: HttpErrorResponse) => {
-          // Handle Bad Request (400) or other HTTP errors
-          this.showError = true;
-          if (error.status === 400) {
-            // Fallback to error.message if the backend response didn't include a custom text message
-            this.errorMsg =
-              error.error?.message || 'Invalid data submitted. Please check your form.';
-          } else {
-            this.errorMsg = 'An unexpected error occurred. Please try again.';
-          }
-          this.cdr.detectChanges();
-        },
-      });
+      // Validate the zipcode
+      this.apiServiceUtility
+        .getVerifyZipcode(this.updateProfileForm.get('zipcode')?.value)
+        .subscribe({
+          next: (result) => {
+            if (result && result.length > 0 && result[0].isValid === 1) {
+              // submit the registration form if the zipcode is valid
+              // Pass the raw form values to your service
+              this.apiService
+                .submitUpdateProfileForm(this.userId, this.updateProfileForm.value)
+                .subscribe({
+                  next: (response) => {
+                    console.log('valid');
+                    this.showSuccess = true;
+                    this.cdr.detectChanges();
+                  },
+                  error: (error: HttpErrorResponse) => {
+                    // Handle Bad Request (400) or other HTTP errors
+                    this.showError = true;
+                    if (error.status === 400) {
+                      // Fallback to error.message if the backend response didn't include a custom text message
+                      this.errorMsg =
+                        error.error?.message || 'Invalid data submitted. Please check your form.';
+                    } else {
+                      this.errorMsg = 'An unexpected error occurred. Please try again.';
+                    }
+                    this.cdr.detectChanges();
+                  },
+                });
+            } else {
+              this.showError = true;
+              this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
+              this.cdr.detectChanges();
+            }
+          },
+        });
     } else {
       console.log('Form is invalid');
     }

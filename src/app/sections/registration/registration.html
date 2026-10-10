@@ -65,7 +65,8 @@
                 id="zipcode"
                 name="zipcode"
                 type="text"
-                oninput="if (this.value.length > 5) this.value = this.value.slice(0, 5);"
+                maxlength="5"
+                (input)="onZipcodeInput($event)"
                 required
                 formControlName="zipcode"
                 placeholder="Please enter a zipcode..."
