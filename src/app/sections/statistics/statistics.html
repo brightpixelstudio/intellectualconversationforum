@@ -75,7 +75,15 @@
                           track theStat.postcatagoryid
                         ) {
                           <tr>
-                            <td>{{ theStat.catagory }}</td>
+                            <td>
+                              <a
+                                class="mt-3 me-1"
+                                title="View Posts"
+                                [attr.href]="'/posts?catagoryid=' + theStat.postcatagoryid"
+                              >
+                                {{ theStat.catagory }}
+                              </a>
+                            </td>
                             <td>{{ theStat.count }}</td>
                           </tr>
                         }
@@ -107,7 +115,15 @@
                           track theStat.userid
                         ) {
                           <tr>
-                            <td>{{ theStat.name }}</td>
+                            <td>
+                              <a
+                                class="mt-3 me-1"
+                                title="View Posts"
+                                [attr.href]="'/posts?userid=' + theStat.userid"
+                              >
+                                {{ theStat.name }}
+                              </a>
+                            </td>
                             <td>{{ theStat.username }}</td>
                             <td>{{ theStat.email }}</td>
                             <td>{{ theStat.zipcode }}</td>
@@ -140,7 +156,15 @@
                           track theStat.postid
                         ) {
                           <tr>
-                            <td>{{ theStat.catagory }}</td>
+                            <td>
+                              <a
+                                class="mt-3 me-1"
+                                title="View Posts"
+                                [attr.href]="'/posts?catagoryid=' + theStat.postcatagoryid"
+                              >
+                                {{ theStat.catagory }}
+                              </a>
+                            </td>
                             <td><span innerHTML="{{ theStat.shorttextpost }}"></span></td>
                             <td>{{ theStat.count }}</td>
                           </tr>

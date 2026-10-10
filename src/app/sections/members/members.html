@@ -52,7 +52,15 @@
                     let i = $index
                   ) {
                     <tr>
-                      <td>{{ theMember.name }}</td>
+                      <td>
+                        <a
+                          class="mt-3 me-1"
+                          title="View Posts"
+                          [attr.href]="'/posts?userid=' + theMember.userid"
+                        >
+                          {{ theMember.name }}
+                        </a>
+                      </td>
                       <td>{{ theMember.username }}</td>
                       <td>{{ theMember.email }}</td>
                       <td>{{ theMember.zipcode }}</td>

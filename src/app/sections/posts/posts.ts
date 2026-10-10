@@ -46,6 +46,19 @@ export class Posts implements OnInit {
         this.catagoryList = response.catagories;
         this.cdr.detectChanges();
 
+        // any query strings sent in?
+        const urlParams = new URLSearchParams(window.location.search);
+        const catagory = urlParams.get('catagoryid');
+        const user = urlParams.get('userid');
+
+        if (catagory) {
+          this.catagoryid = +catagory;
+        }
+        if (user) {
+          this.userid = +user;
+        }
+
+        // load posts
         this.loadPosts();
       },
       error: (err) => console.error('One of the requests failed!', err),
