@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUtility } from '../../services/utilityservice';
+import { ApiServiceUser } from '../../services/userservice';
 import { ApiServicePost } from '../../services/postservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -27,8 +28,10 @@ import { QuillModule } from 'ngx-quill';
 export class EditPost implements OnInit {
   timePassed?: string;
   postId: number = 0;
+  userid: number = 0;
   getPost: GetPost | null = null;
   catagoryList!: any[];
+  userList!: any[];
   updatePostForm!: FormGroup;
   showRatingSuccess = false;
   showSuccess = false;
@@ -42,6 +45,7 @@ export class EditPost implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiServiceUtilities: ApiServiceUtility,
+    private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -61,11 +65,15 @@ export class EditPost implements OnInit {
       ]),
     });
 
+    // GetAllMemberNames;
     forkJoin({
       catagories: this.apiServiceUtilities.getCatagoryList(),
+      users: this.apiServiceUser.getUserList(),
     }).subscribe({
       next: (response) => {
         this.catagoryList = response.catagories;
+        this.userList = response.users;
+        this.userid = this.userList[0].userid;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
@@ -95,6 +103,12 @@ export class EditPost implements OnInit {
     return this.updatePostForm.controls;
   }
 
+  onUserChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    console.log(select);
+    this.userid = Number(select.value);
+  }
+
   onRatingToolbarClick(event: MouseEvent, postId: number): void {
     this.showRatingSuccess = false;
     const target = event.target as HTMLElement;
@@ -103,6 +117,7 @@ export class EditPost implements OnInit {
     if (button) {
       console.log('Clicked button:', button.textContent?.trim());
       console.log('Post ID:', postId);
+      console.log('User ID:', this.userid);
       this.showRatingSuccess = true;
     }
   }
