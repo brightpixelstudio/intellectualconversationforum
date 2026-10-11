@@ -9,4 +9,5 @@ export interface GetPostsByCategoryUser {
   count: number;
   post: string;
   comments: string;
+  rating: number;
 }

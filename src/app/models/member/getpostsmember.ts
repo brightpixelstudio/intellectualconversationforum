@@ -6,4 +6,5 @@ export interface GetPostsMember {
   dateadded: Date;
   count: number;
   shorttext: string;
+  rating: number;
 }

@@ -7,5 +7,6 @@ export interface GetPost {
   postcatagoryid: number;
   catagory: string;
   count: number;
+  rating: number;
   dateadded: Date;
 }
