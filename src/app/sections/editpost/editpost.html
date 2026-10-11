@@ -28,7 +28,29 @@
                   <option [value]="catagory.postcatagoryid">{{ catagory.catagory }}</option>
                 }
               </select>
-              <br />
+              <div
+                class="btn-toolbar mt-1"
+                role="toolbar"
+                aria-label="Rate this post"
+                (click)="onRatingToolbarClick($event, postId)"
+              >
+                <span class="mt-3"><p class="title">Rate:</p></span>
+                <div class="btn-group" role="group" aria-label="First group">
+                  <button type="button" class="btn btn-primary ratingBtn">1</button>
+                  <button type="button" class="btn btn-primary ratingBtn">2</button>
+                  <button type="button" class="btn btn-primary ratingBtn">3</button>
+                  <button type="button" class="btn btn-primary ratingBtn">4</button>
+                  <button type="button" class="btn btn-primary ratingBtn">5</button>
+                  <button type="button" class="btn btn-primary ratingBtn">6</button>
+                  <button type="button" class="btn btn-primary ratingBtn">7</button>
+                  <button type="button" class="btn btn-primary ratingBtn">8</button>
+                  <button type="button" class="btn btn-primary ratingBtn">9</button>
+                  <button type="button" class="btn btn-primary ratingBtn">10</button>
+                </div>
+              </div>
+              @if (showRatingSuccess == true) {
+                <div class="successmsg">Your rating was succesfully saved</div>
+              }
               <quill-editor
                 [modules]="modules"
                 id="post"
@@ -37,7 +59,7 @@
                 formControlName="post"
                 placeholder="Post..."
                 class="form-control"
-                class="mt-3"
+                class="mt-1"
                 (onContentChanged)="checkQuillLength($event)"
               ></quill-editor>
               @if (f['post'].touched && f['post'].errors?.['profanity']) {

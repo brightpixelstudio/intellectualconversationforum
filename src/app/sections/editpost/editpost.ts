@@ -30,6 +30,7 @@ export class EditPost implements OnInit {
   getPost: GetPost | null = null;
   catagoryList!: any[];
   updatePostForm!: FormGroup;
+  showRatingSuccess = false;
   showSuccess = false;
   showError = false;
   errorMsg = '';
@@ -92,6 +93,18 @@ export class EditPost implements OnInit {
 
   get f() {
     return this.updatePostForm.controls;
+  }
+
+  onRatingToolbarClick(event: MouseEvent, postId: number): void {
+    this.showRatingSuccess = false;
+    const target = event.target as HTMLElement;
+    const button = target.closest('button');
+
+    if (button) {
+      console.log('Clicked button:', button.textContent?.trim());
+      console.log('Post ID:', postId);
+      this.showRatingSuccess = true;
+    }
   }
 
   onSubmit() {

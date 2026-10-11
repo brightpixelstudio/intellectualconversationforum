@@ -91,6 +91,14 @@ quill-editor
   border-color: #0d6efd !important;
 }
 
+.ratingBtn {
+  font-size: 14px !important;
+}
+
+.btn-group {
+  padding: 12px;
+}
+
 /* Form */
 form {
   width: 80%;
