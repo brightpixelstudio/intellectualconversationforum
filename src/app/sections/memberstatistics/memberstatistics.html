@@ -58,6 +58,7 @@
                           <tr>
                             <th scope="col">Catagory</th>
                             <th scope="col">Comment Count</th>
+                            <th scope="col">Rating</th>
                             <th style="width: 500px" scope="col">Post</th>
                             <th scope="col">Date</th>
                           </tr>
@@ -68,8 +69,17 @@
                             track record.postid
                           ) {
                             <tr>
-                              <td>{{ record.catagory }}</td>
+                              <td>
+                                <a
+                                  class="mt-3 me-1"
+                                  title="View Posts"
+                                  [attr.href]="'/posts?catagoryid=' + record.postcatagoryid"
+                                >
+                                  {{ record.catagory }}
+                                </a>
+                              </td>
                               <td>{{ record.count }}</td>
+                              <td>{{ record.rating }}</td>
                               <td><span innerHTML="{{ record.shorttext }}"></span></td>
                               <td>{{ record.dateadded | date: 'mediumDate' }}</td>
                             </tr>
@@ -102,7 +112,15 @@
                             track record.postid
                           ) {
                             <tr>
-                              <td>{{ record.catagory }}</td>
+                              <td>
+                                <a
+                                  class="mt-3 me-1"
+                                  title="View Posts"
+                                  [attr.href]="'/posts?catagoryid=' + record.postcatagoryid"
+                                >
+                                  {{ record.catagory }}
+                                </a>
+                              </td>
                               <td><span innerHTML="{{ record.postshorttext }}"></span></td>
                               <td><span innerHTML="{{ record.commentshorttext }}"></span></td>
                               <td>{{ record.dateadded | date: 'mediumDate' }}</td>

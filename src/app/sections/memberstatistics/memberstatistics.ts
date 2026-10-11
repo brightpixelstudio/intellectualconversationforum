@@ -33,7 +33,6 @@ export class MemberStatistics implements OnInit {
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserStatisticsInformation = data;
-        console.log(this.getUserStatisticsInformation);
 
         // load a blog post
         this.cdr.detectChanges();
