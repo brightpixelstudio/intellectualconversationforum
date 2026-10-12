@@ -6,4 +6,5 @@ export interface GetComment {
   dateadded: Date;
   name: string;
   catagory: string;
+  rating: number;
 }

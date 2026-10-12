@@ -17,21 +17,23 @@
                 >
               </p>
               <hr />
-              <select
-                #postcatagoryid
-                name="postcatagoryid"
-                id="postcatagoryid"
-                class="me-2"
-                formControlName="postcatagoryid"
-              >
-                @for (catagory of catagoryList; track catagory.postcatagoryid) {
-                  <option [value]="catagory.postcatagoryid">{{ catagory.catagory }}</option>
-                }
-              </select>
               <div class="row">
-                <div class="col-3">
+                <div class="col-2">
+                  <select
+                    #postcatagoryid
+                    name="postcatagoryid"
+                    id="postcatagoryid"
+                    class="me-2"
+                    formControlName="postcatagoryid"
+                  >
+                    @for (catagory of catagoryList; track catagory.postcatagoryid) {
+                      <option [value]="catagory.postcatagoryid">{{ catagory.catagory }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-3 mt-2">
                   <div
-                    class="btn-toolbar mt-1"
+                    class="btn-toolbar"
                     role="toolbar"
                     aria-label="Rate this post"
                     (click)="onRatingToolbarClick($event, postId)"
@@ -51,7 +53,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-6 mt-3">
+                <div class="col-3 mt-3">
                   <select
                     #userid
                     name="userid"
@@ -64,11 +66,10 @@
                     }
                   </select>
                 </div>
+                @if (showRatingSuccess == true) {
+                  <div class="successmsg">Your rating was succesfully saved</div>
+                }
               </div>
-              @if (showRatingSuccess == true) {
-                <div class="successmsg">Your rating was succesfully saved</div>
-              }
-
               <br />
               <quill-editor
                 [modules]="modules"

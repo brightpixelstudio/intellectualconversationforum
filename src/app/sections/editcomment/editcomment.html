@@ -13,16 +13,43 @@
                 <strong>{{ getComment?.name }}</strong
                 >,<i>
                   {{ getComment?.catagory }}, {{ getComment?.dateadded | date: 'mediumDate' }},
-                  {{ timePassed }}</i
+                  {{ timePassed }}, {{ getComment?.rating }} rating</i
                 >
               </p>
               <hr />
-              <select #user name="user" id="user" formControlName="userid">
-                @for (user of userList; track user.userid) {
-                  <option [value]="user.userid">{{ user.name }}</option>
-                }
-              </select>
-              <br />
+              <div class="row mb-2">
+                <div class="col-2">
+                  <select #user name="user" id="user" formControlName="userid">
+                    @for (user of userList; track user.userid) {
+                      <option [value]="user.userid">{{ user.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-3 mt-2 ms-4">
+                  <div class="btn-toolbar" role="toolbar" aria-label="Rate this post">
+                    <span class="mt-3"><p class="title">Rate:</p></span>
+                    <div class="btn-group" role="group" aria-label="First group">
+                      <button type="button" class="btn btn-primary ratingBtn">1</button>
+                      <button type="button" class="btn btn-primary ratingBtn">2</button>
+                      <button type="button" class="btn btn-primary ratingBtn">3</button>
+                      <button type="button" class="btn btn-primary ratingBtn">4</button>
+                      <button type="button" class="btn btn-primary ratingBtn">5</button>
+                      <button type="button" class="btn btn-primary ratingBtn">6</button>
+                      <button type="button" class="btn btn-primary ratingBtn">7</button>
+                      <button type="button" class="btn btn-primary ratingBtn">8</button>
+                      <button type="button" class="btn btn-primary ratingBtn">9</button>
+                      <button type="button" class="btn btn-primary ratingBtn">10</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3 mt-3">
+                  <select #userid name="userid" id="userid" class="userSelect">
+                    @for (user of userList; track user.userid) {
+                      <option value="{{ user.userid }}">{{ user.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
               <quill-editor
                 [modules]="modules"
                 id="comment"

@@ -259,7 +259,7 @@ export class Posts implements OnInit {
       const newDate = new Date(comment.dateadded);
       const timePassed = this.globalService.getTimePassed(newDate);
       const mediumDate = this.mediumDateFormatter.format(newDate);
-      let title = `<p class='comment' ><strong>${comment.name}</strong>, <span class="posttitleinfo">${mediumDate}, ${timePassed}</span></p>`;
+      let title = `<p class='comment' ><strong>${comment.name}</strong>, <span class="posttitleinfo">${mediumDate}, ${timePassed}, ${comment.rating} rating</span></p>`;
 
       // edit / delete button
       let editdeletebtn = `<div><a class='btn btn-primary editcommentbtn mt-2 me-1 post-${comment.postid} comment-${comment.postcommentid}'>Edit</a><a class='btn btn-danger deletecommentbtn mt-2 post-${comment.postid} comment-${comment.postcommentid}'>Delete</a></div>`;
