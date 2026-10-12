@@ -10,4 +10,5 @@ export interface GetPostsByCategoryUserRating {
   post: string;
   comments: string;
   rating: number;
+  successrating: boolean;
 }

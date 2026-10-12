@@ -19,7 +19,6 @@ import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
 })
 export class Posts implements OnInit {
   noPosts: boolean = false;
-  showRatingSuccess: boolean = false;
   postId: number = 0;
   userid: number | null = null;
   rating: number = 0;
@@ -86,6 +85,8 @@ export class Posts implements OnInit {
         this.postsList = data;
         this.noPosts = false;
         this.setratingPostUserList();
+        // turn off all success messages
+        this.setSuccessMessages(false);
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -168,9 +169,11 @@ export class Posts implements OnInit {
   }
 
   onRatingToolbarClick(event: MouseEvent, postId: number): void {
-    this.showRatingSuccess = false;
     const target = event.target as HTMLElement;
     const button = target.closest('button');
+
+    // turn off all success messages
+    this.setSuccessMessages(false);
 
     // have they set a userid for this post?
     const rating = this.ratingPostUserList.find((x) => x.postid === postId);
@@ -185,9 +188,14 @@ export class Posts implements OnInit {
         .submitPostUserRating(rating.userid, postId, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
-            // update the post listing rating
-            this.postsList[0].rating = response.averageRating;
-            // this.showRatingSuccess = true;
+            // Find the post in the listing
+            const post = this.postsList.find((post) => post.postid === postId);
+
+            if (post) {
+              // Update the post rating
+              post.rating = response.averageRating;
+              post.successrating = true;
+            }
             this.cdr.detectChanges();
           },
           error: (error) => {
@@ -222,6 +230,12 @@ export class Posts implements OnInit {
   }
 
   // helpers
+  setSuccessMessages(show: boolean) {
+    this.postsList.forEach((post) => {
+      post.successrating = false;
+    });
+  }
+
   deleteComment(commentId: number, postId: string) {
     const confirmed = window.confirm('Are you sure you want to delete this comment?');
     if (confirmed) {
