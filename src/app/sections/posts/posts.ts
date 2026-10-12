@@ -22,6 +22,7 @@ export class Posts implements OnInit {
   showRatingSuccess: boolean = false;
   postId: number = 0;
   userid: number | null = null;
+  rating: number = 0;
   userratingid: number = 0;
   catagoryid: number | null = null;
   userList!: any[];
@@ -80,8 +81,8 @@ export class Posts implements OnInit {
   }
 
   loadPosts() {
-    this.apiServicePost.getPosts(this.catagoryid, this.userid).subscribe({
-      next: (data: GetPostsByCategoryUser[]) => {
+    this.apiServicePost.getPosts(this.catagoryid, this.userid, this.rating).subscribe({
+      next: (data: GetPostsByCategoryUserRating[]) => {
         this.postsList = data;
         this.noPosts = false;
         this.setratingPostUserList();
