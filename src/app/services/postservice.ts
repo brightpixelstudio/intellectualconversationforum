@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-import { GetPostsByCategoryUser } from '../models/posts/getpostsbycategoryuser';
+import { GetPostsByCategoryUserRating } from '../models/posts/getpostsbycategoryuserrating';
 import { GetPost } from '../models/posts/getpost';
 import { GetComment } from '../models/posts/getcomment';
 import { GetPostComments } from '../models/posts/getpostcomments';
@@ -19,23 +19,32 @@ export class ApiServicePost {
   getPosts(
     catagoryidparam: number | null,
     useridparam: number | null,
-  ): Observable<GetPostsByCategoryUser[]> {
+    ratingparam: number | null,
+  ): Observable<GetPostsByCategoryUserRating[]> {
     var queryString = '';
     const catagoryParam =
       catagoryidparam == null || catagoryidparam == 0 ? '' : `postcatagoryId=${catagoryidparam}`;
     const userParam = useridparam == null || useridparam == 0 ? '' : `userId=${useridparam}`;
+    const ratingParam = ratingparam == null || ratingparam == 0 ? '' : `rating=${ratingparam}`;
 
     // build the string based on values.
-    queryString = catagoryParam;
-    if (catagoryParam.length > 0 && userParam.length > 0) {
-      queryString += '&' + userParam;
-    } else if (catagoryParam.length == 0 && userParam.length > 0) {
-      queryString = userParam;
+    let params = new HttpParams();
+
+    if (catagoryParam.length > 0) {
+      params = params.append('postcatagoryId', catagoryParam);
     }
 
-    return this.http.get<GetPostsByCategoryUser[]>(
-      this.apiUrl + '/getPostsByCategoryUser?' + queryString,
-    );
+    if (userParam.length > 0) {
+      params = params.append('userId', userParam);
+    }
+
+    if (ratingParam.length > 0) {
+      params = params.append('rating', ratingParam);
+    }
+
+    return this.http.get<GetPostsByCategoryUserRating[]>(this.apiUrl + '/getPostsByCategoryUser', {
+      params,
+    });
   }
 
   // GET request to fetch data

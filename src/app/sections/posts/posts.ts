@@ -7,7 +7,7 @@ import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { GlobalService } from '../../services/globalservice';
-import { GetPostsByCategoryUser } from '../../models/posts/getpostsbycategoryuser';
+import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
 
@@ -27,7 +27,7 @@ export class Posts implements OnInit {
   userList!: any[];
   catagoryList!: any[];
   hiddenButtonIds = new Set<string>();
-  postsList: GetPostsByCategoryUser[] = [];
+  postsList: GetPostsByCategoryUserRating[] = [];
   commentList: GetPostComments[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
 

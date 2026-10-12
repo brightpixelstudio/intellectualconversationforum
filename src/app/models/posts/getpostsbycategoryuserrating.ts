@@ -1,4 +1,4 @@
-export interface GetPostsByCategoryUser {
+export interface GetPostsByCategoryUserRating {
   postid: number;
   userid: number;
   username: string;
