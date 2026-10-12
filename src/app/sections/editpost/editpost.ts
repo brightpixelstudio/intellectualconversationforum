@@ -30,6 +30,7 @@ export class EditPost implements OnInit {
   postId: number = 0;
   userid: number = 0;
   getPost: GetPost | null = null;
+  rating: number = 0;
   catagoryList!: any[];
   userList!: any[];
   updatePostForm!: FormGroup;
@@ -88,6 +89,7 @@ export class EditPost implements OnInit {
     this.apiServicePost.getPost(this.postId).subscribe({
       next: (GetPost) => {
         this.getPost = GetPost[0];
+        this.rating = this.getPost.rating;
         this.updatePostForm.patchValue(GetPost[0]);
         this.timePassed = this.globalService.getTimePassed(this.getPost.dateadded);
       },
@@ -116,16 +118,18 @@ export class EditPost implements OnInit {
 
     if (button) {
       // Pass variables to the service
-      this.apiServiceUser.submitPostUserRating(this.userid, postId, +button.textContent?.trim()).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.showSuccess = true;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Failed to submit rating', error);
-        },
-      });
+      this.apiServiceUser
+        .submitPostUserRating(this.userid, postId, +button.textContent?.trim())
+        .subscribe({
+          next: (response) => {
+            this.rating = response.averageRating;
+            this.showRatingSuccess = true;
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Failed to submit rating', error);
+          },
+        });
     }
   }
 
