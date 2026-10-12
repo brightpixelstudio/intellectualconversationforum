@@ -72,7 +72,10 @@ export class Posts implements OnInit {
   setratingPostUserList() {
     this.ratingPostUserList = [];
     for (const post of this.postsList) {
-      this.ratingPostUserList.push({ postid: post.postid, userid: this.userid || 0 });
+      this.ratingPostUserList.push({
+        postid: post.postid,
+        userid: 0,
+      });
     }
   }
 
@@ -149,10 +152,10 @@ export class Posts implements OnInit {
     const userId = Number(selectElement.value);
 
     // update the record
-    const rating = this.ratingPostUserList.find((x) => x.postid === postId);
+    const record = this.ratingPostUserList.find((x) => x.postid === postId);
 
-    if (rating) {
-      rating.userid = userId;
+    if (record) {
+      record.userid = userId;
     }
   }
 
@@ -174,8 +177,8 @@ export class Posts implements OnInit {
         .submitPostUserRating(rating.userid, postId, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
-            // Needs to add rating to interface and perhaps success
-            // this.rating = response.averageRating;
+            // update the post listing rating
+            this.postsList[0].rating = response.averageRating;
             // this.showRatingSuccess = true;
             this.cdr.detectChanges();
           },
