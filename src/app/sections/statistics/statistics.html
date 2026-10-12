@@ -54,6 +54,18 @@
                       >Posts With the Most Comments</a
                     >
                   </li>
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link"
+                      id="simple-tab-3"
+                      data-bs-toggle="tab"
+                      href="#simple-tabpanel-3"
+                      role="tab"
+                      aria-controls="simple-tabpanel-3"
+                      aria-selected="false"
+                      >Highest Rating Posts</a
+                    >
+                  </li>
                 </ul>
                 <div class="tab-content pt-3" id="tab-content">
                   <div
@@ -154,6 +166,44 @@
                       <tbody>
                         @for (
                           theStat of getStatisticsInformation.getMostPopularPostWithComments;
+                          track theStat.postid
+                        ) {
+                          <tr>
+                            <td>
+                              <a
+                                class="mt-3 me-1"
+                                title="View Posts"
+                                [attr.href]="'/posts?catagoryid=' + theStat.postcatagoryid"
+                              >
+                                {{ theStat.catagory }}
+                              </a>
+                            </td>
+                            <td><span innerHTML="{{ theStat.shorttextpost }}"></span></td>
+                            <td>{{ theStat.rating }}</td>
+                            <td>{{ theStat.count }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="tab-pane"
+                    id="simple-tabpanel-3"
+                    role="tabpanel"
+                    aria-labelledby="tab-3"
+                  >
+                    <table class="table table-striped table-hover">
+                      <thead class="custom-thead">
+                        <tr>
+                          <th scope="col">Catagory</th>
+                          <th scope="col">Post</th>
+                          <th scope="col">Rating</th>
+                          <th scope="col">Comment Count</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (
+                          theStat of getStatisticsInformation.getHighestRatingPosts;
                           track theStat.postid
                         ) {
                           <tr>

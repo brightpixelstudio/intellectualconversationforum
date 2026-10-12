@@ -22,12 +22,14 @@ export class ApiServiceStatistics {
     // NOTE - you dont need models for this architecture
     const getMostPopularCatagories$ = this.http.get(this.apiUrl + `/GetMostPopularCatagories`);
     const getMostPostsMembers$ = this.http.get(this.apiUrl + `/GetMostPostsMembers`);
+    const getHighestRatingPosts$ = this.http.get(this.apiUrl + `/GetHighestRatingPosts`);
     const getMostPopularPostWithComments$ = this.http.get(
       this.apiUrl + `/GetMostPopularPostWithComments`,
     );
     return forkJoin({
       getMostPopularCatagories: getMostPopularCatagories$,
       getMostPostsMembers: getMostPostsMembers$,
+      getHighestRatingPosts: getHighestRatingPosts$,
       getMostPopularPostWithComments: getMostPopularPostWithComments$,
     });
   }
