@@ -21,7 +21,6 @@ export class ApiServicePost {
     useridparam: number | null,
     ratingparam: number | null,
   ): Observable<GetPostsByCategoryUserRating[]> {
-    var queryString = '';
     const catagoryParam =
       catagoryidparam == null || catagoryidparam == 0 ? '' : `postcatagoryId=${catagoryidparam}`;
     const userParam = useridparam == null || useridparam == 0 ? '' : `userId=${useridparam}`;
@@ -30,21 +29,24 @@ export class ApiServicePost {
     // build the string based on values.
     let params = new HttpParams();
 
-    if (catagoryParam.length > 0) {
-      params = params.append('postcatagoryId', catagoryParam);
+    if (catagoryidparam != null && catagoryidparam !== 0) {
+      params = params.append('postcatagoryId', catagoryidparam);
     }
 
-    if (userParam.length > 0) {
-      params = params.append('userId', userParam);
+    if (useridparam != null && useridparam !== 0) {
+      params = params.append('userId', useridparam);
     }
 
-    if (ratingParam.length > 0) {
-      params = params.append('rating', ratingParam);
+    if (ratingparam != null && ratingparam !== 0) {
+      params = params.append('rating', ratingparam);
     }
 
-    return this.http.get<GetPostsByCategoryUserRating[]>(this.apiUrl + '/getPostsByCategoryUser', {
-      params,
-    });
+    return this.http.get<GetPostsByCategoryUserRating[]>(
+      this.apiUrl + '/getPostsByCategoryUserRating',
+      {
+        params,
+      },
+    );
   }
 
   // GET request to fetch data

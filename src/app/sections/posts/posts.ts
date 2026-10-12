@@ -83,6 +83,7 @@ export class Posts implements OnInit {
   loadPosts() {
     this.apiServicePost.getPosts(this.catagoryid, this.userid, this.rating).subscribe({
       next: (data: GetPostsByCategoryUserRating[]) => {
+        console.log(data);
         this.postsList = data;
         this.noPosts = false;
         this.setratingPostUserList();
@@ -98,12 +99,19 @@ export class Posts implements OnInit {
   // events
   onCatagoryChange(catagory: string) {
     this.catagoryid = +catagory;
-    this.loadPosts();
   }
 
   onUserChange(user: string) {
     this.userid = +user;
-    this.loadPosts();
+  }
+
+  onRatingChange(ratingIn: string) {
+    // ensure there is some value and it is between 1 and 10
+    const rating = ratingIn === '' ? 0 : Number(ratingIn);
+    if (rating !== 0 && (rating < 1 || rating > 10)) {
+      return;
+    }
+    this.rating = +ratingIn;
   }
 
   onCommentsClick(postId: string) {
