@@ -76,4 +76,12 @@ export class ApiServiceUser {
       null,
     );
   }
+
+  submitCommentUserRating(userid: number, commentid: number, rating: number): Observable<any> {
+    return this.http.post(
+      this.apiUrl +
+        `/insertCommentUserRating?userid=${userid}&commentid=${commentid}&rating=${rating}`,
+      null,
+    );
+  }
 }

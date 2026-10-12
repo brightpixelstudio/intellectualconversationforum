@@ -27,9 +27,12 @@ import { QuillModule } from 'ngx-quill';
 export class EditComment implements OnInit {
   timePassed?: string;
   userList!: any[];
+  rating: number = 0;
   commentId: number = 0;
+  userid: number = 0;
   getComment: GetComment | null = null;
   updateCommentForm!: FormGroup;
+  showRatingSuccess = false;
   showSuccess = false;
   showError = false;
   errorMsg = '';
@@ -78,6 +81,7 @@ export class EditComment implements OnInit {
     this.apiServicePost.getComment(this.commentId).subscribe({
       next: (GetComment) => {
         this.getComment = GetComment[0];
+        this.rating = this.getComment.rating;
         this.updateCommentForm.patchValue(GetComment[0]);
         this.timePassed = this.globalService.getTimePassed(this.getComment.dateadded);
       },
@@ -91,6 +95,33 @@ export class EditComment implements OnInit {
 
   get f() {
     return this.updateCommentForm.controls;
+  }
+
+  onUserChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.userid = Number(select.value);
+  }
+
+  onRatingToolbarClick(event: MouseEvent, commentId: number): void {
+    this.showRatingSuccess = false;
+    const target = event.target as HTMLElement;
+    const button = target.closest('button');
+
+    if (button) {
+      // Pass variables to the service
+      this.apiServiceUser
+        .submitCommentUserRating(this.userid, commentId, +button.textContent?.trim())
+        .subscribe({
+          next: (response) => {
+            this.rating = response.averageRating;
+            this.showRatingSuccess = true;
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Failed to submit rating', error);
+          },
+        });
+    }
   }
 
   onSubmit() {

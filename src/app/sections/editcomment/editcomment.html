@@ -13,7 +13,7 @@
                 <strong>{{ getComment?.name }}</strong
                 >,<i>
                   {{ getComment?.catagory }}, {{ getComment?.dateadded | date: 'mediumDate' }},
-                  {{ timePassed }}, {{ getComment?.rating }} rating</i
+                  {{ timePassed }}, {{ rating }} rating</i
                 >
               </p>
               <hr />
@@ -26,29 +26,43 @@
                   </select>
                 </div>
                 <div class="col-3 mt-2 ms-4">
-                  <div class="btn-toolbar" role="toolbar" aria-label="Rate this post">
+                  <div
+                    class="btn-toolbar"
+                    role="toolbar"
+                    aria-label="Rate this commment"
+                    (click)="onRatingToolbarClick($event, commentId)"
+                  >
                     <span class="mt-3"><p class="title">Rate:</p></span>
                     <div class="btn-group" role="group" aria-label="First group">
-                      <button type="button" class="btn btn-primary ratingBtn">1</button>
-                      <button type="button" class="btn btn-primary ratingBtn">2</button>
-                      <button type="button" class="btn btn-primary ratingBtn">3</button>
-                      <button type="button" class="btn btn-primary ratingBtn">4</button>
-                      <button type="button" class="btn btn-primary ratingBtn">5</button>
-                      <button type="button" class="btn btn-primary ratingBtn">6</button>
-                      <button type="button" class="btn btn-primary ratingBtn">7</button>
-                      <button type="button" class="btn btn-primary ratingBtn">8</button>
-                      <button type="button" class="btn btn-primary ratingBtn">9</button>
-                      <button type="button" class="btn btn-primary ratingBtn">10</button>
+                      <button type="button" class="btn btn-warning ratingBtn">1</button>
+                      <button type="button" class="btn btn-warning ratingBtn">2</button>
+                      <button type="button" class="btn btn-warning ratingBtn">3</button>
+                      <button type="button" class="btn btn-warning ratingBtn">4</button>
+                      <button type="button" class="btn btn-warning ratingBtn">5</button>
+                      <button type="button" class="btn btn-warning ratingBtn">6</button>
+                      <button type="button" class="btn btn-warning ratingBtn">7</button>
+                      <button type="button" class="btn btn-warning ratingBtn">8</button>
+                      <button type="button" class="btn btn-warning ratingBtn">9</button>
+                      <button type="button" class="btn btn-warning ratingBtn">10</button>
                     </div>
                   </div>
                 </div>
                 <div class="col-3 mt-3">
-                  <select #userid name="userid" id="userid" class="userSelect">
+                  <select
+                    #userid
+                    name="userid"
+                    id="userid"
+                    class="userSelect"
+                    (change)="onUserChange($event)"
+                  >
                     @for (user of userList; track user.userid) {
                       <option value="{{ user.userid }}">{{ user.name }}</option>
                     }
                   </select>
                 </div>
+                @if (showRatingSuccess == true) {
+                  <div class="successmsg">Your rating was succesfully saved</div>
+                }
               </div>
               <quill-editor
                 [modules]="modules"
