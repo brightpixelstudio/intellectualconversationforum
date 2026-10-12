@@ -115,10 +115,17 @@ export class EditPost implements OnInit {
     const button = target.closest('button');
 
     if (button) {
-      console.log('Clicked button:', button.textContent?.trim());
-      console.log('Post ID:', postId);
-      console.log('User ID:', this.userid);
-      this.showRatingSuccess = true;
+      // Pass variables to the service
+      this.apiServiceUser.submitPostUserRating(this.userid, postId, +button.textContent?.trim()).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.showSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Failed to submit rating', error);
+        },
+      });
     }
   }
 

@@ -75,4 +75,11 @@ export class ApiServiceUser {
   deleteUser(userid: number): Observable<any> {
     return this.http.delete<any>(this.apiUrl + `/DeleteMember?userid=${userid}`);
   }
+
+  submitPostUserRating(userid: number, postid: number, rating: number): Observable<any> {
+    return this.http.post(
+      this.apiUrl + `/insertPostUserRating?userid=${userid}&postid=${postid}&rating=${rating}`,
+      null,
+    );
+  }
 }
