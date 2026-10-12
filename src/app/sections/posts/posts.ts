@@ -83,7 +83,6 @@ export class Posts implements OnInit {
   loadPosts() {
     this.apiServicePost.getPosts(this.catagoryid, this.userid, this.rating).subscribe({
       next: (data: GetPostsByCategoryUserRating[]) => {
-        console.log(data);
         this.postsList = data;
         this.noPosts = false;
         this.setratingPostUserList();
