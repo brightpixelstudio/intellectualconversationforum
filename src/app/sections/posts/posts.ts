@@ -9,6 +9,7 @@ import { ApiServicePost } from '../../services/postservice';
 import { GlobalService } from '../../services/globalservice';
 import { GetPostsByCategoryUser } from '../../models/posts/getpostsbycategoryuser';
 import { GetPostComments } from '../../models/posts/getpostcomments';
+import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
 
 @Component({
   selector: 'posts',
@@ -18,14 +19,17 @@ import { GetPostComments } from '../../models/posts/getpostcomments';
 })
 export class Posts implements OnInit {
   noPosts: boolean = false;
+  showRatingSuccess: boolean = false;
   postId: number = 0;
   userid: number | null = null;
+  userratingid: number = 0;
   catagoryid: number | null = null;
   userList!: any[];
   catagoryList!: any[];
   hiddenButtonIds = new Set<string>();
   postsList: GetPostsByCategoryUser[] = [];
   commentList: GetPostComments[] = [];
+  ratingPostUserList: RatingPostUserList[] = [];
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -65,11 +69,19 @@ export class Posts implements OnInit {
     });
   }
 
+  setratingPostUserList() {
+    this.ratingPostUserList = [];
+    for (const post of this.postsList) {
+      this.ratingPostUserList.push({ postid: post.postid, userid: this.userid || 0 });
+    }
+  }
+
   loadPosts() {
     this.apiServicePost.getPosts(this.catagoryid, this.userid).subscribe({
       next: (data: GetPostsByCategoryUser[]) => {
         this.postsList = data;
         this.noPosts = false;
+        this.setratingPostUserList();
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -129,6 +141,48 @@ export class Posts implements OnInit {
           window.alert('Error deleting this post');
         },
       });
+    }
+  }
+
+  onUserRatingChange(event: Event, postId: number): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const userId = Number(selectElement.value);
+
+    // update the record
+    const rating = this.ratingPostUserList.find((x) => x.postid === postId);
+
+    if (rating) {
+      rating.userid = userId;
+    }
+  }
+
+  onRatingToolbarClick(event: MouseEvent, postId: number): void {
+    this.showRatingSuccess = false;
+    const target = event.target as HTMLElement;
+    const button = target.closest('button');
+
+    // have they set a userid for this post?
+    const rating = this.ratingPostUserList.find((x) => x.postid === postId);
+    if (!rating || rating.userid === 0) {
+      window.alert('Please select a user to rate this post');
+      return;
+    }
+
+    if (button) {
+      // Pass variables to the service
+      this.apiServiceUser
+        .submitPostUserRating(rating.userid, postId, +button.textContent?.trim())
+        .subscribe({
+          next: (response) => {
+            // Needs to add rating to interface and perhaps success
+            // this.rating = response.averageRating;
+            // this.showRatingSuccess = true;
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Failed to submit rating', error);
+          },
+        });
     }
   }
 

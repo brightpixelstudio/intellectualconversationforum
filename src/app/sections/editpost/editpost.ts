@@ -107,7 +107,6 @@ export class EditPost implements OnInit {
 
   onUserChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    console.log(select);
     this.userid = Number(select.value);
   }
 
