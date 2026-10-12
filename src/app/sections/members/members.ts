@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiServiceUser } from '../../services/userservice';
+import { ApiServiceStatistics } from '../../services/statisticservice';
 import { GetAllProfileMembers } from '../../models/getallprofilemembers';
 import { GetNewestMembers } from '../../models/getnewestmembers';
 import { GetMostPostsMembers } from '../../models/getmostpostsmembers';
@@ -29,6 +30,7 @@ export class Members implements OnInit {
 
   constructor(
     private apiService: ApiServiceUser,
+    private apiServiceStatistics: ApiServiceStatistics,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -57,7 +59,7 @@ export class Members implements OnInit {
 
       case 'mostposts':
         this.reportType = MemberReportType.MostPosts;
-        this.apiService.getMostPostsMembers().subscribe((data: GetMostPostsMembers[]) => {
+        this.apiServiceStatistics.getMostPostsMembers().subscribe((data: GetMostPostsMembers[]) => {
           this.memberListMostPostsMembers = data;
           this.cdr.detectChanges();
         });

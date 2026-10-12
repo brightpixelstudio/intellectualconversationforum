@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { GetMostPostsMembers } from '../models/getmostpostsmembers';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
@@ -10,6 +11,11 @@ import { environment } from '../../environments/environment';
 export class ApiServiceStatistics {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/statistic'; // Uses the API URL from environment
+
+  // GET request to fetch data
+  getMostPostsMembers(): Observable<GetMostPostsMembers[]> {
+    return this.http.get<GetMostPostsMembers[]>(this.apiUrl + '/GetMostPostsMembers');
+  }
 
   // GET request to fetch data
   getStatistics(): Observable<any> {

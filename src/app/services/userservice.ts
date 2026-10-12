@@ -4,7 +4,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { GetAllProfileMembers } from '../models/getallprofilemembers';
 import { GetNewestMembers } from '../models/getnewestmembers';
-import { GetMostPostsMembers } from '../models/getmostpostsmembers';
 import { GetLatestLoginsMembers } from '../models/getlatestloginsmembers';
 import { GetProfileMember } from '../models/member/getprofilemember';
 import { GetUserList } from '../models/member/getuserlist';
@@ -25,11 +24,6 @@ export class ApiServiceUser {
   // GET request to fetch data
   getNewestMembers(): Observable<GetNewestMembers[]> {
     return this.http.get<GetNewestMembers[]>(this.apiUrl + '/GetNewestMembers');
-  }
-
-  // GET request to fetch data
-  getMostPostsMembers(): Observable<GetMostPostsMembers[]> {
-    return this.http.get<GetMostPostsMembers[]>(this.apiUrl + '/GetMostPostsMembers');
   }
 
   // GET request to fetch data
