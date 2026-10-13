@@ -10,7 +10,7 @@ import { GlobalService } from '../../services/globalservice';
 import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
-//import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
+import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 
 @Component({
   selector: 'posts',
@@ -28,11 +28,9 @@ export class Posts implements OnInit {
   searchString: string = '';
   userList!: any[];
   catagoryList!: any[];
-  hiddenButtonIds = new Set<string>();
   postsList: GetPostsByCategoryUserRating[] = [];
-  commentList: GetPostComments[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
-  //  ratingCommentUserlist: RatingCommentUserlist[] = [];
+  ratingCommentUserlist: RatingCommentUserlist[] = [];
 
   // Comments stored separately for each post
   commentsByPostId = new Map<number, GetPostComments[]>();
@@ -49,7 +47,6 @@ export class Posts implements OnInit {
     private apiServicePost: ApiServicePost,
     public globalService: GlobalService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +80,7 @@ export class Posts implements OnInit {
 
   setratingPostUserList() {
     this.ratingPostUserList = [];
+    this.ratingCommentUserlist = [];
     for (const post of this.postsList) {
       this.ratingPostUserList.push({
         postid: post.postid,
@@ -91,11 +89,21 @@ export class Posts implements OnInit {
     }
   }
 
-  loadPosts() {
-    // clear out comment list
-    this.commentList.length = 0;
-    // this.ratingCommentUserlist.length = 0;
+  setratingCommentUserList() {
+    this.ratingCommentUserlist = [];
 
+    // Insert all comment IDs from every loaded post
+    this.commentsByPostId.forEach((comments) => {
+      comments.forEach((comment) => {
+        this.ratingCommentUserlist.push({
+          commentid: comment.postcommentid,
+          userid: 0,
+        });
+      });
+    });
+  }
+
+  loadPosts() {
     // get posts
     this.apiServicePost
       .getPosts(this.catagoryid, this.userid, this.rating, this.searchString)
@@ -159,11 +167,11 @@ export class Posts implements OnInit {
     const userId = Number(selectElement.value);
 
     // update the record
-    // const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
+    const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
 
-    //if (record) {
-    //  record.userid = userId;
-    //}
+    if (record) {
+      record.userid = userId;
+    }
   }
 
   onViewCommentsClick(postId: number): void {
@@ -186,6 +194,7 @@ export class Posts implements OnInit {
     this.apiServicePost.getComments(postId).subscribe({
       next: (comments: GetPostComments[]) => {
         this.commentsByPostId.set(postId, comments);
+        this.setratingCommentUserList();
         this.loadingPostIds.delete(postId);
       },
       error: (error) => {
@@ -201,7 +210,6 @@ export class Posts implements OnInit {
       this.apiServicePost.deletePost(postId).subscribe({
         next: (response) => {
           // remove the record from the lists
-          // remove comments also
           this.removeItem(this.postsList, (post) => post.postid === postId);
           this.cdr.detectChanges();
         },
@@ -281,26 +289,6 @@ export class Posts implements OnInit {
     });
   }
 
-  deleteComment(commentId: number, postId: string) {
-    const confirmed = window.confirm('Are you sure you want to delete this comment?');
-    if (confirmed) {
-      // delete all these comments from this post
-      this.commentList = this.commentList.filter((comment) => comment.postid !== +postId);
-
-      // delete the actual comment
-      this.apiServicePost.deleteComment(commentId).subscribe({
-        next: (response) => {
-          // reload the comments for this post
-          //          this.onViewCommentsClick(+postId);
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          window.alert('Error deleting this post');
-        },
-      });
-    }
-  }
-
   removeItem<T>(list: T[], condition: (item: T) => boolean): void {
     const index = list.findIndex(condition);
     if (index !== -1) {
@@ -311,8 +299,4 @@ export class Posts implements OnInit {
   getTimePassed(date: Date) {
     return this.globalService.getTimePassed(date);
   }
-
-  mediumDateFormatter = new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'medium',
-  });
 }

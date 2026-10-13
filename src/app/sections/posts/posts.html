@@ -208,19 +208,17 @@
                           </a>
                         }
                         @if (thePost.count > 0) {
-                          @if (!hiddenButtonIds.has(thePost.postid.toString())) {
-                            <button
-                              type="button"
-                              class="btn btn-primary commentsbtn mt-3 ms-1"
-                              (click)="onViewCommentsClick(thePost.postid)"
-                            >
-                              {{
-                                expandedPostIds.has(thePost.postid)
-                                  ? 'Hide Comments'
-                                  : `View the ${thePost.count} Comments`
-                              }}
-                            </button>
-                          }
+                          <button
+                            type="button"
+                            class="btn btn-primary commentsbtn mt-3 ms-1"
+                            (click)="onViewCommentsClick(thePost.postid)"
+                          >
+                            {{
+                              expandedPostIds.has(thePost.postid)
+                                ? 'Hide Comments'
+                                : `View the ${thePost.count} Comments`
+                            }}
+                          </button>
                         }
                         @if (!thePost.commentsclosed) {
                           <button
