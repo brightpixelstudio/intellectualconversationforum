@@ -132,18 +132,16 @@ export class Posts implements OnInit {
 
   // **************************
 
-  onPostUserRatingChange(event: Event, commentId: number): void {
+  onPostUserRatingChange(event: Event, postId: number): void {
     const selectElement = event.target as HTMLSelectElement;
     const userId = Number(selectElement.value);
 
-    /*
     // update the record
     const record = this.ratingPostUserList.find((x) => x.postid === postId);
 
     if (record) {
       record.userid = userId;
     }
-      */
   }
 
   // dropdown
@@ -218,6 +216,7 @@ export class Posts implements OnInit {
 
     // have they set a userid for this post?
     const rating = this.ratingPostUserList.find((x) => x.postid === postId);
+
     if (!rating || rating.userid === 0) {
       window.alert('Please select a user to rate this post');
       return;
@@ -310,15 +309,13 @@ export class Posts implements OnInit {
     for (const user of this.userList) {
       userOptions += `<option [value]='${user.userid}'>${user.name}</option>`;
     }
-    console.log(userOptions);
 
     // build the content
     let comments: string = '';
     for (const comment of this.commentList) {
       if (this.postId != comment.postid) continue;
 
-      /* create the select users dropdown
-      
+      /* create the select users dropdown      
       <select #user name="user" id="user" (change)="onCommentUserRatingChange($event, thePost.commentid)"">
         <option value="0">All Users</option>
         @for (user of userList; track user.userid) {
