@@ -196,6 +196,9 @@ export class Posts implements OnInit {
         this.commentsByPostId.set(postId, comments);
         this.setratingCommentUserList();
         this.loadingPostIds.delete(postId);
+
+        // Notify Angular that the view needs updating
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading comments:', error);
