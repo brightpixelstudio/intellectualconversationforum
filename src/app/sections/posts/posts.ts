@@ -112,7 +112,7 @@ export class Posts implements OnInit {
     this.searchString = value;
   }
 
-  onRatingChange(ratingIn: string) {
+  onPostRatingChange(ratingIn: string) {
     // ensure there is some value and it is between 1 and 10
     const rating = ratingIn === '' ? 0 : Number(ratingIn);
     if (rating !== 0 && (rating < 1 || rating > 10)) {
@@ -163,7 +163,7 @@ export class Posts implements OnInit {
     }
   }
 
-  onUserRatingChange(event: Event, postId: number): void {
+  onPostUserRatingChange(event: Event, postId: number): void {
     const selectElement = event.target as HTMLSelectElement;
     const userId = Number(selectElement.value);
 
@@ -175,7 +175,7 @@ export class Posts implements OnInit {
     }
   }
 
-  onRatingToolbarClick(event: MouseEvent, postId: number): void {
+  onPostRatingToolbarClick(event: MouseEvent, postId: number): void {
     const target = event.target as HTMLElement;
     const button = target.closest('button');
 
@@ -271,6 +271,8 @@ export class Posts implements OnInit {
   }
 
   buildCommemts(): string {
+    // create the select users dropdown
+
     // build the content
     let comments: string = '';
     for (const comment of this.commentList) {
@@ -283,10 +285,12 @@ export class Posts implements OnInit {
       let title = `<p class='comment' ><strong>${comment.name}</strong>, <span class="posttitleinfo">${mediumDate}, ${timePassed}, ${comment.rating} rating</span></p>`;
 
       // edit / delete button
-      let editdeletebtn = `<div><a class='btn btn-primary editcommentbtn mt-2 me-1 post-${comment.postid} comment-${comment.postcommentid}'>Edit</a><a class='btn btn-danger deletecommentbtn mt-2 post-${comment.postid} comment-${comment.postcommentid}'>Delete</a></div>`;
+      let startwrapper = `<div class='row'><div class='col-2'>`;
+      let editdeletebtn = `<a class='btn btn-primary editcommentbtn mt-2 me-1 post-${comment.postid} comment-${comment.postcommentid}'>Edit</a><a class='btn btn-danger deletecommentbtn mt-2 post-${comment.postid} comment-${comment.postcommentid}'>Delete</a>`;
+      let endwrapper = `</div></div><hr/>`;
 
       // comment
-      let theComment = comment.comment + editdeletebtn + '<hr/>';
+      let theComment = comment.comment + startwrapper + editdeletebtn + endwrapper;
 
       // add to the comments
       comments += title + theComment;
