@@ -97,42 +97,50 @@
                     </div>
                     <div class="row">
                       @if (expandedPostIds.has(thePost.postid)) {
-                        <div class="comments-container mt-3">
+                        <div class="mt-3 ms-5">
                           @if (loadingPostIds.has(thePost.postid)) {
                             <p>Loading comments...</p>
                           } @else {
                             @for (
-                              comment of commentsByPostId.get(thePost.postid) ?? [];
-                              track comment.postcommentid
+                              theComment of commentsByPostId.get(thePost.postid) ?? [];
+                              track theComment.postcommentid
                             ) {
                               <div class="row mb-3">
                                 <div class="col-12">
                                   <p class="comment">
-                                    <strong>{{ comment.name }}, </strong>
+                                    <strong>{{ theComment.name }}, </strong>
                                     <span class="posttitleinfo"
-                                      >{{ comment.dateadded | date: 'medium' }},
-                                      {{ globalService.getTimePassed(comment.dateadded) }},
-                                      {{ comment.rating }} rating
+                                      >{{ theComment.dateadded | date: 'medium' }},
+                                      {{ globalService.getTimePassed(theComment.dateadded) }},
+                                      {{ theComment.rating }} rating
                                     </span>
                                   </p>
 
-                                  <div [innerHTML]="comment.comment"></div>
+                                  <div [innerHTML]="theComment.comment"></div>
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="col-12">
                                   <div class="row">
                                     <div class="col-3">
-                                      <button
-                                        type="button"
+                                      <a
+                                        [attr.href]="
+                                          '/editcomment?commentid=' + theComment.postcommentid
+                                        "
                                         class="btn btn-primary editcommentbtn mt-2 me-1"
                                       >
                                         Edit Comment
-                                      </button>
+                                      </a>
 
                                       <button
                                         type="button"
                                         class="btn btn-danger deletecommentbtn mt-2"
+                                        (click)="
+                                          onDeleteCommentClick(
+                                            theComment.postid,
+                                            theComment.postcommentid
+                                          )
+                                        "
                                       >
                                         Delete This Comment
                                       </button>
@@ -142,7 +150,10 @@
                                       <select
                                         class="form-select userSelect mt-1"
                                         (change)="
-                                          onCommentUserRatingChange($event, comment.postcommentid)
+                                          onCommentUserRatingChange(
+                                            $event,
+                                            theComment.postcommentid
+                                          )
                                         "
                                       >
                                         <option value="0">Select User</option>

@@ -250,27 +250,28 @@ export class Posts implements OnInit {
     }
   }
 
-  onCommentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // get the postid and commentid
-    let commentClass = Array.from(target.classList).find((className) =>
-      className.startsWith('comment-'),
-    );
-    let postClass = Array.from(target.classList).find((className) => className.startsWith('post-'));
-    if (!commentClass || !postClass) return;
-
-    const postId: string = postClass.substring(postClass.indexOf('-') + 1);
-    const commentId: string = commentClass.substring(commentClass.indexOf('-') + 1);
-
-    // is this a delete?
-    if (target.classList.contains('deletecommentbtn')) {
-      this.deleteComment(+commentId, postId);
-    } else {
-      this.router.navigate(['/editcomment'], {
-        queryParams: { commentid: commentId },
-      });
+  onDeleteCommentClick(postId: number, commentId: number) {
+    if (!confirm('Are you sure you want to delete this comment?')) {
+      return;
     }
+
+    // delete the actual comment
+    this.apiServicePost.deleteComment(commentId).subscribe({
+      next: (response) => {
+        // Get comments for this post
+        const comments = this.commentsByPostId.get(postId) ?? [];
+
+        // Remove the deleted comment
+        this.commentsByPostId.set(
+          postId,
+          comments.filter((comment) => comment.postcommentid !== commentId),
+        );
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        alert('Unable to delete the comment.');
+      },
+    });
   }
 
   // helpers
