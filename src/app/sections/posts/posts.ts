@@ -24,6 +24,7 @@ export class Posts implements OnInit {
   rating: number = 0;
   userratingid: number = 0;
   catagoryid: number | null = null;
+  searchString: string = '';
   userList!: any[];
   catagoryList!: any[];
   hiddenButtonIds = new Set<string>();
@@ -80,20 +81,22 @@ export class Posts implements OnInit {
   }
 
   loadPosts() {
-    this.apiServicePost.getPosts(this.catagoryid, this.userid, this.rating).subscribe({
-      next: (data: GetPostsByCategoryUserRating[]) => {
-        this.postsList = data;
-        this.noPosts = false;
-        this.setratingPostUserList();
-        // turn off all success messages
-        this.setSuccessMessages(false);
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.noPosts = true;
-        this.cdr.detectChanges();
-      },
-    });
+    this.apiServicePost
+      .getPosts(this.catagoryid, this.userid, this.rating, this.searchString)
+      .subscribe({
+        next: (data: GetPostsByCategoryUserRating[]) => {
+          this.postsList = data;
+          this.noPosts = false;
+          this.setratingPostUserList();
+          // turn off all success messages
+          this.setSuccessMessages(false);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.noPosts = true;
+          this.cdr.detectChanges();
+        },
+      });
   }
 
   // events
@@ -103,6 +106,10 @@ export class Posts implements OnInit {
 
   onUserChange(user: string) {
     this.userid = +user;
+  }
+
+  onSearchChange(value: string): void {
+    this.searchString = value;
   }
 
   onRatingChange(ratingIn: string) {

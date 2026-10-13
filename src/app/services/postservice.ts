@@ -20,6 +20,7 @@ export class ApiServicePost {
     catagoryidparam: number | null,
     useridparam: number | null,
     ratingparam: number | null,
+    searchString: string | null,
   ): Observable<GetPostsByCategoryUserRating[]> {
     const catagoryParam =
       catagoryidparam == null || catagoryidparam == 0 ? '' : `postcatagoryId=${catagoryidparam}`;
@@ -39,6 +40,9 @@ export class ApiServicePost {
 
     if (ratingparam != null && ratingparam !== 0) {
       params = params.append('rating', ratingparam);
+    }
+    if (searchString != null && searchString.trim().length !== 0) {
+      params = params.append('searchString', searchString.trim());
     }
 
     return this.http.get<GetPostsByCategoryUserRating[]>(

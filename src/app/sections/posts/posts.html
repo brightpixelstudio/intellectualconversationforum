@@ -47,6 +47,16 @@
                   class="ms-2"
                   (change)="onRatingChange(rating.value)"
                 />
+                <input
+                  #search
+                  placeholder="Search String"
+                  type="text"
+                  id="search"
+                  name="search"
+                  maxlength="30"
+                  class="ms-2"
+                  (input)="onSearchChange(search.value)"
+                />
                 <a class="btn btn-primary newpostbtn ms-2" title="Get Posts" (click)="loadPosts()">
                   Get Posts
                 </a>
