@@ -7,5 +7,6 @@ export interface GetPostComments {
   dateadded: Date;
   catagory: string;
   rating: number;
+  successrating: boolean;
   comment: string;
 }

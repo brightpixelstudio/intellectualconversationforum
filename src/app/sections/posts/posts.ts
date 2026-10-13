@@ -30,7 +30,7 @@ export class Posts implements OnInit {
   catagoryList!: any[];
   postsList: GetPostsByCategoryUserRating[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
-  ratingCommentUserlist: RatingCommentUserlist[] = [];
+  ratingCommentUserList: RatingCommentUserlist[] = [];
 
   // Comments stored separately for each post
   commentsByPostId = new Map<number, GetPostComments[]>();
@@ -80,7 +80,7 @@ export class Posts implements OnInit {
 
   setratingPostUserList() {
     this.ratingPostUserList = [];
-    this.ratingCommentUserlist = [];
+    this.ratingCommentUserList = [];
     for (const post of this.postsList) {
       this.ratingPostUserList.push({
         postid: post.postid,
@@ -90,12 +90,12 @@ export class Posts implements OnInit {
   }
 
   setratingCommentUserList() {
-    this.ratingCommentUserlist = [];
+    this.ratingCommentUserList = [];
 
     // Insert all comment IDs from every loaded post
     this.commentsByPostId.forEach((comments) => {
       comments.forEach((comment) => {
-        this.ratingCommentUserlist.push({
+        this.ratingCommentUserList.push({
           commentid: comment.postcommentid,
           userid: 0,
         });
@@ -113,7 +113,7 @@ export class Posts implements OnInit {
           this.noPosts = false;
           this.setratingPostUserList();
           // turn off all success messages
-          this.setSuccessMessages(false);
+          this.setPostSuccessMessages(false);
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -149,6 +149,7 @@ export class Posts implements OnInit {
 
   // **************************
 
+  // dropdown
   onPostUserRatingChange(event: Event, postId: number): void {
     const selectElement = event.target as HTMLSelectElement;
     const userId = Number(selectElement.value);
@@ -167,7 +168,7 @@ export class Posts implements OnInit {
     const userId = Number(selectElement.value);
 
     // update the record
-    const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
+    const record = this.ratingCommentUserList.find((x) => x.commentid === commentId);
 
     if (record) {
       record.userid = userId;
@@ -228,7 +229,7 @@ export class Posts implements OnInit {
     const button = target.closest('button');
 
     // turn off all success messages
-    this.setSuccessMessages(false);
+    this.setPostSuccessMessages(false);
 
     // have they set a userid for this post?
     const rating = this.ratingPostUserList.find((x) => x.postid === postId);
@@ -261,6 +262,38 @@ export class Posts implements OnInit {
     }
   }
 
+  onCommentRatingToolbarClick(event: MouseEvent, commentId: number): void {
+    const target = event.target as HTMLElement;
+    const button = target.closest('button');
+
+    // turn off all success messages
+    this.setCommentSuccessMessages(false);
+
+    // have they set a userid for this comment?
+    const rating = this.ratingCommentUserList.find((x) => x.commentid === commentId);
+
+    if (!rating || rating.userid === 0) {
+      window.alert('Please select a user to rate this comment');
+      return;
+    }
+
+    if (!button) return;
+
+    // Pass variables to the service
+    this.apiServiceUser
+      .submitCommentUserRating(rating.userid, commentId, +button.textContent?.trim())
+      .subscribe({
+        next: (response) => {
+          // Update the comment and rating
+          this.setCommentRating(commentId, response.averageRating, true);
+          this.cdr.markForCheck();
+        },
+        error: (error) => {
+          console.error('Failed to submit comment rating', error);
+        },
+      });
+  }
+
   onDeleteCommentClick(postId: number, commentId: number) {
     if (!confirm('Are you sure you want to delete this comment?')) {
       return;
@@ -286,9 +319,28 @@ export class Posts implements OnInit {
   }
 
   // helpers
-  setSuccessMessages(show: boolean) {
+  setCommentRating(commentid: number, rating: number, show: boolean): void {
+    for (const comments of this.commentsByPostId.values()) {
+      const comment = comments.find((c) => c.postcommentid === commentid);
+
+      if (comment) {
+        comment.rating = rating;
+        comment.successrating = show;
+        return;
+      }
+    }
+  }
+
+  setPostSuccessMessages(show: boolean) {
     this.postsList.forEach((post) => {
       post.successrating = false;
+    });
+  }
+  setCommentSuccessMessages(show: boolean) {
+    this.commentsByPostId.forEach((comments) => {
+      comments.forEach((comment) => {
+        comment.successrating = show;
+      });
     });
   }
 
