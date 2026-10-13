@@ -315,14 +315,14 @@ export class Posts implements OnInit {
     for (const comment of this.commentList) {
       if (this.postId != comment.postid) continue;
 
-      /* create the select users dropdown      
-      <select #user name="user" id="user" (change)="onCommentUserRatingChange($event, thePost.commentid)"">
-        <option value="0">All Users</option>
-        @for (user of userList; track user.userid) {
-          <option [value]="user.userid">{{ user.name }}</option>
-        }
-      </select>
-      */
+      // create the select users dropdown
+      let selectControl: string;
+      selectControl =
+        `<select #user name="user" id="user" (change)="onCommentUserRatingChange($event, thePost.commentid)"><option value="0">All Users</option>` +
+        userOptions +
+        `</select>`;
+
+      console.log(selectControl);
 
       // title
       const newDate = new Date(comment.dateadded);
