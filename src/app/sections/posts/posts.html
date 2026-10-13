@@ -130,55 +130,57 @@
                                   <div [innerHTML]="theComment.comment"></div>
                                 </div>
                               </div>
-                              <div class="row">
-                                <div class="col-12">
-                                  <div class="row">
-                                    <div class="col-3">
-                                      <a
-                                        [attr.href]="
-                                          '/editcomment?commentid=' + theComment.postcommentid
-                                        "
-                                        class="btn btn-primary editcommentbtn mt-2 me-1"
-                                      >
-                                        Edit Comment
-                                      </a>
+                              @if (!thePost.commentsclosed) {
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="row">
+                                      <div class="col-3">
+                                        <a
+                                          [attr.href]="
+                                            '/editcomment?commentid=' + theComment.postcommentid
+                                          "
+                                          class="btn btn-primary editcommentbtn mt-2 me-1"
+                                        >
+                                          Edit Comment
+                                        </a>
 
-                                      <button
-                                        type="button"
-                                        class="btn btn-danger deletecommentbtn mt-2"
-                                        (click)="
-                                          onDeleteCommentClick(
-                                            theComment.postid,
-                                            theComment.postcommentid
-                                          )
-                                        "
-                                      >
-                                        Delete This Comment
-                                      </button>
-                                    </div>
+                                        <button
+                                          type="button"
+                                          class="btn btn-danger deletecommentbtn mt-2"
+                                          (click)="
+                                            onDeleteCommentClick(
+                                              theComment.postid,
+                                              theComment.postcommentid
+                                            )
+                                          "
+                                        >
+                                          Delete This Comment
+                                        </button>
+                                      </div>
 
-                                    <div class="col-2">
-                                      <select
-                                        class="form-select userSelect mt-1"
-                                        (change)="
-                                          onCommentUserRatingChange(
-                                            $event,
-                                            theComment.postcommentid
-                                          )
-                                        "
-                                      >
-                                        <option value="0">Select User</option>
+                                      <div class="col-2">
+                                        <select
+                                          class="form-select userSelect mt-1"
+                                          (change)="
+                                            onCommentUserRatingChange(
+                                              $event,
+                                              theComment.postcommentid
+                                            )
+                                          "
+                                        >
+                                          <option value="0">Select User</option>
 
-                                        @for (user of userList; track user.userid) {
-                                          <option [value]="user.userid">
-                                            {{ user.name }}
-                                          </option>
-                                        }
-                                      </select>
+                                          @for (user of userList; track user.userid) {
+                                            <option [value]="user.userid">
+                                              {{ user.name }}
+                                            </option>
+                                          }
+                                        </select>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              }
                               <hr />
                             } @empty {
                               <p>No comments found for this post.</p>
