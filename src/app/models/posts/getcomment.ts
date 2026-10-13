@@ -7,4 +7,5 @@ export interface GetComment {
   name: string;
   catagory: string;
   rating: number;
+  timePassed: string;
 }

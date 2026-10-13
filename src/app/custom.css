@@ -45,8 +45,8 @@ p.comment {
   margin-bottom: 0px;
   line-height: 10px;
 }
-.deletecommentbtn, .editcommentbtn {
-  font-size: 14px;
+.deletecommentbtn, .editcommentbtn, usercommentselect{
+  font-size: 14px !important;
 }
 
 /* quill overrides */

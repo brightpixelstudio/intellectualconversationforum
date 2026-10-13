@@ -10,7 +10,7 @@ import { GlobalService } from '../../services/globalservice';
 import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
-import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
+//import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 
 @Component({
   selector: 'posts',
@@ -32,13 +32,22 @@ export class Posts implements OnInit {
   postsList: GetPostsByCategoryUserRating[] = [];
   commentList: GetPostComments[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
-  ratingCommentUserlist: RatingCommentUserlist[] = [];
+  //  ratingCommentUserlist: RatingCommentUserlist[] = [];
+
+  // Comments stored separately for each post
+  commentsByPostId = new Map<number, GetPostComments[]>();
+
+  // Track which posts have their comments expanded
+  expandedPostIds = new Set<number>();
+
+  // Track which posts are currently loading
+  loadingPostIds = new Set<number>();
 
   constructor(
     private apiServiceUser: ApiServiceUser,
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
-    private globalService: GlobalService,
+    public globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private router: Router,
   ) {}
@@ -85,7 +94,7 @@ export class Posts implements OnInit {
   loadPosts() {
     // clear out comment list
     this.commentList.length = 0;
-    this.ratingCommentUserlist.length = 0;
+    // this.ratingCommentUserlist.length = 0;
 
     // get posts
     this.apiServicePost
@@ -150,45 +159,40 @@ export class Posts implements OnInit {
     const userId = Number(selectElement.value);
 
     // update the record
-    const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
+    // const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
 
-    if (record) {
-      record.userid = userId;
-    }
+    //if (record) {
+    //  record.userid = userId;
+    //}
   }
 
-  onCommentsClick(postId: string) {
-    // add to the hide button list
-    this.hiddenButtonIds.add(postId);
-
-    // get the element from the list
-    const post = this.postsList.find((post) => post.postid === +postId);
-
-    if (post) {
-      this.postId = +postId;
-      // get the comments
-      this.apiServicePost.getComments(+postId).subscribe({
-        next: (data: GetPostComments[]) => {
-          // we add to the comment list in case they want to delete one.
-          this.commentList = [...this.commentList, ...data];
-
-          // add to comment list
-          this.ratingCommentUserlist = this.commentList.map((comment) => ({
-            commentid: comment.postcommentid,
-            userid: 0,
-          }));
-
-          // build the comments
-          let comments = this.buildCommemts();
-
-          // set the comments
-          let content = `<div class="row mt-3 ms-4"><div class="col-11">${comments}</div></row>`;
-          post.comments = content;
-          this.cdr.detectChanges();
-        },
-        error: (_err: unknown) => {},
-      });
+  onViewCommentsClick(postId: number): void {
+    // If already expanded, collapse this post's comments
+    if (this.expandedPostIds.has(postId)) {
+      this.expandedPostIds.delete(postId);
+      return;
     }
+
+    // Expand this post independently
+    this.expandedPostIds.add(postId);
+
+    // Avoid loading the same comments again
+    if (this.commentsByPostId.has(postId)) {
+      return;
+    }
+
+    this.loadingPostIds.add(postId);
+
+    this.apiServicePost.getComments(postId).subscribe({
+      next: (comments: GetPostComments[]) => {
+        this.commentsByPostId.set(postId, comments);
+        this.loadingPostIds.delete(postId);
+      },
+      error: (error) => {
+        console.error('Error loading comments:', error);
+        this.loadingPostIds.delete(postId);
+      },
+    });
   }
 
   onDeletePostClick(postId: number) {
@@ -197,6 +201,7 @@ export class Posts implements OnInit {
       this.apiServicePost.deletePost(postId).subscribe({
         next: (response) => {
           // remove the record from the lists
+          // remove comments also
           this.removeItem(this.postsList, (post) => post.postid === postId);
           this.cdr.detectChanges();
         },
@@ -255,7 +260,6 @@ export class Posts implements OnInit {
     let postClass = Array.from(target.classList).find((className) => className.startsWith('post-'));
     if (!commentClass || !postClass) return;
 
-    // remove all comments in the list for this post
     const postId: string = postClass.substring(postClass.indexOf('-') + 1);
     const commentId: string = commentClass.substring(commentClass.indexOf('-') + 1);
 
@@ -286,7 +290,7 @@ export class Posts implements OnInit {
       this.apiServicePost.deleteComment(commentId).subscribe({
         next: (response) => {
           // reload the comments for this post
-          this.onCommentsClick(postId);
+          //          this.onViewCommentsClick(+postId);
           this.cdr.detectChanges();
         },
         error: (error) => {
@@ -301,47 +305,6 @@ export class Posts implements OnInit {
     if (index !== -1) {
       list.splice(index, 1);
     }
-  }
-
-  buildCommemts(): string {
-    // create the user options
-    let userOptions = '<option value="0">Select User</option>';
-    for (const user of this.userList) {
-      userOptions += `<option [value]='${user.userid}'>${user.name}</option>`;
-    }
-
-    // build the content
-    let comments: string = '';
-    for (const comment of this.commentList) {
-      if (this.postId != comment.postid) continue;
-
-      // create the select users dropdown
-      let selectControl: string;
-      selectControl =
-        `<select #user name="user" id="user" (change)="onCommentUserRatingChange($event, thePost.commentid)"><option value="0">All Users</option>` +
-        userOptions +
-        `</select>`;
-
-      console.log(selectControl);
-
-      // title
-      const newDate = new Date(comment.dateadded);
-      const timePassed = this.globalService.getTimePassed(newDate);
-      const mediumDate = this.mediumDateFormatter.format(newDate);
-      let title = `<p class='comment' ><strong>${comment.name}</strong>, <span class="posttitleinfo">${mediumDate}, ${timePassed}, ${comment.rating} rating</span></p>`;
-
-      // edit / delete button
-      let startwrapper = `<div class='row'><div class='col-2'>`;
-      let editdeletebtn = `<a class='btn btn-primary editcommentbtn mt-2 me-1 post-${comment.postid} comment-${comment.postcommentid}'>Edit</a><a class='btn btn-danger deletecommentbtn mt-2 post-${comment.postid} comment-${comment.postcommentid}'>Delete</a>`;
-      let endwrapper = `</div></div><hr/>`;
-
-      // comment
-      let theComment = comment.comment + startwrapper + editdeletebtn + endwrapper;
-
-      // add to the comments
-      comments += title + theComment;
-    }
-    return comments;
   }
 
   getTimePassed(date: Date) {
