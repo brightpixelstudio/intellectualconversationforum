@@ -88,6 +88,17 @@
                         </p>
                       </div>
                     </div>
+                    @if (thePost.commentsclosed) {
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="posttitle">
+                            <span class="posttitleinfo danger"
+                              >This posts comments have been closed</span
+                            >
+                          </p>
+                        </div>
+                      </div>
+                    }
                     <div class="row">
                       <div class="col-12">
                         <p class="post">
@@ -175,34 +186,25 @@
                           }
                         </div>
                       }
-                      <!--
-                      <div
-                        (click)="onCommentClick($event)"
-                        class="col-12"
-                        #comments{{
-                        thePost.postid
-                        }}
-                        id="comments{{ thePost.postid }}"
-                        [innerHTML]="thePost.comments"
-                      ></div>
-                      -->
                     </div>
                     <div class="row">
                       <div class="col-5">
-                        <a
-                          class="btn btn-primary mt-3 me-1"
-                          title="Edit Post"
-                          [attr.href]="'/editpost?postid=' + thePost.postid"
-                        >
-                          Edit Post
-                        </a>
-                        <a
-                          class="btn btn-primary mt-3"
-                          title="Add Comment"
-                          [attr.href]="'/newcomment?postid=' + thePost.postid"
-                        >
-                          Add Comment
-                        </a>
+                        @if (!thePost.commentsclosed) {
+                          <a
+                            class="btn btn-primary mt-3 me-1"
+                            title="Edit Post"
+                            [attr.href]="'/editpost?postid=' + thePost.postid"
+                          >
+                            Edit Post
+                          </a>
+                          <a
+                            class="btn btn-primary mt-3"
+                            title="Add Comment"
+                            [attr.href]="'/newcomment?postid=' + thePost.postid"
+                          >
+                            Add Comment
+                          </a>
+                        }
                         @if (thePost.count > 0) {
                           @if (!hiddenButtonIds.has(thePost.postid.toString())) {
                             <button
@@ -218,57 +220,63 @@
                             </button>
                           }
                         }
-                        <button
-                          class="btn btn-danger deletebtn mt-3 ms-1"
-                          id="button{{ thePost.postid }}"
-                          (click)="onDeletePostClick(thePost.postid)"
-                        >
-                          Delete This Post
-                        </button>
-                      </div>
-                      <div class="col-7">
-                        <div class="row">
-                          <div class="col-4">
-                            <div
-                              class="btn-toolbar mt-1"
-                              role="toolbar"
-                              aria-label="Rate this post"
-                              (click)="onPostRatingToolbarClick($event, thePost.postid)"
-                            >
-                              <span class="mt-3"><p class="title">Rate:</p></span>
-                              <div class="btn-group" role="group" aria-label="First group">
-                                <button type="button" class="btn btn-primary ratingBtn">1</button>
-                                <button type="button" class="btn btn-primary ratingBtn">2</button>
-                                <button type="button" class="btn btn-primary ratingBtn">3</button>
-                                <button type="button" class="btn btn-primary ratingBtn">4</button>
-                                <button type="button" class="btn btn-primary ratingBtn">5</button>
-                                <button type="button" class="btn btn-primary ratingBtn">6</button>
-                                <button type="button" class="btn btn-primary ratingBtn">7</button>
-                                <button type="button" class="btn btn-primary ratingBtn">8</button>
-                                <button type="button" class="btn btn-primary ratingBtn">9</button>
-                                <button type="button" class="btn btn-primary ratingBtn">10</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-4 mt-3">
-                            <select
-                              #userid
-                              name="userid"
-                              id="userid"
-                              class="userSelect"
-                              (change)="onPostUserRatingChange($event, thePost.postid)"
-                            >
-                              <option value="0">Select User</option>
-                              @for (user of userList; track user.userid) {
-                                <option value="{{ user.userid }}">{{ user.name }}</option>
-                              }
-                            </select>
-                          </div>
-                        </div>
-                        @if (thePost.successrating) {
-                          <div class="successmsg">Your rating was succesfully saved</div>
+                        @if (!thePost.commentsclosed) {
+                          <button
+                            class="btn btn-danger deletebtn mt-3 ms-1"
+                            id="button{{ thePost.postid }}"
+                            (click)="onDeletePostClick(thePost.postid)"
+                          >
+                            Delete This Post
+                          </button>
                         }
                       </div>
+                      @if (!thePost.commentsclosed) {
+                        <div class="col-7">
+                          <div class="row">
+                            <div class="col-4">
+                              <div
+                                class="btn-toolbar mt-1"
+                                role="toolbar"
+                                aria-label="Rate this post"
+                                (click)="onPostRatingToolbarClick($event, thePost.postid)"
+                              >
+                                <span class="mt-3"><p class="title">Rate:</p></span>
+                                <div class="btn-group" role="group" aria-label="First group">
+                                  <button type="button" class="btn btn-primary ratingBtn">1</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">2</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">3</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">4</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">5</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">6</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">7</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">8</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">9</button>
+                                  <button type="button" class="btn btn-primary ratingBtn">
+                                    10
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-4 mt-3">
+                              <select
+                                #userid
+                                name="userid"
+                                id="userid"
+                                class="userSelect"
+                                (change)="onPostUserRatingChange($event, thePost.postid)"
+                              >
+                                <option value="0">Select User</option>
+                                @for (user of userList; track user.userid) {
+                                  <option value="{{ user.userid }}">{{ user.name }}</option>
+                                }
+                              </select>
+                            </div>
+                          </div>
+                          @if (thePost.successrating) {
+                            <div class="successmsg">Your rating was succesfully saved</div>
+                          }
+                        </div>
+                      }
                     </div>
                     <div class="row">
                       <div class="col-12">

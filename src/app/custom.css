@@ -45,6 +45,9 @@ p.comment {
   margin-bottom: 0px;
   line-height: 10px;
 }
+span.danger{
+  color:#c70000;
+}
 .deletecommentbtn, .editcommentbtn, usercommentselect{
   font-size: 14px !important;
 }
