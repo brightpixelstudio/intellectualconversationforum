@@ -101,7 +101,7 @@
                     }
                     <div class="row">
                       <div class="col-12">
-                        <p class="post">
+                        <p class="post text-break">
                           <span [innerHTML]="thePost.post"></span>
                         </p>
                       </div>
@@ -126,8 +126,13 @@
                                       {{ theComment.rating }} rating
                                     </span>
                                   </p>
-
-                                  <div [innerHTML]="theComment.comment"></div>
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <p class="post text-break">
+                                        <span [innerHTML]="theComment.comment"></span>
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                               @if (!thePost.commentsclosed) {
