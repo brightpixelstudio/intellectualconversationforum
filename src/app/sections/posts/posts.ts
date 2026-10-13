@@ -99,7 +99,9 @@ export class Posts implements OnInit {
       });
   }
 
-  // events
+  // Events
+  // **************************
+  // Main Filters
   onCatagoryChange(catagory: string) {
     this.catagoryid = +catagory;
   }
@@ -119,6 +121,19 @@ export class Posts implements OnInit {
       return;
     }
     this.rating = +ratingIn;
+  }
+  // **************************
+
+  onPostUserRatingChange(event: Event, postId: number): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const userId = Number(selectElement.value);
+
+    // update the record
+    const record = this.ratingPostUserList.find((x) => x.postid === postId);
+
+    if (record) {
+      record.userid = userId;
+    }
   }
 
   onCommentsClick(postId: string) {
@@ -160,18 +175,6 @@ export class Posts implements OnInit {
           window.alert('Error deleting this post');
         },
       });
-    }
-  }
-
-  onPostUserRatingChange(event: Event, postId: number): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const userId = Number(selectElement.value);
-
-    // update the record
-    const record = this.ratingPostUserList.find((x) => x.postid === postId);
-
-    if (record) {
-      record.userid = userId;
     }
   }
 
