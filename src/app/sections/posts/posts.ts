@@ -10,6 +10,7 @@ import { GlobalService } from '../../services/globalservice';
 import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
+import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 
 @Component({
   selector: 'posts',
@@ -31,6 +32,7 @@ export class Posts implements OnInit {
   postsList: GetPostsByCategoryUserRating[] = [];
   commentList: GetPostComments[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
+  ratingCommentUserlist: RatingCommentUserlist[] = [];
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -81,6 +83,11 @@ export class Posts implements OnInit {
   }
 
   loadPosts() {
+    // clear out comment list
+    this.commentList.length = 0;
+    this.ratingCommentUserlist.length = 0;
+
+    // get posts
     this.apiServicePost
       .getPosts(this.catagoryid, this.userid, this.rating, this.searchString)
       .subscribe({
@@ -110,10 +117,6 @@ export class Posts implements OnInit {
     this.userid = +user;
   }
 
-  onSearchChange(value: string): void {
-    this.searchString = value;
-  }
-
   onPostRatingChange(ratingIn: string) {
     // ensure there is some value and it is between 1 and 10
     const rating = ratingIn === '' ? 0 : Number(ratingIn);
@@ -122,14 +125,34 @@ export class Posts implements OnInit {
     }
     this.rating = +ratingIn;
   }
+
+  onSearchChange(value: string): void {
+    this.searchString = value;
+  }
+
   // **************************
 
-  onPostUserRatingChange(event: Event, postId: number): void {
+  onPostUserRatingChange(event: Event, commentId: number): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const userId = Number(selectElement.value);
+
+    /*
+    // update the record
+    const record = this.ratingPostUserList.find((x) => x.postid === postId);
+
+    if (record) {
+      record.userid = userId;
+    }
+      */
+  }
+
+  // dropdown
+  onCommentUserRatingChange(event: Event, commentId: number): void {
     const selectElement = event.target as HTMLSelectElement;
     const userId = Number(selectElement.value);
 
     // update the record
-    const record = this.ratingPostUserList.find((x) => x.postid === postId);
+    const record = this.ratingCommentUserlist.find((x) => x.commentid === commentId);
 
     if (record) {
       record.userid = userId;
@@ -150,6 +173,14 @@ export class Posts implements OnInit {
         next: (data: GetPostComments[]) => {
           // we add to the comment list in case they want to delete one.
           this.commentList = [...this.commentList, ...data];
+
+          // add to comment list
+          this.ratingCommentUserlist = this.commentList.map((comment) => ({
+            commentid: comment.postcommentid,
+            userid: 0,
+          }));
+
+          // build the comments
           let comments = this.buildCommemts();
 
           // set the comments
@@ -274,12 +305,27 @@ export class Posts implements OnInit {
   }
 
   buildCommemts(): string {
-    // create the select users dropdown
+    // create the user options
+    let userOptions = '<option value="0">Select User</option>';
+    for (const user of this.userList) {
+      userOptions += `<option [value]='${user.userid}'>${user.name}</option>`;
+    }
+    console.log(userOptions);
 
     // build the content
     let comments: string = '';
     for (const comment of this.commentList) {
       if (this.postId != comment.postid) continue;
+
+      /* create the select users dropdown
+      
+      <select #user name="user" id="user" (change)="onCommentUserRatingChange($event, thePost.commentid)"">
+        <option value="0">All Users</option>
+        @for (user of userList; track user.userid) {
+          <option [value]="user.userid">{{ user.name }}</option>
+        }
+      </select>
+      */
 
       // title
       const newDate = new Date(comment.dateadded);
