@@ -18,13 +18,12 @@ export class ApiServicePost {
   // GET request to fetch data
   getPosts(
     catagoryidparam: number | null,
-    useridparam: number | null,
+    userGuid: string | null,
     ratingparam: number | null,
     searchString: string | null,
   ): Observable<GetPostsByCategoryUserRating[]> {
     const catagoryParam =
       catagoryidparam == null || catagoryidparam == 0 ? '' : `postcatagoryId=${catagoryidparam}`;
-    const userParam = useridparam == null || useridparam == 0 ? '' : `userId=${useridparam}`;
     const ratingParam = ratingparam == null || ratingparam == 0 ? '' : `rating=${ratingparam}`;
 
     // build the string based on values.
@@ -34,8 +33,8 @@ export class ApiServicePost {
       params = params.append('postcatagoryId', catagoryidparam);
     }
 
-    if (useridparam != null && useridparam !== 0) {
-      params = params.append('userId', useridparam);
+    if (userGuid != null && userGuid.trim().length !== 0) {
+      params = params.append('userGuid', userGuid.trim());
     }
 
     if (ratingparam != null && ratingparam !== 0) {
@@ -54,39 +53,39 @@ export class ApiServicePost {
   }
 
   // GET request to fetch data
-  getPost(postid: number): Observable<GetPost[]> {
-    return this.http.get<GetPost[]>(this.apiUrl + `/getPost?postid=${postid}`);
+  getPost(postguid: string): Observable<GetPost[]> {
+    return this.http.get<GetPost[]>(this.apiUrl + `/getPost?postguid=${postguid}`);
   }
 
-  getComment(commentid: number): Observable<GetComment[]> {
-    return this.http.get<GetComment[]>(this.apiUrl + `/getComment?commentid=${commentid}`);
+  getComment(commentguid: string): Observable<GetComment[]> {
+    return this.http.get<GetComment[]>(this.apiUrl + `/getComment?commentguid=${commentguid}`);
   }
 
   submitNewPostForm(formData: any): Observable<any> {
     return this.http.post(this.apiUrl + '/addPost', formData);
   }
 
-  submitNewCommentForm(postid: number, formData: any): Observable<any> {
-    return this.http.post(this.apiUrl + `/addComment?postid=${postid}`, formData);
+  submitNewCommentForm(postguid: string, formData: any): Observable<any> {
+    return this.http.post(this.apiUrl + `/addComment?postguid=${postguid}`, formData);
   }
 
-  getComments(postid: number): Observable<GetPostComments[]> {
-    return this.http.get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postid=${postid}`);
+  getComments(postGuid: string): Observable<GetPostComments[]> {
+    return this.http.get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postGuid=${postGuid}`);
   }
 
-  deletePost(postid: number): Observable<any> {
-    return this.http.delete<any>(this.apiUrl + `/DeletePost?postid=${postid}`);
+  deletePost(guid: string): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + `/DeletePost?guid=${guid}`);
   }
 
-  deleteComment(commentid: number): Observable<any> {
-    return this.http.delete<any>(this.apiUrl + `/DeleteComment?postcommentid=${commentid}`);
+  deleteComment(guid: string): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + `/DeleteComment?guid=${guid}`);
   }
 
-  submitUpdatePostForm(postid: number, formData: any): Observable<any> {
-    return this.http.post(this.apiUrl + `/updatePost?postid=${postid}`, formData);
+  submitUpdatePostForm(postguid: string, formData: any): Observable<any> {
+    return this.http.post(this.apiUrl + `/updatePost?postguid=${postguid}`, formData);
   }
 
-  submitUpdateCommentForm(commentid: number, formData: any): Observable<any> {
-    return this.http.post(this.apiUrl + `/updateComment?commentid=${commentid}`, formData);
+  submitUpdateCommentForm(commentguid: string, formData: any): Observable<any> {
+    return this.http.post(this.apiUrl + `/updateComment?commentguid=${commentguid}`, formData);
   }
 }

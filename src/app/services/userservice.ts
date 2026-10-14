@@ -32,8 +32,10 @@ export class ApiServiceUser {
   }
 
   // GET request to fetch data
-  getUserProfile(userid: number): Observable<GetProfileMember[]> {
-    return this.http.get<GetProfileMember[]>(this.apiUrl + `/getProfileMember?userid=${userid}`);
+  getUserProfile(userGuid: string): Observable<GetProfileMember[]> {
+    return this.http.get<GetProfileMember[]>(
+      this.apiUrl + `/getProfileMember?userGuid=${userGuid}`,
+    );
   }
 
   // GET request to fetch data
@@ -41,19 +43,19 @@ export class ApiServiceUser {
     return this.http.get<GetUserList[]>(this.apiUrl + '/getUserList');
   }
 
-  getUserStatistics(useridparam: number | undefined): Observable<any> {
+  getUserStatistics(userguid: string | undefined): Observable<any> {
     // NOTE - you dont need models for this architecture
-    const getPostsMember$ = this.http.get(this.apiUrl + `/getPostsMember?userid=${useridparam}`);
+    const getPostsMember$ = this.http.get(this.apiUrl + `/getPostsMember?userguid=${userguid}`);
     const getCommentsMember$ = this.http.get(
-      this.apiUrl + `/getCommentsMember?userid=${useridparam}`,
+      this.apiUrl + `/getCommentsMember?userguid=${userguid}`,
     );
     const getPostsWithMostCommentsMember$ = this.http.get(
-      this.apiUrl + `/getPostsWithMostCommentsMember?userid=${useridparam}`,
+      this.apiUrl + `/getPostsWithMostCommentsMember?userguid=${userguid}`,
     );
     return forkJoin({
       getPostsMember: getPostsMember$,
       getCommentsMember: getCommentsMember$,
-      // getPostsWithMostCommentsMember: getPostsWithMostCommentsMember$,
+      getPostsWithMostCommentsMember: getPostsWithMostCommentsMember$,
     });
   }
 
@@ -62,25 +64,26 @@ export class ApiServiceUser {
     return this.http.post(this.apiUrl + '/addNewMember', formData);
   }
 
-  submitUpdateProfileForm(userid: number, formData: any): Observable<any> {
-    return this.http.post(this.apiUrl + `/updateMemberProfile?userid=${userid}`, formData);
+  submitUpdateProfileForm(userguid: string, formData: any): Observable<any> {
+    return this.http.post(this.apiUrl + `/updateMemberProfile?userguid=${userguid}`, formData);
   }
 
-  deleteUser(userid: number): Observable<any> {
-    return this.http.delete<any>(this.apiUrl + `/DeleteMember?userid=${userid}`);
+  deleteUser(userGuid: string): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + `/DeleteMember?userGuid=${userGuid}`);
   }
 
-  submitPostUserRating(userid: number, postid: number, rating: number): Observable<any> {
+  submitPostUserRating(userguid: string, postguid: string, rating: number): Observable<any> {
     return this.http.post(
-      this.apiUrl + `/insertPostUserRating?userid=${userid}&postid=${postid}&rating=${rating}`,
+      this.apiUrl +
+        `/insertPostUserRating?userguid=${userguid}&postguid=${postguid}&rating=${rating}`,
       null,
     );
   }
 
-  submitCommentUserRating(userid: number, commentid: number, rating: number): Observable<any> {
+  submitCommentUserRating(userguid: string, commentguid: string, rating: number): Observable<any> {
     return this.http.post(
       this.apiUrl +
-        `/insertCommentUserRating?userid=${userid}&commentid=${commentid}&rating=${rating}`,
+        `/insertCommentUserRating?userguid=${userguid}&commentguid=${commentguid}&rating=${rating}`,
       null,
     );
   }
