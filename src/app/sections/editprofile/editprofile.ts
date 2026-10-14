@@ -86,6 +86,7 @@ export class EditProfile implements OnInit {
     // get the query string value
     const userguid = this.route.snapshot.queryParamMap.get('userguid');
     if (!userguid) return;
+    this.userguid = userguid;
 
     // load the members profile
     this.apiService.getUserProfile(this.userguid).subscribe({

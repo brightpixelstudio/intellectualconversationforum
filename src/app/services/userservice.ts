@@ -32,9 +32,9 @@ export class ApiServiceUser {
   }
 
   // GET request to fetch data
-  getUserProfile(userGuid: string): Observable<GetProfileMember[]> {
+  getUserProfile(userguid: string): Observable<GetProfileMember[]> {
     return this.http.get<GetProfileMember[]>(
-      this.apiUrl + `/getProfileMember?userGuid=${userGuid}`,
+      this.apiUrl + `/getProfileMember?userguid=${userguid}`,
     );
   }
 
