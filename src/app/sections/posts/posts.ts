@@ -262,7 +262,7 @@ export class Posts implements OnInit {
     }
   }
 
-  onCommentRatingToolbarClick(event: MouseEvent, commentId: number): void {
+  onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {
     const target = event.target as HTMLElement;
     const button = target.closest('button');
 
@@ -270,9 +270,9 @@ export class Posts implements OnInit {
     this.setCommentSuccessMessages(false);
 
     // have they set a userid for this comment?
-    const rating = this.ratingCommentUserList.find((x) => x.commentid === commentId);
+    const rating = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
 
-    if (!rating || rating.userid === 0) {
+    if (!rating || rating.userguid === '') {
       window.alert('Please select a user to rate this comment');
       return;
     }
@@ -281,11 +281,11 @@ export class Posts implements OnInit {
 
     // Pass variables to the service
     this.apiServiceUser
-      .submitCommentUserRating(rating.userid, commentId, +button.textContent?.trim())
+      .submitCommentUserRating(rating.userguid, commentguid, +button.textContent?.trim())
       .subscribe({
         next: (response) => {
           // Update the comment and rating
-          this.setCommentRating(commentId, response.averageRating, true);
+          this.setCommentRating(commentguid, response.averageRating, true);
           this.cdr.markForCheck();
         },
         error: (error) => {
@@ -319,9 +319,9 @@ export class Posts implements OnInit {
   }
 
   // helpers
-  setCommentRating(commentid: number, rating: number, show: boolean): void {
+  setCommentRating(commentguid: string, rating: number, show: boolean): void {
     for (const comments of this.commentsByPostGuid.values()) {
-      const comment = comments.find((c) => c.postcommentid === commentid);
+      const comment = comments.find((c) => c.commentguid === commentguid);
 
       if (comment) {
         comment.rating = rating;
