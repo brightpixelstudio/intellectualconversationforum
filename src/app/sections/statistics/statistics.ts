@@ -26,7 +26,6 @@ export class Statistics implements OnInit {
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getStatisticsInformation = data;
-        console.log(this.getStatisticsInformation);
         this.cdr.detectChanges();
       },
       error: (err) => {
