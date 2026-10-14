@@ -28,8 +28,8 @@ export class EditComment implements OnInit {
   timePassed?: string;
   userList!: any[];
   rating: number = 0;
-  commentId: number = 0;
-  userid: number = 0;
+  commentguid: string = '';
+  userguid: string = '';
   getComment: GetComment | null = null;
   updateCommentForm!: FormGroup;
   showRatingSuccess = false;
@@ -73,12 +73,12 @@ export class EditComment implements OnInit {
     });
 
     // get the query string value
-    const commentId = this.route.snapshot.queryParamMap.get('commentid');
-    if (!commentId) return;
-    this.commentId = +commentId;
+    const commentguid = this.route.snapshot.queryParamMap.get('commentguid');
+    if (!commentguid) return;
+    this.commentguid = commentguid;
 
     // load the comment
-    this.apiServicePost.getComment(this.commentId).subscribe({
+    this.apiServicePost.getComment(this.commentguid).subscribe({
       next: (GetComment) => {
         this.getComment = GetComment[0];
         this.rating = this.getComment.rating;
@@ -99,10 +99,10 @@ export class EditComment implements OnInit {
 
   onUserChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    this.userid = Number(select.value);
+    this.userguid = select.value;
   }
 
-  onRatingToolbarClick(event: MouseEvent, commentId: number): void {
+  onRatingToolbarClick(event: MouseEvent, commentguid: string): void {
     this.showRatingSuccess = false;
     const target = event.target as HTMLElement;
     const button = target.closest('button');
@@ -110,7 +110,7 @@ export class EditComment implements OnInit {
     if (button) {
       // Pass variables to the service
       this.apiServiceUser
-        .submitCommentUserRating(this.userid, commentId, +button.textContent?.trim())
+        .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
             this.rating = response.averageRating;
@@ -131,7 +131,7 @@ export class EditComment implements OnInit {
     if (this.updateCommentForm.valid) {
       // Pass the raw form values to your service
       this.apiServicePost
-        .submitUpdateCommentForm(this.commentId, this.updateCommentForm.value)
+        .submitUpdateCommentForm(this.commentguid, this.updateCommentForm.value)
         .subscribe({
           next: (response) => {
             this.showSuccess = true;

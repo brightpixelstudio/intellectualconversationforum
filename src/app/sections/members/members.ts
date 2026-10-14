@@ -82,16 +82,16 @@ export class Members implements OnInit {
     }
   }
 
-  onDeleteUser(id: number): void {
+  onDeleteUser(guid: string): void {
     const confirmed = window.confirm('Are you sure you want to delete this member?');
     if (confirmed) {
-      this.apiService.deleteUser(id).subscribe({
+      this.apiService.deleteUser(guid).subscribe({
         next: (response) => {
           // remove the record from all lists (although they might be loaded yet) (no reason to reload)
-          this.removeMember(this.memberListGetAllProfile, (user) => user.userid === id);
-          this.removeMember(this.memberListGetNewestMembers, (user) => user.userid === id);
-          this.removeMember(this.memberListMostPostsMembers, (user) => user.userid === id);
-          this.removeMember(this.memberListLatestLoginsMembers, (user) => user.userid === id);
+          this.removeMember(this.memberListGetAllProfile, (user) => user.userguid === guid);
+          this.removeMember(this.memberListGetNewestMembers, (user) => user.userguid === guid);
+          this.removeMember(this.memberListMostPostsMembers, (user) => user.userguid === guid);
+          this.removeMember(this.memberListLatestLoginsMembers, (user) => user.userguid === guid);
         },
         error: (error) => {
           window.alert('Error deleting the member');

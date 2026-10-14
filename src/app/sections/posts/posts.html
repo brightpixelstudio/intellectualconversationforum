@@ -32,7 +32,7 @@
                 <select #user name="user" id="user" (change)="onUserChange(user.value)">
                   <option value="0">All Users</option>
                   @for (user of userList; track user.userid) {
-                    <option [value]="user.userid">{{ user.name }}</option>
+                    <option [value]="user.userguid">{{ user.name }}</option>
                   }
                 </select>
                 <input
@@ -107,13 +107,13 @@
                       </div>
                     </div>
                     <div class="row">
-                      @if (expandedPostIds.has(thePost.postid)) {
+                      @if (expandedPostGuids.has(thePost.postguid)) {
                         <div class="mt-3 ms-5">
-                          @if (loadingPostIds.has(thePost.postid)) {
+                          @if (loadingPostGuids.has(thePost.postguid)) {
                             <p>Loading comments...</p>
                           } @else {
                             @for (
-                              theComment of commentsByPostId.get(thePost.postid) ?? [];
+                              theComment of commentsByPostGuid.get(thePost.postguid) ?? [];
                               track theComment.postcommentid
                             ) {
                               <div class="row mb-3">
@@ -142,7 +142,7 @@
                                       <div class="col-3">
                                         <a
                                           [attr.href]="
-                                            '/editcomment?commentid=' + theComment.postcommentid
+                                            '/editcomment?commentguid=' + theComment.commentguid
                                           "
                                           class="btn btn-primary editcommentbtn mt-2 me-1"
                                         >
@@ -154,8 +154,8 @@
                                           class="btn btn-danger deletecommentbtn mt-2"
                                           (click)="
                                             onDeleteCommentClick(
-                                              theComment.postid,
-                                              theComment.postcommentid
+                                              theComment.postguid,
+                                              theComment.commentguid
                                             )
                                           "
                                         >
@@ -219,14 +219,14 @@
                                           (change)="
                                             onCommentUserRatingChange(
                                               $event,
-                                              theComment.postcommentid
+                                              theComment.commentguid
                                             )
                                           "
                                         >
                                           <option value="0">Select User</option>
 
                                           @for (user of userList; track user.userid) {
-                                            <option [value]="user.userid">
+                                            <option [value]="user.userguid">
                                               {{ user.name }}
                                             </option>
                                           }
@@ -260,14 +260,14 @@
                           <a
                             class="btn btn-primary mt-3 me-1"
                             title="Edit Post"
-                            [attr.href]="'/editpost?postid=' + thePost.postid"
+                            [attr.href]="'/editpost?postguid=' + thePost.postguid"
                           >
                             Edit Post
                           </a>
                           <a
                             class="btn btn-primary mt-3"
                             title="Add Comment"
-                            [attr.href]="'/newcomment?postid=' + thePost.postid"
+                            [attr.href]="'/newcomment?postguid=' + thePost.postguid"
                           >
                             Add Comment
                           </a>
@@ -276,10 +276,10 @@
                           <button
                             type="button"
                             class="btn btn-primary commentsbtn mt-3 ms-1"
-                            (click)="onViewCommentsClick(thePost.postid)"
+                            (click)="onViewCommentsClick(thePost.postguid)"
                           >
                             {{
-                              expandedPostIds.has(thePost.postid)
+                              expandedPostGuids.has(thePost.postguid)
                                 ? 'Hide Comments'
                                 : `View the ${thePost.count} Comments`
                             }}
@@ -289,7 +289,7 @@
                           <button
                             class="btn btn-danger deletebtn mt-3 ms-1"
                             id="button{{ thePost.postid }}"
-                            (click)="onDeletePostClick(thePost.postid)"
+                            (click)="onDeletePostClick(thePost.postguid)"
                           >
                             Delete This Post
                           </button>
@@ -303,7 +303,7 @@
                                 class="btn-toolbar mt-1"
                                 role="toolbar"
                                 aria-label="Rate this post"
-                                (click)="onPostRatingToolbarClick($event, thePost.postid)"
+                                (click)="onPostRatingToolbarClick($event, thePost.postguid)"
                               >
                                 <span class="mt-3"><p class="title">Rate:</p></span>
                                 <div class="btn-group" role="group" aria-label="First group">
@@ -328,11 +328,11 @@
                                 name="userid"
                                 id="userid"
                                 class="userSelect"
-                                (change)="onPostUserRatingChange($event, thePost.postid)"
+                                (change)="onPostUserRatingChange($event, thePost.postguid)"
                               >
                                 <option value="0">Select User</option>
                                 @for (user of userList; track user.userid) {
-                                  <option value="{{ user.userid }}">{{ user.name }}</option>
+                                  <option value="{{ user.userguid }}">{{ user.name }}</option>
                                 }
                               </select>
                             </div>

@@ -6,12 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'memberstatistics',
-  imports: [DatePipe, JsonPipe],
+  imports: [DatePipe],
   templateUrl: './memberstatistics.html',
   styleUrl: './memberstatistics.css',
 })
 export class MemberStatistics implements OnInit {
-  userId: number = 0;
+  userguid: string = '';
   getUserStatisticsInformation: any = '';
 
   constructor(
@@ -22,14 +22,14 @@ export class MemberStatistics implements OnInit {
 
   ngOnInit(): void {
     // get the query string value
-    const userId = this.route.snapshot.queryParamMap.get('userid');
-    if (!userId) return;
-    this.userId = +userId;
+    const userguid = this.route.snapshot.queryParamMap.get('userguid');
+    if (!userguid) return;
+    this.userguid = userguid;
 
     // this.userId = 5; // testing
 
     // look at Sunray to call all procedures at once.
-    this.apiService.getUserStatistics(this.userId).subscribe({
+    this.apiService.getUserStatistics(this.userguid).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserStatisticsInformation = data;

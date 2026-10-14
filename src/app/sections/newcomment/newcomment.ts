@@ -24,7 +24,7 @@ import { QuillModule } from 'ngx-quill';
 })
 export class NewComment implements OnInit {
   userList!: any[];
-  postId: number = 0;
+  postguid: string = '';
 
   commentForm!: FormGroup;
   showSuccess = false;
@@ -67,9 +67,9 @@ export class NewComment implements OnInit {
     });
 
     // get the query string value
-    const postId = this.route.snapshot.queryParamMap.get('postid');
-    if (!postId) return;
-    this.postId = +postId;
+    const postguid = this.route.snapshot.queryParamMap.get('postguid');
+    if (!postguid) return;
+    this.postguid = postguid;
   }
 
   checkQuillLength(event: any) {
@@ -86,7 +86,7 @@ export class NewComment implements OnInit {
 
     if (this.commentForm.valid) {
       // Pass the raw form values to your service
-      this.apiServicePost.submitNewCommentForm(this.postId, this.commentForm.value).subscribe({
+      this.apiServicePost.submitNewCommentForm(this.postguid, this.commentForm.value).subscribe({
         next: (response) => {
           this.commentForm.reset();
           this.showSuccess = true;

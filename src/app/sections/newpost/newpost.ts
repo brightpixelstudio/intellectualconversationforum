@@ -20,7 +20,7 @@ import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'newpost',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe, QuillModule],
+  imports: [ReactiveFormsModule, FormsModule, QuillModule],
   templateUrl: './newpost.html',
   styleUrl: './newpost.css',
 })

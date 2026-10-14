@@ -1,4 +1,4 @@
 export interface RatingCommentUserlist {
-  commentid: number;
-  userid: number;
+  commentguid: string;
+  userguid: string;
 }

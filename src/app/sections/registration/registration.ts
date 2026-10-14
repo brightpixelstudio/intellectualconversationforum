@@ -21,7 +21,7 @@ import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'registration',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe, QuillModule],
+  imports: [ReactiveFormsModule, FormsModule, QuillModule],
   templateUrl: './registration.html',
   styleUrl: './registration.css',
 })

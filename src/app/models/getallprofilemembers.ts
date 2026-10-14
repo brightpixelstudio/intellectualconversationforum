@@ -1,5 +1,6 @@
 export interface GetAllProfileMembers {
   userid: number;
+  userguid: string;
   username: string;
   email: string;
   name: string;

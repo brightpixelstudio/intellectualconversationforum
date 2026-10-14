@@ -21,14 +21,14 @@ import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'editpost',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe, DatePipe, QuillModule],
+  imports: [ReactiveFormsModule, FormsModule, DatePipe, QuillModule],
   templateUrl: './editpost.html',
   styleUrl: './editpost.css',
 })
 export class EditPost implements OnInit {
   timePassed?: string;
-  postId: number = 0;
-  userid: number = 0;
+  postguid: string = '';
+  userguid: string = '';
   getPost: GetPost | null = null;
   rating: number = 0;
   catagoryList!: any[];
@@ -74,19 +74,19 @@ export class EditPost implements OnInit {
       next: (response) => {
         this.catagoryList = response.catagories;
         this.userList = response.users;
-        this.userid = this.userList[0].userid;
+        this.userguid = this.userList[0].userguid;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
 
     // get the query string value
-    const postId = this.route.snapshot.queryParamMap.get('postid');
-    if (!postId) return;
-    this.postId = +postId;
+    const postguid = this.route.snapshot.queryParamMap.get('postguid');
+    if (!postguid) return;
+    this.postguid = postguid;
 
     // load the post
-    this.apiServicePost.getPost(this.postId).subscribe({
+    this.apiServicePost.getPost(this.postguid).subscribe({
       next: (GetPost) => {
         this.getPost = GetPost[0];
         this.rating = this.getPost.rating;
@@ -107,10 +107,10 @@ export class EditPost implements OnInit {
 
   onUserChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    this.userid = Number(select.value);
+    this.userguid = select.value;
   }
 
-  onRatingToolbarClick(event: MouseEvent, postId: number): void {
+  onRatingToolbarClick(event: MouseEvent, postguid: string): void {
     this.showRatingSuccess = false;
     const target = event.target as HTMLElement;
     const button = target.closest('button');
@@ -118,7 +118,7 @@ export class EditPost implements OnInit {
     if (button) {
       // Pass variables to the service
       this.apiServiceUser
-        .submitPostUserRating(this.userid, postId, +button.textContent?.trim())
+        .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
             this.rating = response.averageRating;
@@ -138,7 +138,7 @@ export class EditPost implements OnInit {
 
     if (this.updatePostForm.valid) {
       // Pass the raw form values to your service
-      this.apiServicePost.submitUpdatePostForm(this.postId, this.updatePostForm.value).subscribe({
+      this.apiServicePost.submitUpdatePostForm(this.postguid, this.updatePostForm.value).subscribe({
         next: (response) => {
           this.showSuccess = true;
           this.cdr.detectChanges();

@@ -21,13 +21,13 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'editprofile',
-  imports: [ReactiveFormsModule, FormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './editprofile.html',
   styleUrl: './editprofile.css',
 })
 export class EditProfile implements OnInit {
   updateProfileForm!: FormGroup;
-  userId: number = 0;
+  userguid: string = '';
   showSuccess = false;
   showError = false;
   errorMsg = '';
@@ -84,12 +84,11 @@ export class EditProfile implements OnInit {
     );
 
     // get the query string value
-    const userId = this.route.snapshot.queryParamMap.get('userid');
-    if (!userId) return;
-    this.userId = +userId;
+    const userguid = this.route.snapshot.queryParamMap.get('userguid');
+    if (!userguid) return;
 
     // load the members profile
-    this.apiService.getUserProfile(this.userId).subscribe({
+    this.apiService.getUserProfile(this.userguid).subscribe({
       next: (GetProfileMember) => {
         this.updateProfileForm.patchValue(GetProfileMember[0]);
       },
@@ -124,7 +123,7 @@ export class EditProfile implements OnInit {
               // submit the registration form if the zipcode is valid
               // Pass the raw form values to your service
               this.apiService
-                .submitUpdateProfileForm(this.userId, this.updateProfileForm.value)
+                .submitUpdateProfileForm(this.userguid, this.updateProfileForm.value)
                 .subscribe({
                   next: (response) => {
                     console.log('valid');

@@ -1,6 +1,8 @@
 export interface GetPostsByCategoryUserRating {
   postid: number;
   userid: number;
+  postguid: string;
+  userguid: string;
   username: string;
   name: string;
   postcatagoruid: string;

@@ -21,7 +21,7 @@ import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist'
 export class Posts implements OnInit {
   noPosts: boolean = false;
   postId: number = 0;
-  userid: number | null = null;
+  userguid: string | null = null;
   rating: number = 0;
   userratingid: number = 0;
   catagoryid: number | null = null;
@@ -33,13 +33,13 @@ export class Posts implements OnInit {
   ratingCommentUserList: RatingCommentUserlist[] = [];
 
   // Comments stored separately for each post
-  commentsByPostId = new Map<number, GetPostComments[]>();
+  commentsByPostGuid = new Map<string, GetPostComments[]>();
 
   // Track which posts have their comments expanded
-  expandedPostIds = new Set<number>();
+  expandedPostGuids = new Set<string>();
 
   // Track which posts are currently loading
-  loadingPostIds = new Set<number>();
+  loadingPostGuids = new Set<string>();
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -62,13 +62,13 @@ export class Posts implements OnInit {
         // any query strings sent in?
         const urlParams = new URLSearchParams(window.location.search);
         const catagory = urlParams.get('catagoryid');
-        const user = urlParams.get('userid');
+        const user = urlParams.get('userguid');
 
         if (catagory) {
           this.catagoryid = +catagory;
         }
         if (user) {
-          this.userid = +user;
+          this.userguid = user;
         }
 
         // load posts
@@ -83,8 +83,8 @@ export class Posts implements OnInit {
     this.ratingCommentUserList = [];
     for (const post of this.postsList) {
       this.ratingPostUserList.push({
-        postid: post.postid,
-        userid: 0,
+        postguid: post.postguid,
+        userguid: '',
       });
     }
   }
@@ -93,11 +93,11 @@ export class Posts implements OnInit {
     this.ratingCommentUserList = [];
 
     // Insert all comment IDs from every loaded post
-    this.commentsByPostId.forEach((comments) => {
+    this.commentsByPostGuid.forEach((comments) => {
       comments.forEach((comment) => {
         this.ratingCommentUserList.push({
-          commentid: comment.postcommentid,
-          userid: 0,
+          commentguid: comment.commentguid,
+          userguid: '',
         });
       });
     });
@@ -106,7 +106,7 @@ export class Posts implements OnInit {
   loadPosts() {
     // get posts
     this.apiServicePost
-      .getPosts(this.catagoryid, this.userid, this.rating, this.searchString)
+      .getPosts(this.catagoryid, this.userguid, this.rating, this.searchString)
       .subscribe({
         next: (data: GetPostsByCategoryUserRating[]) => {
           this.postsList = data;
@@ -131,7 +131,7 @@ export class Posts implements OnInit {
   }
 
   onUserChange(user: string) {
-    this.userid = +user;
+    this.userguid = user;
   }
 
   onPostRatingChange(ratingIn: string) {
@@ -150,71 +150,71 @@ export class Posts implements OnInit {
   // **************************
 
   // dropdown
-  onPostUserRatingChange(event: Event, postId: number): void {
+  onPostUserRatingChange(event: Event, postguid: string): void {
     const selectElement = event.target as HTMLSelectElement;
-    const userId = Number(selectElement.value);
+    const userguid = selectElement.value;
 
     // update the record
-    const record = this.ratingPostUserList.find((x) => x.postid === postId);
+    const record = this.ratingPostUserList.find((x) => x.postguid === postguid);
 
     if (record) {
-      record.userid = userId;
+      record.userguid = userguid;
     }
   }
 
   // dropdown
-  onCommentUserRatingChange(event: Event, commentId: number): void {
+  onCommentUserRatingChange(event: Event, commentguid: string): void {
     const selectElement = event.target as HTMLSelectElement;
-    const userId = Number(selectElement.value);
+    const userguid = selectElement.value;
 
     // update the record
-    const record = this.ratingCommentUserList.find((x) => x.commentid === commentId);
+    const record = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
 
     if (record) {
-      record.userid = userId;
+      record.userguid = userguid;
     }
   }
 
-  onViewCommentsClick(postId: number): void {
+  onViewCommentsClick(postguid: string): void {
     // If already expanded, collapse this post's comments
-    if (this.expandedPostIds.has(postId)) {
-      this.expandedPostIds.delete(postId);
+    if (this.expandedPostGuids.has(postguid)) {
+      this.expandedPostGuids.delete(postguid);
       return;
     }
 
     // Expand this post independently
-    this.expandedPostIds.add(postId);
+    this.expandedPostGuids.add(postguid);
 
     // Avoid loading the same comments again
-    if (this.commentsByPostId.has(postId)) {
+    if (this.commentsByPostGuid.has(postguid)) {
       return;
     }
 
-    this.loadingPostIds.add(postId);
+    this.loadingPostGuids.add(postguid);
 
-    this.apiServicePost.getComments(postId).subscribe({
+    this.apiServicePost.getComments(postguid).subscribe({
       next: (comments: GetPostComments[]) => {
-        this.commentsByPostId.set(postId, comments);
+        this.commentsByPostGuid.set(postguid, comments);
         this.setratingCommentUserList();
-        this.loadingPostIds.delete(postId);
+        this.loadingPostGuids.delete(postguid);
 
         // Notify Angular that the view needs updating
         this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading comments:', error);
-        this.loadingPostIds.delete(postId);
+        this.loadingPostGuids.delete(postguid);
       },
     });
   }
 
-  onDeletePostClick(postId: number) {
+  onDeletePostClick(postguid: string) {
     const confirmed = window.confirm('Are you sure you want to delete this post?');
     if (confirmed) {
-      this.apiServicePost.deletePost(postId).subscribe({
+      this.apiServicePost.deletePost(postguid).subscribe({
         next: (response) => {
           // remove the record from the lists
-          this.removeItem(this.postsList, (post) => post.postid === postId);
+          this.removeItem(this.postsList, (post) => post.postguid === postguid);
           this.cdr.detectChanges();
         },
         error: (error) => {
@@ -224,7 +224,7 @@ export class Posts implements OnInit {
     }
   }
 
-  onPostRatingToolbarClick(event: MouseEvent, postId: number): void {
+  onPostRatingToolbarClick(event: MouseEvent, postguid: string): void {
     const target = event.target as HTMLElement;
     const button = target.closest('button');
 
@@ -232,9 +232,9 @@ export class Posts implements OnInit {
     this.setPostSuccessMessages(false);
 
     // have they set a userid for this post?
-    const rating = this.ratingPostUserList.find((x) => x.postid === postId);
+    const rating = this.ratingPostUserList.find((x) => x.postguid === postguid);
 
-    if (!rating || rating.userid === 0) {
+    if (!rating || rating.userguid === '') {
       window.alert('Please select a user to rate this post');
       return;
     }
@@ -242,11 +242,11 @@ export class Posts implements OnInit {
     if (button) {
       // Pass variables to the service
       this.apiServiceUser
-        .submitPostUserRating(rating.userid, postId, +button.textContent?.trim())
+        .submitPostUserRating(rating.userguid, postguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
             // Find the post in the listing
-            const post = this.postsList.find((post) => post.postid === postId);
+            const post = this.postsList.find((post) => post.postguid === postguid);
 
             if (post) {
               // Update the post rating
@@ -294,21 +294,21 @@ export class Posts implements OnInit {
       });
   }
 
-  onDeleteCommentClick(postId: number, commentId: number) {
+  onDeleteCommentClick(postguid: string, commentguid: string) {
     if (!confirm('Are you sure you want to delete this comment?')) {
       return;
     }
 
     // delete the actual comment
-    this.apiServicePost.deleteComment(commentId).subscribe({
+    this.apiServicePost.deleteComment(commentguid).subscribe({
       next: (response) => {
         // Get comments for this post
-        const comments = this.commentsByPostId.get(postId) ?? [];
+        const comments = this.commentsByPostGuid.get(postguid) ?? [];
 
         // Remove the deleted comment
-        this.commentsByPostId.set(
-          postId,
-          comments.filter((comment) => comment.postcommentid !== commentId),
+        this.commentsByPostGuid.set(
+          postguid,
+          comments.filter((comment) => comment.commentguid !== commentguid),
         );
         this.cdr.detectChanges();
       },
@@ -320,7 +320,7 @@ export class Posts implements OnInit {
 
   // helpers
   setCommentRating(commentid: number, rating: number, show: boolean): void {
-    for (const comments of this.commentsByPostId.values()) {
+    for (const comments of this.commentsByPostGuid.values()) {
       const comment = comments.find((c) => c.postcommentid === commentid);
 
       if (comment) {
@@ -337,7 +337,7 @@ export class Posts implements OnInit {
     });
   }
   setCommentSuccessMessages(show: boolean) {
-    this.commentsByPostId.forEach((comments) => {
+    this.commentsByPostGuid.forEach((comments) => {
       comments.forEach((comment) => {
         comment.successrating = show;
       });

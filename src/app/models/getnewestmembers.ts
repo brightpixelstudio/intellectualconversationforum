@@ -1,5 +1,6 @@
 export interface GetNewestMembers {
   userid: number;
+  userguid: string;
   usertypeid: number;
   type: string;
   name: string;
