@@ -51,7 +51,7 @@ export class NewPost implements OnInit {
   ngOnInit(): void {
     this.postForm = this.fb.group({
       catagoryid: new FormControl('', [Validators.required]),
-      userid: new FormControl('', [Validators.required]),
+      guid: new FormControl('', [Validators.required]),
       post: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),

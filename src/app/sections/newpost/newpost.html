@@ -19,9 +19,9 @@
                   <option [value]="catagory.postcatagoryid">{{ catagory.catagory }}</option>
                 }
               </select>
-              <select #user name="user" id="user" formControlName="userid">
+              <select #user name="user" id="user" formControlName="guid">
                 @for (user of userList; track user.userid) {
-                  <option [value]="user.userid">{{ user.name }}</option>
+                  <option [value]="user.userguid">{{ user.name }}</option>
                 }
               </select>
               <br />
