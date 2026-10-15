@@ -8,9 +8,9 @@
             <h3 class="pb-3">Create Comment</h3>
             <p>Create a new comment below:</p>
             <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-              <select #user name="user" id="user" formControlName="userid">
+              <select #user name="user" id="user" formControlName="userguid">
                 @for (user of userList; track user.userid) {
-                  <option [value]="user.userid">{{ user.name }}</option>
+                  <option [value]="user.userguid">{{ user.name }}</option>
                 }
               </select>
               <br />
