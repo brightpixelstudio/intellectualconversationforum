@@ -19,9 +19,9 @@
               <hr />
               <div class="row mb-2">
                 <div class="col-2">
-                  <select #user name="user" id="user" formControlName="userid">
+                  <select #user name="user" id="user" formControlName="userguid">
                     @for (user of userList; track user.userid) {
-                      <option [value]="user.userid">{{ user.name }}</option>
+                      <option [value]="user.userguid">{{ user.name }}</option>
                     }
                   </select>
                 </div>

@@ -54,7 +54,7 @@ export class EditComment implements OnInit {
 
   ngOnInit(): void {
     this.updateCommentForm = this.fb.group({
-      userid: new FormControl('', [Validators.required]),
+      userguid: new FormControl('', [Validators.required]),
       comment: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),
