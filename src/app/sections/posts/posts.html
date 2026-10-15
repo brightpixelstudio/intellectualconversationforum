@@ -102,12 +102,29 @@
                     <div class="row">
                       <div class="col-12">
                         <p class="text-break">
-                          <span [innerHTML]="thePost.post"></span>
+                          <span
+                            [innerHTML]="
+                              isPostExpanded(thePost.postguid)
+                                ? thePost.post
+                                : getPostPreview(thePost.post, globalService.getPostMaxLength())
+                            "
+                          >
+                          </span>
+                          @if (hasMoreText(thePost.post)) {
+                            <p></p>
+                            <a
+                              href="#"
+                              class="see-more"
+                              (click)="$event.preventDefault(); ontogglePost(thePost.postguid)"
+                            >
+                              {{ isPostExpanded(thePost.postguid) ? 'See less' : 'See more' }}
+                            </a>
+                          }
                         </p>
                       </div>
                     </div>
                     <div class="row">
-                      @if (expandedPostGuids.has(thePost.postguid)) {
+                      @if (expandedPostCommentsGuids.has(thePost.postguid)) {
                         <div class="mt-3 ms-5">
                           @if (loadingPostGuids.has(thePost.postguid)) {
                             <p>Loading comments...</p>
@@ -279,7 +296,7 @@
                             (click)="onViewCommentsClick(thePost.postguid)"
                           >
                             {{
-                              expandedPostGuids.has(thePost.postguid)
+                              expandedPostCommentsGuids.has(thePost.postguid)
                                 ? 'Hide Comments'
                                 : `View the ${thePost.count} Comments`
                             }}

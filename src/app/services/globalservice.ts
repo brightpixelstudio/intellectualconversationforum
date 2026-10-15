@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root', // Makes it accessible globally
 })
 export class GlobalService {
+  private maxPostLength = 200;
+
   getTimePassed(postDate: Date): string {
     const currentDate: Date = new Date();
     const newPostDate: Date = new Date(postDate);
@@ -49,5 +51,20 @@ export class GlobalService {
         ['clean'], // remove formatting button
       ],
     };
+  }
+
+  getPostMaxLength(): number {
+    return this.maxPostLength;
+  }
+
+  stripHtml(html: string): string {
+    return html
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
   }
 }

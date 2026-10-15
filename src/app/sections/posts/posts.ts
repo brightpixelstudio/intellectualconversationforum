@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { forkJoin } from 'rxjs';
 import { ApiServiceUser } from '../../services/userservice';
@@ -14,7 +13,7 @@ import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist'
 
 @Component({
   selector: 'posts',
-  imports: [DatePipe, FontAwesomeModule],
+  imports: [DatePipe, JsonPipe, FontAwesomeModule],
   templateUrl: './posts.html',
   styleUrl: './posts.css',
 })
@@ -31,12 +30,13 @@ export class Posts implements OnInit {
   postsList: GetPostsByCategoryUserRating[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
   ratingCommentUserList: RatingCommentUserlist[] = [];
+  expandedPostGuids = new Set<string>();
 
   // Comments stored separately for each post
   commentsByPostGuid = new Map<string, GetPostComments[]>();
 
   // Track which posts have their comments expanded
-  expandedPostGuids = new Set<string>();
+  expandedPostCommentsGuids = new Set<string>();
 
   // Track which posts are currently loading
   loadingPostGuids = new Set<string>();
@@ -177,13 +177,13 @@ export class Posts implements OnInit {
 
   onViewCommentsClick(postguid: string): void {
     // If already expanded, collapse this post's comments
-    if (this.expandedPostGuids.has(postguid)) {
-      this.expandedPostGuids.delete(postguid);
+    if (this.expandedPostCommentsGuids.has(postguid)) {
+      this.expandedPostCommentsGuids.delete(postguid);
       return;
     }
 
     // Expand this post independently
-    this.expandedPostGuids.add(postguid);
+    this.expandedPostCommentsGuids.add(postguid);
 
     // Avoid loading the same comments again
     if (this.commentsByPostGuid.has(postguid)) {
@@ -318,6 +318,14 @@ export class Posts implements OnInit {
     });
   }
 
+  ontogglePost(postGuid: string): void {
+    if (this.expandedPostGuids.has(postGuid)) {
+      this.expandedPostGuids.delete(postGuid);
+    } else {
+      this.expandedPostGuids.add(postGuid);
+    }
+  }
+
   // helpers
   setCommentRating(commentguid: string, rating: number, show: boolean): void {
     for (const comments of this.commentsByPostGuid.values()) {
@@ -336,6 +344,7 @@ export class Posts implements OnInit {
       post.successrating = false;
     });
   }
+
   setCommentSuccessMessages(show: boolean) {
     this.commentsByPostGuid.forEach((comments) => {
       comments.forEach((comment) => {
@@ -353,5 +362,29 @@ export class Posts implements OnInit {
 
   getTimePassed(date: Date) {
     return this.globalService.getTimePassed(date);
+  }
+
+  getPostPreview(post: string, maxlength: number): string {
+    if (!post) {
+      return '';
+    }
+
+    const plainText = this.globalService.stripHtml(post);
+
+    return plainText.length > this.globalService.getPostMaxLength()
+      ? plainText.substring(0, this.globalService.getPostMaxLength()) + '...'
+      : plainText;
+  }
+
+  isPostExpanded(postguid: string): boolean {
+    return this.expandedPostGuids.has(postguid);
+  }
+
+  hasMoreText(post: string | null | undefined): boolean {
+    if (!post) {
+      return false;
+    }
+
+    return this.globalService.stripHtml(post).length > this.globalService.getPostMaxLength();
   }
 }
