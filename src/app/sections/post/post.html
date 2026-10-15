@@ -45,7 +45,7 @@
                   name="userid"
                   id="userid"
                   class="userSelect"
-                  (change)="onUserChange($event)"
+                  (change)="onUserPostChange($event)"
                 >
                   @for (user of userList; track user.userid) {
                     <option value="{{ user.userguid }}">{{ user.name }}</option>
@@ -61,10 +61,91 @@
                 <p class="text-break">
                   <span [innerHTML]="thePost?.post"> </span>
                 </p>
+                <hr />
               </div>
             </div>
+            @for (theComment of theComments; track theComment.postcommentid) {
+              <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <p class="comment">
+                    <strong>{{ theComment.name }}, </strong>
+                    <span class="posttitleinfo"
+                      >{{ theComment.dateadded | date: 'medium' }},
+                      {{ globalService.getTimePassed(theComment.dateadded) }},
+                      {{ theComment.rating }} rating
+                    </span>
+                  </p>
+                  <div class="row">
+                    <div class="col-12">
+                      <p class="text-break">
+                        <span [innerHTML]="theComment.comment"></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @if (thePost && !thePost.commentsclosed) {
+                <div class="row">
+                  <div class="col-1"></div>
+                  <div class="col-11">
+                    <div class="row">
+                      <div class="col-3">
+                        <div
+                          class="btn-toolbar"
+                          role="toolbar"
+                          aria-label="Rate this commment"
+                          (click)="onCommentRatingToolbarClick($event, theComment.commentguid)"
+                        >
+                          <span class="mt-3"><p class="title">Rate:</p></span>
+                          <div class="btn-group" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-warning ratingBtn">1</button>
+                            <button type="button" class="btn btn-warning ratingBtn">2</button>
+                            <button type="button" class="btn btn-warning ratingBtn">3</button>
+                            <button type="button" class="btn btn-warning ratingBtn">4</button>
+                            <button type="button" class="btn btn-warning ratingBtn">5</button>
+                            <button type="button" class="btn btn-warning ratingBtn">6</button>
+                            <button type="button" class="btn btn-warning ratingBtn">7</button>
+                            <button type="button" class="btn btn-warning ratingBtn">8</button>
+                            <button type="button" class="btn btn-warning ratingBtn">9</button>
+                            <button type="button" class="btn btn-warning ratingBtn">10</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <select
+                          class="form-select userSelect mt-1"
+                          (change)="onUserCommentChange($event, theComment.commentguid)"
+                        >
+                          <option value="0">Select User</option>
+
+                          @for (user of userList; track user.userid) {
+                            <option [value]="user.userguid">
+                              {{ user.name }}
+                            </option>
+                          }
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3"></div>
+                  <div class="col-7">
+                    @if (theComment.successrating) {
+                      <div class="successmsg">Your comment rating was succesfully saved</div>
+                    }
+                  </div>
+                </div>
+              }
+              <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <hr />
+                </div>
+              </div>
+            }
           </div>
-          <div class="col-1"></div>
         </div>
       </div>
     </div>

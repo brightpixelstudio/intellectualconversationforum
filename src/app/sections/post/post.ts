@@ -29,7 +29,7 @@ export class Post implements OnInit {
   constructor(
     private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
-    private globalService: GlobalService,
+    public globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {}
@@ -52,17 +52,33 @@ export class Post implements OnInit {
         this.theComments = response.comments;
         this.rating = this.thePost.rating;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
-        this.setratingCommentUserList();
+        // add all comment guid to list
+        this.ratingCommentUserList = this.theComments.map((comment) => ({
+          commentguid: comment.commentguid,
+          userguid: '',
+        }));
         this.cdr.detectChanges();
-        console.log(this.theComments);
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
   }
 
-  onUserChange(event: Event): void {
+  // dropdown
+  onUserPostChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     this.userguid = select.value;
+  }
+
+  onUserCommentChange(event: Event, commentguid: string): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const userguid = selectElement.value;
+
+    // update the record
+    const record = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
+
+    if (record) {
+      record.userguid = userguid;
+    }
   }
 
   onPostRatingToolbarClick(event: MouseEvent, postguid: string): void {
@@ -87,18 +103,51 @@ export class Post implements OnInit {
     }
   }
 
-  setratingCommentUserList() {
-    this.ratingCommentUserList = [];
+  onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {
+    const target = event.target as HTMLElement;
+    const button = target.closest('button');
 
-    /* Insert all comment IDs from every loaded post
-    this.commentsByPostGuid.forEach((comments) => {
-      comments.forEach((comment) => {
-        this.ratingCommentUserList.push({
-          commentguid: comment.commentguid,
-          userguid: '',
-        });
+    // turn off all success messages
+    this.setCommentSuccessMessages(false);
+
+    // have they set a userid for this comment?
+    const rating = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
+
+    if (!rating || rating.userguid === '') {
+      window.alert('Please select a user to rate this comment');
+      return;
+    }
+
+    if (!button) return;
+
+    // Pass variables to the service
+    this.apiServiceUser
+      .submitCommentUserRating(rating.userguid, commentguid, +button.textContent?.trim())
+      .subscribe({
+        next: (response) => {
+          // Update the comment and rating
+          this.setCommentRating(commentguid, response.averageRating, true);
+          this.cdr.markForCheck();
+        },
+        error: (error) => {
+          console.error('Failed to submit comment rating', error);
+        },
       });
+  }
+
+  // helpers
+  setCommentSuccessMessages(show: boolean) {
+    this.theComments.forEach((comment) => {
+      comment.successrating = show;
     });
-    */
+  }
+
+  setCommentRating(commentguid: string, rating: number, show: boolean): void {
+    const comment = this.theComments.find((c) => c.commentguid === commentguid);
+
+    if (comment) {
+      comment.rating = rating;
+      comment.successrating = show;
+    }
   }
 }
