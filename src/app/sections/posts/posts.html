@@ -276,6 +276,13 @@
                         @if (!thePost.commentsclosed) {
                           <a
                             class="btn btn-primary mt-3 me-1"
+                            title="View Full Post"
+                            [attr.href]="'/post?postguid=' + thePost.postguid"
+                          >
+                            Full Post
+                          </a>
+                          <a
+                            class="btn btn-primary mt-3 me-1"
                             title="Edit Post"
                             [attr.href]="'/editpost?postguid=' + thePost.postguid"
                           >
@@ -298,7 +305,7 @@
                             {{
                               expandedPostCommentsGuids.has(thePost.postguid)
                                 ? 'Hide Comments'
-                                : `View the ${thePost.count} Comments`
+                                : `View Comments`
                             }}
                           </button>
                         }
