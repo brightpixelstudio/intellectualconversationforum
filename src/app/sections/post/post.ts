@@ -35,15 +35,6 @@ export class Post implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    forkJoin({
-      users: this.apiServiceUser.getUserList(),
-    }).subscribe({
-      next: (response) => {
-        this.userList = response.users;
-      },
-      error: (err) => console.error('One of the requests failed!', err),
-    });
-
     // get the query string value
     const postguid = this.route.snapshot.queryParamMap.get('postguid');
     if (!postguid) return;
@@ -51,17 +42,19 @@ export class Post implements OnInit {
 
     // load the post / comments
     forkJoin({
+      users: this.apiServiceUser.getUserList(),
       post: this.apiServicePost.getPost(this.postguid),
       comments: this.apiServicePost.getComments(this.postguid),
     }).subscribe({
       next: (response) => {
-        console.log(this.theComments);
+        this.userList = response.users;
         this.thePost = response.post[0];
         this.theComments = response.comments;
         this.rating = this.thePost.rating;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         this.setratingCommentUserList();
         this.cdr.detectChanges();
+        console.log(this.theComments);
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
