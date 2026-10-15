@@ -9,6 +9,7 @@ import { NewPostPage } from './pages/newpost/newpostpage';
 import { NewCommentPage } from './pages/newcomment/newcommentpage';
 import { EditPostPage } from './pages/editpost/editpostpage';
 import { EditCommentPage } from './pages/editcomment/editcommentpage';
+import { PostPage } from './pages/post/posttpage';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Registration' },
@@ -21,4 +22,5 @@ export const routes: Routes = [
   { path: 'newcomment', component: NewCommentPage, title: 'New Comment' },
   { path: 'editpost', component: EditPostPage, title: 'Edit Post' },
   { path: 'editcomment', component: EditCommentPage, title: 'Edit Comment' },
+  { path: 'post', component: PostPage, title: 'View Full Post' },
 ];

@@ -2,6 +2,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
+import { catchError, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { GetPostsByCategoryUserRating } from '../models/posts/getpostsbycategoryuserrating';
 import { GetPost } from '../models/posts/getpost';
 import { GetComment } from '../models/posts/getcomment';
@@ -70,7 +72,17 @@ export class ApiServicePost {
   }
 
   getComments(postGuid: string): Observable<GetPostComments[]> {
-    return this.http.get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postGuid=${postGuid}`);
+    return this.http
+      .get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postGuid=${postGuid}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return of([]);
+          }
+
+          throw error;
+        }),
+      );
   }
 
   deletePost(guid: string): Observable<any> {

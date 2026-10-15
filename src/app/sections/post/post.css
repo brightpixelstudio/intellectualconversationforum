@@ -1,0 +1,10 @@
+p.title {
+  font-size: 16px;
+  color: rgb(36, 123, 252)
+}
+
+select.userSelect {
+  font-size: 16px !important;
+  margin: 0px;
+  padding: 6px;
+}
