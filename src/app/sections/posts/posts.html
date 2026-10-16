@@ -106,7 +106,10 @@
                             [innerHTML]="
                               isPostExpanded(thePost.postguid)
                                 ? thePost.post
-                                : getPostPreview(thePost.post, globalService.getPostMaxLength())
+                                : getPostPreview(
+                                    thePost.post,
+                                    globalService.getPostMaxLengthAbbreviated()
+                                  )
                             "
                           >
                           </span>

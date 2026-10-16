@@ -371,8 +371,8 @@ export class Posts implements OnInit {
 
     const plainText = this.globalService.stripHtml(post);
 
-    return plainText.length > this.globalService.getPostMaxLength()
-      ? plainText.substring(0, this.globalService.getPostMaxLength()) + '...'
+    return plainText.length > this.globalService.getPostMaxLengthAbbreviated()
+      ? plainText.substring(0, this.globalService.getPostMaxLengthAbbreviated()) + '...'
       : plainText;
   }
 
@@ -385,6 +385,8 @@ export class Posts implements OnInit {
       return false;
     }
 
-    return this.globalService.stripHtml(post).length > this.globalService.getPostMaxLength();
+    return (
+      this.globalService.stripHtml(post).length > this.globalService.getPostMaxLengthAbbreviated()
+    );
   }
 }

@@ -137,7 +137,7 @@ export class Registration implements OnInit {
     }
 
     // Maximum file size: 250 KB
-    if (file.size > this.globalService.getPostMaxLength()) {
+    if (file.size > this.globalService.getProfileFileMaxLength()) {
       this.profileImageError = 'The image must be 250 KB or smaller.';
       input.value = '';
       return;
