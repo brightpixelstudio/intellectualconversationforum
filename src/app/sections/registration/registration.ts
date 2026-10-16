@@ -166,41 +166,58 @@ export class Registration implements OnInit {
     this.showSuccess = false;
     this.showError = false;
 
-    if (this.registerForm.valid) {
-      // Validate the zipcode
-      this.apiServiceUtility.getVerifyZipcode(this.registerForm.get('zipcode')?.value).subscribe({
-        next: (result) => {
-          if (result && result.length > 0 && result[0].isValid === 1) {
-            // submit the registration form if the zipcode is valid
-            // Pass the raw form values to your service
-            this.apiService.submitRegistrationForm(this.registerForm.value).subscribe({
-              next: (response) => {
-                this.registerForm.reset();
-                this.showSuccess = true;
-                this.cdr.detectChanges();
-              },
-              error: (error: HttpErrorResponse) => {
-                // Handle Bad Request (400) or other HTTP errors
-                this.showError = true;
-                if (error.status === 400) {
-                  // Fallback to error.message if the backend response didn't include a custom text message
-                  this.errorMsg =
-                    error.error?.message || 'Invalid data submitted. Please check your form.';
-                } else {
-                  this.errorMsg = 'An unexpected error occurred. Please try again.';
-                }
-              },
-            });
-          } else {
-            this.showError = true;
-            this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
-            this.cdr.detectChanges();
-          }
-        },
-      });
-    } else {
+    if (!this.registerForm.valid) {
+      this.registerForm.markAllAsTouched();
       console.log('Form is invalid');
     }
+
+    // Validate the zipcode
+    this.apiServiceUtility.getVerifyZipcode(this.registerForm.get('zipcode')?.value).subscribe({
+      next: (result) => {
+        if (result && result.length > 0 && result[0].isValid === 1) {
+          // submit the registration form if the zipcode is valid
+
+          // Create multipart form data
+          const formData = new FormData();
+
+          // Add registration form fields
+          Object.entries(this.registerForm.value).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+              formData.append(key, String(value));
+            }
+          });
+
+          // Add the optional profile image
+          if (this.profileImage) {
+            formData.append('profileImage', this.profileImage, this.profileImage.name);
+          }
+
+          // Pass the raw form values to your service
+          this.apiService.submitRegistrationForm(formData).subscribe({
+            next: (response) => {
+              this.registerForm.reset();
+              this.removeProfileImage();
+              this.showSuccess = true;
+              this.cdr.detectChanges();
+            },
+            error: (error: HttpErrorResponse) => {
+              this.showError = true;
+              if (error.status === 400) {
+                this.errorMsg =
+                  error.error?.message || 'Invalid data submitted. Please check your form.';
+              } else {
+                this.errorMsg = 'An unexpected error occurred. Please try again.';
+              }
+              this.cdr.detectChanges();
+            },
+          });
+        } else {
+          this.showError = true;
+          this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
+          this.cdr.detectChanges();
+        }
+      },
+    });
   }
 
   // helpers
