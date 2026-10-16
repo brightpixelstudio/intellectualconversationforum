@@ -12,7 +12,7 @@ import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist'
 
 @Component({
   selector: 'post',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -23,6 +23,7 @@ export class Post implements OnInit {
   rating: number = 0;
   userList!: any[];
 
+  showRatings = false;
   showRatingSuccess = false;
   thePost: GetPost | null = null;
   theComments: GetPostComments[] = [];
@@ -156,5 +157,9 @@ export class Post implements OnInit {
       comment.rating = rating;
       comment.successrating = show;
     }
+  }
+
+  toggleRatings(): void {
+    this.showRatings = !this.showRatings;
   }
 }
