@@ -6,6 +6,7 @@ import { GlobalService } from '../../services/globalservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
+import { GetPostRatings } from '../../models/posts/getpostratings';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 
@@ -21,9 +22,11 @@ export class Post implements OnInit {
   userguid: string = '';
   rating: number = 0;
   userList!: any[];
+
   showRatingSuccess = false;
   thePost: GetPost | null = null;
   theComments: GetPostComments[] = [];
+  thePostRatings: GetPostRatings[] = [];
   ratingCommentUserList: RatingCommentUserlist[] = [];
 
   constructor(
@@ -45,11 +48,13 @@ export class Post implements OnInit {
       users: this.apiServiceUser.getUserList(),
       post: this.apiServicePost.getPost(this.postguid),
       comments: this.apiServicePost.getComments(this.postguid),
+      ratings: this.apiServicePost.getpostratings(this.postguid),
     }).subscribe({
       next: (response) => {
         this.userList = response.users;
         this.thePost = response.post[0];
         this.theComments = response.comments;
+        this.thePostRatings = response.ratings;
         this.rating = this.thePost.rating;
         this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
@@ -58,6 +63,7 @@ export class Post implements OnInit {
           commentguid: comment.commentguid,
           userguid: '',
         }));
+        console.log('ratings', this.thePostRatings);
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
@@ -93,7 +99,6 @@ export class Post implements OnInit {
         .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
-            console.log(response.averageRating);
             this.rating = response.averageRating;
             this.showRatingSuccess = true;
             this.cdr.detectChanges();

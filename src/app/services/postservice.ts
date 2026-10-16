@@ -8,6 +8,7 @@ import { GetPostsByCategoryUserRating } from '../models/posts/getpostsbycategory
 import { GetPost } from '../models/posts/getpost';
 import { GetComment } from '../models/posts/getcomment';
 import { GetPostComments } from '../models/posts/getpostcomments';
+import { GetPostRatings } from '../models/posts/getpostratings';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -74,6 +75,20 @@ export class ApiServicePost {
   getComments(postGuid: string): Observable<GetPostComments[]> {
     return this.http
       .get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postGuid=${postGuid}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return of([]);
+          }
+
+          throw error;
+        }),
+      );
+  }
+
+  getpostratings(postGuid: string): Observable<GetPostRatings[]> {
+    return this.http
+      .get<GetPostRatings[]>(this.apiUrl + `/GetPostRatings?postGuid=${postGuid}`)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) {
