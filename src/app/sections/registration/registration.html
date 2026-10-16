@@ -8,6 +8,57 @@
             <h3 class="pb-3">Registration</h3>
             <p>Please create a new profile below:</p>
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <!-- Profile image upload -->
+              <div class="mb-1">
+                <p>Profile Image (optional)</p>
+                <input
+                  type="file"
+                  id="profileImage"
+                  name="profileImage"
+                  class="form-control"
+                  accept="image/jpeg,image/png,image/webp"
+                  (change)="onProfileImageSelected($event)"
+                />
+                <small class="text-muted"> JPG, PNG, or WebP. Maximum size: 150k. </small>
+
+                @if (isFormattingImage) {
+                  <div class="d-flex align-items-center mt-2 mb-3">
+                    <div
+                      class="spinner-border spinner-border-sm text-primary me-2"
+                      role="status"
+                      aria-label="Loading"
+                    ></div>
+
+                    <span>Preparing profile image...</span>
+                  </div>
+                }
+                @if (profileImageError) {
+                  <div class="errormsg">{{ profileImageError }}</div>
+                }
+
+                @if (profileImagePreview && !isFormattingImage) {
+                  <div class="mt-3">
+                    <img
+                      [src]="profileImagePreview"
+                      alt="Profile image preview"
+                      class="rounded-circle border"
+                      width="120"
+                      height="120"
+                      style="object-fit: cover"
+                    />
+
+                    <div>
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm mt-2"
+                        (click)="removeProfileImage()"
+                      >
+                        Remove Image
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
               <input
                 style="min-width: 300px"
                 type="text"

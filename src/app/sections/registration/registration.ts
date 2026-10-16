@@ -30,6 +30,13 @@ export class Registration implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+
+  // image
+  profileImage: File | null = null;
+  profileImagePreview: string | null = null;
+  profileImageError = '';
+  isFormattingImage = false;
+
   // quill
   modules: any;
   maxLimit: number = 5000;
@@ -40,7 +47,6 @@ export class Registration implements OnInit {
     private apiService: ApiServiceUser,
     private apiServiceUtility: ApiServiceUtility,
     private cdr: ChangeDetectorRef,
-    private globalService: GlobalService,
   ) {}
 
   ngOnInit(): void {
@@ -111,6 +117,51 @@ export class Registration implements OnInit {
     return this.registerForm.controls;
   }
 
+  onProfileImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    this.profileImageError = '';
+
+    if (!file) {
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!allowedTypes.includes(file.type)) {
+      this.profileImageError = 'Please select a JPG, PNG, or WebP image.';
+      input.value = '';
+      return;
+    }
+
+    // Maximum file size: 250 KB
+    if (file.size > 250 * 1024) {
+      this.profileImageError = 'The image must be 250 KB or smaller.';
+      input.value = '';
+      return;
+    }
+
+    this.isFormattingImage = true;
+    this.profileImage = file;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.profileImagePreview = reader.result as string;
+      this.isFormattingImage = false;
+      this.cdr.detectChanges();
+    };
+
+    reader.onerror = () => {
+      this.profileImageError = 'Unable to read the selected image.';
+      this.isFormattingImage = false;
+      this.cdr.detectChanges();
+    };
+
+    reader.readAsDataURL(file);
+  }
+
   onSubmit() {
     this.showSuccess = false;
     this.showError = false;
@@ -149,6 +200,19 @@ export class Registration implements OnInit {
       });
     } else {
       console.log('Form is invalid');
+    }
+  }
+
+  // helpers
+  removeProfileImage(): void {
+    this.profileImage = null;
+    this.profileImagePreview = null;
+    this.profileImageError = '';
+
+    const input = document.getElementById('profileImage') as HTMLInputElement | null;
+
+    if (input) {
+      input.value = '';
     }
   }
 }
