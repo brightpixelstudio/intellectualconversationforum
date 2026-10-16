@@ -51,6 +51,7 @@ export class Post implements OnInit {
         this.thePost = response.post[0];
         this.theComments = response.comments;
         this.rating = this.thePost.rating;
+        this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         // add all comment guid to list
         this.ratingCommentUserList = this.theComments.map((comment) => ({
@@ -92,6 +93,7 @@ export class Post implements OnInit {
         .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
+            console.log(response.averageRating);
             this.rating = response.averageRating;
             this.showRatingSuccess = true;
             this.cdr.detectChanges();
