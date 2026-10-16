@@ -46,6 +46,7 @@ export class Registration implements OnInit {
     private fb: FormBuilder,
     private apiService: ApiServiceUser,
     private apiServiceUtility: ApiServiceUtility,
+    private globalService: GlobalService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -136,7 +137,7 @@ export class Registration implements OnInit {
     }
 
     // Maximum file size: 250 KB
-    if (file.size > 250 * 1024) {
+    if (file.size > this.globalService.getPostMaxLength()) {
       this.profileImageError = 'The image must be 250 KB or smaller.';
       input.value = '';
       return;

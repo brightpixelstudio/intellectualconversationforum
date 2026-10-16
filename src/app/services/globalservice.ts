@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class GlobalService {
   private maxPostLength = 200;
+  private maxProfileFileMaxLength = 250 * 1024; // 250k;
 
   getTimePassed(postDate: Date): string {
     const currentDate: Date = new Date();
@@ -55,6 +56,10 @@ export class GlobalService {
 
   getPostMaxLength(): number {
     return this.maxPostLength;
+  }
+
+  getProfileFileMaxLength(): number {
+    return this.maxProfileFileMaxLength;
   }
 
   stripHtml(html: string): string {
