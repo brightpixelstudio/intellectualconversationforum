@@ -16,10 +16,12 @@
                   id="profileImage"
                   name="profileImage"
                   class="form-control"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept=".jpg, .jpeg, .jfif, .png, .webp, image/jpeg, image/png, image/webp"
                   (change)="onProfileImageSelected($event)"
                 />
-                <small class="text-muted"> JPG, PNG, or WebP. Maximum size: 250k. </small>
+                <small class="text-muted">
+                  JPG, JPEG, JFIF, PNG, or WebP. Maximum size: 250 KB.</small
+                >
 
                 @if (isFormattingImage) {
                   <div class="d-flex align-items-center mt-2 mb-3">

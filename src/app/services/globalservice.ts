@@ -72,4 +72,11 @@ export class GlobalService {
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'");
   }
+
+  readonly allowedProfileImageTypes: string[] = [
+    'image/jpeg',
+    'image/jfif',
+    'image/png',
+    'image/webp',
+  ];
 }

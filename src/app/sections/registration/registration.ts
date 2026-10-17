@@ -128,10 +128,9 @@ export class Registration implements OnInit {
       return;
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-
-    if (!allowedTypes.includes(file.type)) {
-      this.profileImageError = 'Please select a JPG, PNG, or WebP image.';
+    // is it the correct type?
+    if (!this.globalService.allowedProfileImageTypes.includes(file.type)) {
+      this.profileImageError = 'Please select a JPG, JPEG, JFIF, PNG, or WebP image.';
       input.value = '';
       return;
     }
