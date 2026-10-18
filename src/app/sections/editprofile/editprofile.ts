@@ -17,6 +17,7 @@ import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { GetProfileMember } from '../../models/member/getprofilemember';
+import { GlobalService } from '../../services/globalservice';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -32,10 +33,17 @@ export class EditProfile implements OnInit {
   showError = false;
   errorMsg = '';
 
+  // image
+  profileImage: File | null = null;
+  profileImagePreview: string | null = null;
+  profileImageError = '';
+  isFormattingImage = false;
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiServiceUser,
     private apiServiceUtility: ApiServiceUtility,
+    private globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {}
@@ -92,6 +100,7 @@ export class EditProfile implements OnInit {
     this.apiService.getUserProfile(this.userguid).subscribe({
       next: (GetProfileMember) => {
         this.updateProfileForm.patchValue(GetProfileMember[0]);
+        this.profileImagePreview = GetProfileMember[0].profileImage || null;
       },
       error: (err) => console.error('Failed to load user profile', err),
     });
@@ -110,49 +119,119 @@ export class EditProfile implements OnInit {
     return this.updateProfileForm.controls;
   }
 
+  onProfileImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    this.profileImageError = '';
+
+    if (!file) {
+      return;
+    }
+
+    // is it the correct type?
+    if (!this.globalService.allowedProfileImageTypes.includes(file.type)) {
+      this.profileImageError = 'Please select a JPG, JPEG, JFIF, PNG, or WebP image.';
+      input.value = '';
+      return;
+    }
+
+    // Maximum file size: 250 KB
+    if (file.size > this.globalService.getProfileFileMaxLength()) {
+      this.profileImageError = 'The image must be 250 KB or smaller.';
+      input.value = '';
+      return;
+    }
+
+    this.isFormattingImage = true;
+    this.profileImage = file;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.profileImagePreview = reader.result as string;
+      this.isFormattingImage = false;
+      this.cdr.detectChanges();
+    };
+
+    reader.onerror = () => {
+      this.profileImageError = 'Unable to read the selected image.';
+      this.isFormattingImage = false;
+      this.cdr.detectChanges();
+    };
+
+    reader.readAsDataURL(file);
+  }
+
   onSubmit() {
     this.showSuccess = false;
     this.showError = false;
 
-    if (this.updateProfileForm.valid) {
-      // Validate the zipcode
-      this.apiServiceUtility
-        .getVerifyZipcode(this.updateProfileForm.get('zipcode')?.value)
-        .subscribe({
-          next: (result) => {
-            if (result && result.length > 0 && result[0].isValid === 1) {
-              // submit the registration form if the zipcode is valid
-              // Pass the raw form values to your service
-              this.apiService
-                .submitUpdateProfileForm(this.userguid, this.updateProfileForm.value)
-                .subscribe({
-                  next: (response) => {
-                    console.log('valid');
-                    this.showSuccess = true;
-                    this.cdr.detectChanges();
-                  },
-                  error: (error: HttpErrorResponse) => {
-                    // Handle Bad Request (400) or other HTTP errors
-                    this.showError = true;
-                    if (error.status === 400) {
-                      // Fallback to error.message if the backend response didn't include a custom text message
-                      this.errorMsg =
-                        error.error?.message || 'Invalid data submitted. Please check your form.';
-                    } else {
-                      this.errorMsg = 'An unexpected error occurred. Please try again.';
-                    }
-                    this.cdr.detectChanges();
-                  },
-                });
-            } else {
-              this.showError = true;
-              this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
-              this.cdr.detectChanges();
-            }
-          },
-        });
-    } else {
+    if (!this.updateProfileForm.valid) {
+      this.updateProfileForm.markAllAsTouched();
       console.log('Form is invalid');
+    }
+
+    // Validate the zipcode
+    this.apiServiceUtility
+      .getVerifyZipcode(this.updateProfileForm.get('zipcode')?.value)
+      .subscribe({
+        next: (result) => {
+          if (result && result.length > 0 && result[0].isValid === 1) {
+            // submit the registration form if the zipcode is valid
+            // Pass the raw form values to your service
+            // Create multipart form data
+            const formData = new FormData();
+
+            // Add registration form fields
+            Object.entries(this.updateProfileForm.value).forEach(([key, value]) => {
+              if (value !== null && value !== undefined) {
+                formData.append(key, String(value));
+              }
+            });
+
+            // Add the optional profile image
+            if (this.profileImage) {
+              formData.append('profileImage', this.profileImage, this.profileImage.name);
+            }
+
+            // Pass the raw form values to your service
+            this.apiService.submitRegistrationForm(formData).subscribe({
+              next: (response) => {
+                this.updateProfileForm.reset();
+                this.removeProfileImage();
+                this.showSuccess = true;
+                this.cdr.detectChanges();
+              },
+              error: (error: HttpErrorResponse) => {
+                this.showError = true;
+                if (error.status === 400) {
+                  this.errorMsg =
+                    error.error?.message || 'Invalid data submitted. Please check your form.';
+                } else {
+                  this.errorMsg = 'An unexpected error occurred. Please try again.';
+                }
+                this.cdr.detectChanges();
+              },
+            });
+          } else {
+            this.showError = true;
+            this.errorMsg = 'Invalid ZIP code. Please enter a valid ZIP code.';
+            this.cdr.detectChanges();
+          }
+        },
+      });
+  }
+  // helpers
+  removeProfileImage(): void {
+    this.profileImage = null;
+    this.profileImagePreview = null;
+    this.profileImageError = '';
+
+    const input = document.getElementById('profileImage') as HTMLInputElement | null;
+
+    if (input) {
+      input.value = '';
     }
   }
 }

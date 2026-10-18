@@ -13,4 +13,6 @@ export interface GetProfileMember {
   datelastlogin: Date;
   dateadded: Date;
   blocked: boolean;
+  profileImageKey: string | null;
+  profileImage: string | null;
 }
