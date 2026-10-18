@@ -5,6 +5,8 @@ export interface GetPostsByCategoryUserRating {
   userguid: string;
   username: string;
   name: string;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
   postcatagoruid: string;
   catagory: string;
   dateadded: Date;

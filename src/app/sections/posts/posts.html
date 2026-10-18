@@ -77,15 +77,23 @@
                   @for (thePost of postsList; track thePost.postid; let i = $index) {
                     <div class="row">
                       <div class="col-12">
-                        <p class="posttitle">
-                          <strong>{{ thePost.name }}</strong
-                          >,
-                          <span class="posttitleinfo"
-                            >{{ thePost.catagory }}, {{ thePost.dateadded | date: 'mediumDate' }},
-                            {{ getTimePassed(thePost.dateadded) }},
-                            {{ thePost.rating }} rating</span
-                          >
-                        </p>
+                        <div class="posttitle d-flex align-items-center gap-2">
+                          <img
+                            [src]="thePost.profileimageurl || '/images/default-profile.png'"
+                            [alt]="thePost.name + ' profile image'"
+                            class="post-profile-image"
+                            width="40"
+                            height="40"
+                          />
+                          <div>
+                            <strong>{{ thePost.name }}</strong
+                            >,
+                            <span class="posttitleinfo">
+                              {{ thePost.catagory }}, {{ thePost.dateadded | date: 'mediumDate' }},
+                              {{ getTimePassed(thePost.dateadded) }}, {{ thePost.rating }} rating
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     @if (thePost.commentsclosed) {

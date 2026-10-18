@@ -44,3 +44,11 @@ select.userSelect {
 .see-more:hover {
   text-decoration: underline;
 }
+
+.post-profile-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
