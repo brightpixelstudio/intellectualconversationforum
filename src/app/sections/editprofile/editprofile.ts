@@ -178,8 +178,6 @@ export class EditProfile implements OnInit {
       .subscribe({
         next: (result) => {
           if (result && result.length > 0 && result[0].isValid === 1) {
-            // submit the registration form if the zipcode is valid
-            // Pass the raw form values to your service
             // Create multipart form data
             const formData = new FormData();
 
@@ -196,10 +194,8 @@ export class EditProfile implements OnInit {
             }
 
             // Pass the raw form values to your service
-            this.apiService.submitRegistrationForm(formData).subscribe({
+            this.apiService.submitUpdateProfileForm(this.userguid, formData).subscribe({
               next: (response) => {
-                this.updateProfileForm.reset();
-                this.removeProfileImage();
                 this.showSuccess = true;
                 this.cdr.detectChanges();
               },
