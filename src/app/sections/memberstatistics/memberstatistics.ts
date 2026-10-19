@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'memberstatistics',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './memberstatistics.html',
   styleUrl: './memberstatistics.css',
 })
