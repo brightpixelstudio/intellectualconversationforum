@@ -11,4 +11,6 @@ export interface GetPost {
   dateadded: Date;
   successrating: boolean;
   commentsclosed: number;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
 }
