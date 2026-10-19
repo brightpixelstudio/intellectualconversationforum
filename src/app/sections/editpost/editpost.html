@@ -10,6 +10,13 @@
             <form [formGroup]="updatePostForm" (ngSubmit)="onSubmit()">
               <hr />
               <p class="title">
+                <img
+                  [src]="getPost?.profileimageurl || '/images/default-profile.png'"
+                  [alt]="getPost?.name + ' profile image'"
+                  class="post-profile-image me-2"
+                  width="60"
+                  height="60"
+                />
                 <strong>{{ getPost?.name }}</strong
                 >,<i>
                   {{ getPost?.catagory }}, {{ getPost?.dateadded | date: 'mediumDate' }},

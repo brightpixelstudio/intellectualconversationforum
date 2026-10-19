@@ -9,6 +9,13 @@
             <p>View the post below:</p>
             <hr />
             <p class="title">
+              <img
+                [src]="thePost?.profileimageurl || '/images/default-profile.png'"
+                [alt]="thePost?.name + ' profile image'"
+                class="post-profile-image me-2"
+                width="40"
+                height="40"
+              />
               <strong>{{ thePost?.name }}</strong
               >,<i>
                 {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
