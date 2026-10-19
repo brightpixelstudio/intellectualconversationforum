@@ -1,6 +1,7 @@
 export interface GetMostPostsMembers {
   userid: number;
   userguid: string;
+  postguid: string;
   usertypeid: number;
   type: string;
   name: string;
@@ -14,4 +15,6 @@ export interface GetMostPostsMembers {
   datelastlogin: Date;
   dateadded: Date;
   blocked: boolean;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
 }
