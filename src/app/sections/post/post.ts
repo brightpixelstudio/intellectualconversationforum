@@ -64,7 +64,7 @@ export class Post implements OnInit {
           commentguid: comment.commentguid,
           userguid: '',
         }));
-        console.log('ratings', this.thePostRatings);
+        console.log('Is the URL included?', this.thePost);
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
