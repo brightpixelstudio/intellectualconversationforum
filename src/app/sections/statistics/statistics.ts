@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { ApiServiceStatistics } from '../../services/statisticservice';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'statistics',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './statistics.html',
   styleUrl: './statistics.css',
 })
