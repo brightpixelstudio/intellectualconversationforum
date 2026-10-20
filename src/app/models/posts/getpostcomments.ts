@@ -12,6 +12,6 @@ export interface GetPostComments {
   rating: number;
   successrating: boolean;
   comment: string;
-  profileimagekey: string | null;
-  profileimageurl: string | null;
+  commentprofileimagekey: string | null;
+  commentprofileimageurl: string | null;
 }
