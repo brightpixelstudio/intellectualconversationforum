@@ -12,4 +12,6 @@ export interface GetAllProfileMembers {
   count: number;
   profile: string;
   blocked: boolean;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
 }

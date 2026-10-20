@@ -14,4 +14,6 @@ export interface GetNewestMembers {
   datelastlogin: Date;
   dateadded: Date;
   blocked: boolean;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
 }
