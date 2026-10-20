@@ -147,6 +147,17 @@
                               <div class="row mb-3">
                                 <div class="col-12">
                                   <p class="comment">
+                                    <img
+                                      [src]="
+                                        theComment?.commentprofileimageurl ||
+                                        '/images/default-profile.png'
+                                      "
+                                      [alt]="theComment?.name + ' profile image'"
+                                      class="post-profile-image me-2"
+                                      width="40"
+                                      height="40"
+                                    />
+
                                     <strong>{{ theComment.name }}, </strong>
                                     <span class="posttitleinfo"
                                       >{{ theComment.dateadded | date: 'medium' }},
