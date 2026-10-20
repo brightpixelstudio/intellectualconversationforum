@@ -83,28 +83,35 @@ export class NewPost implements OnInit {
   onSubmit() {
     this.showSuccess = false;
     this.showError = false;
+    this.errorMsg = '';
 
     if (this.postForm.valid) {
-      // Pass the raw form values to your service
       this.apiServicePost.submitNewPostForm(this.postForm.value).subscribe({
         next: (response) => {
           this.postForm.reset();
           this.showSuccess = true;
+          this.cdr.detectChanges();
         },
+
         error: (error: HttpErrorResponse) => {
-          // Handle Bad Request (400) or other HTTP errors
           this.showError = true;
+
           if (error.status === 400) {
-            // Fallback to error.message if the backend response didn't include a custom text message
             this.errorMsg =
               error.error?.message || 'Invalid data submitted. Please check your form.';
+          } else if (error.status === 409) {
+            // Duplicate post
+            this.errorMsg = error.error?.message || 'You have already posted this text.';
           } else {
-            this.errorMsg = 'An unexpected error occurred. Please try again.';
+            this.errorMsg =
+              error.error?.message || 'An unexpected error occurred. Please try again.';
           }
+
           this.cdr.detectChanges();
         },
       });
     } else {
+      this.postForm.markAllAsTouched();
       console.log('Form is invalid');
     }
   }
