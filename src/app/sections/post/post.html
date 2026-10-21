@@ -146,6 +146,25 @@
                   <div class="col-11">
                     <div class="row">
                       <div class="col-3">
+                        <a
+                          [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
+                          class="btn btn-primary editcommentbtn mt-2 me-1"
+                        >
+                          Edit Comment
+                        </a>
+
+                        <button
+                          type="button"
+                          class="btn btn-danger deletecommentbtn mt-2"
+                          (click)="
+                            onDeleteCommentClick(theComment.postguid, theComment.commentguid)
+                          "
+                        >
+                          Delete This Comment
+                        </button>
+                      </div>
+
+                      <div class="col-3">
                         <div
                           class="btn-toolbar"
                           role="toolbar"

@@ -142,6 +142,26 @@ export class Post implements OnInit {
       });
   }
 
+  onDeleteCommentClick(postguid: string, commentguid: string) {
+    if (!confirm('Are you sure you want to delete this comment?')) {
+      return;
+    }
+
+    // delete the actual comment
+    this.apiServicePost.deleteComment(commentguid).subscribe({
+      next: (response) => {
+        // Remove the deleted comment
+        this.theComments = this.theComments.filter(
+          (comment) => comment.commentguid !== commentguid,
+        );
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        alert('Unable to delete the comment.');
+      },
+    });
+  }
+
   // helpers
   setCommentSuccessMessages(show: boolean) {
     this.theComments.forEach((comment) => {
