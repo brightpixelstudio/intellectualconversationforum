@@ -168,7 +168,7 @@ export class Registration implements OnInit {
 
     if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched();
-      console.log('Form is invalid');
+      return;
     }
 
     // Validate the zipcode
@@ -201,13 +201,22 @@ export class Registration implements OnInit {
               this.cdr.detectChanges();
             },
             error: (error: HttpErrorResponse) => {
+              this.showSuccess = false;
               this.showError = true;
+
               if (error.status === 400) {
+                // Includes images rejected by Azure AI Content Safety
                 this.errorMsg =
                   error.error?.message || 'Invalid data submitted. Please check your form.';
+              } else if (error.status === 503) {
+                // Azure image scanning is unavailable
+                this.errorMsg =
+                  error.error?.message ||
+                  'Image safety scanning is temporarily unavailable. Please try again later.';
               } else {
                 this.errorMsg = 'An unexpected error occurred. Please try again.';
               }
+
               this.cdr.detectChanges();
             },
           });
