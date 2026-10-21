@@ -200,14 +200,33 @@ export class EditProfile implements OnInit {
                 this.cdr.detectChanges();
               },
               error: (error: HttpErrorResponse) => {
+                this.showSuccess = false;
                 this.showError = true;
                 if (error.status === 400) {
+                  // Invalid image or invalid form data
                   this.errorMsg =
-                    error.error?.message || 'Invalid data submitted. Please check your form.';
+                    error.error?.message ??
+                    'The submitted information or image is invalid. Please check your form and try again.';
+                } else if (error.status === 413) {
+                  // Uploaded image is too large
+                  this.errorMsg = 'The image is too large. Please select a smaller image.';
+                } else if (error.status === 415) {
+                  // Unsupported image format
+                  this.errorMsg =
+                    'This image format is not supported. Please select a JPEG, PNG, or WebP image.';
+                } else if (error.status === 503) {
+                  // Azure AI Content Safety service unavailable
+                  this.errorMsg =
+                    error.error?.message ??
+                    'Image safety scanning is temporarily unavailable. Please try again later.';
+                } else if (error.status === 0) {
+                  // Network error or server unavailable
+                  this.errorMsg =
+                    'Unable to connect to the server. Please check your connection and try again.';
                 } else {
-                  this.errorMsg = 'An unexpected error occurred. Please try again.';
+                  this.errorMsg =
+                    error.error?.message ?? 'An unexpected error occurred. Please try again.';
                 }
-                this.cdr.detectChanges();
               },
             });
           } else {
