@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth-guard';
 import { RegistrationPage } from './pages/registration/registrationpage';
 import { MembersPage } from './pages/members/members';
 import { EditProfilePage } from './pages/editprofile/editprofilepage';
@@ -13,16 +14,77 @@ import { PostPage } from './pages/post/posttpage';
 import { LoginPage } from './pages/login/login';
 
 export const routes: Routes = [
-  { path: '', component: LoginPage, title: 'Login' },
-  { path: 'members', component: MembersPage, title: 'Members' },
-  { path: 'editprofile', component: EditProfilePage, title: 'Edit Profile' },
-  { path: 'memberstatistics', component: MemberStatisticsPage, title: 'View Member Statistics' },
-  { path: 'statistics', component: StatisticsPage, title: 'View Statistics' },
-  { path: 'posts', component: PostsPage, title: 'Posts' },
-  { path: 'newpost', component: NewPostPage, title: 'New Post' },
-  { path: 'newcomment', component: NewCommentPage, title: 'New Comment' },
-  { path: 'editpost', component: EditPostPage, title: 'Edit Post' },
-  { path: 'editcomment', component: EditCommentPage, title: 'Edit Comment' },
-  { path: 'post', component: PostPage, title: 'View Full Post' },
-  { path: 'registration', component: RegistrationPage, title: 'Registration' },
+  // Public routes
+  {
+    path: '',
+    component: LoginPage,
+    title: 'Login',
+  },
+  {
+    path: 'registration',
+    component: RegistrationPage,
+    title: 'Registration',
+  },
+
+  // Protected routes
+  {
+    path: 'members',
+    component: MembersPage,
+    title: 'Members',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'editprofile',
+    component: EditProfilePage,
+    title: 'Edit Profile',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'memberstatistics',
+    component: MemberStatisticsPage,
+    title: 'View Member Statistics',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'statistics',
+    component: StatisticsPage,
+    title: 'View Statistics',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'posts',
+    component: PostsPage,
+    title: 'Posts',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'newpost',
+    component: NewPostPage,
+    title: 'New Post',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'newcomment',
+    component: NewCommentPage,
+    title: 'New Comment',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'editpost',
+    component: EditPostPage,
+    title: 'Edit Post',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'editcomment',
+    component: EditCommentPage,
+    title: 'Edit Comment',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'post',
+    component: PostPage,
+    title: 'View Full Post',
+    canActivate: [authGuard],
+  },
 ];
