@@ -1,16 +1,26 @@
 .navbar {
-  margin-left: -30px;
+  width: 100%;
+  display: flex;
+}
+
+.logged-in-menu {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .nav-links {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
   gap: 20px;
 }
 
-.nav-links a {
+.nav-links a,
+.logout-link {
   color: white;
   text-decoration: none;
   font-size: 1rem;
@@ -19,19 +29,18 @@
   transition: background-color 0.3s ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.logout-link:hover {
   background-color: #555;
 }
 
-/* Style for the currently active route */
-.active-link {
+.nav-links a.active-link {
   background-color: #007bff;
+  color: white;
 }
 
-/* Make Logout look like a regular navigation link */
-.nav-links{
-  background: none;
-  border: none;
-  font-family: inherit;
-  cursor: pointer;
+.logout-link {
+  margin-left: auto;
+  white-space: nowrap;
+  padding: 0px 30px 0px 0px;
 }
