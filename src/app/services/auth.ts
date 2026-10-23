@@ -15,7 +15,6 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -46,7 +45,7 @@ export class AuthService {
 
       const decodedPayload = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
 
-      // JWT exp is expressed in seconds.
+      // JWT expiration is expressed in seconds.
       const expiration = decodedPayload.exp;
 
       if (typeof expiration !== 'number' || expiration * 1000 <= Date.now()) {
@@ -62,7 +61,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.accessToken = null;
     this.router.navigate(['/']);
   }
 }
