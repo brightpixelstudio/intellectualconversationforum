@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { AuthService } from '../../app/services/auth';
 
 interface MenuItem {
   label: string;
@@ -10,7 +11,7 @@ interface MenuItem {
 @Component({
   selector: 'menu',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RouterLink],
   templateUrl: './menu.html',
   styleUrls: ['./menu.css'],
 })
@@ -22,4 +23,14 @@ export class MenuComponent {
     { label: 'Statistics', link: '/statistics' },
     { label: 'Posts', link: '/posts' },
   ];
+
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+  ) {}
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
 }
