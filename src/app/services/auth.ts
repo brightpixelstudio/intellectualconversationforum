@@ -24,8 +24,8 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
       tap((response) => {
         this.accessToken = response.token;
-        localStorage.setItem('accessToken', response.token);
-        //sessionStorage.setItem(this.tokenStorageKey, response.token);
+        //localStorage.setItem('accessToken', response.token);
+        localStorage.setItem(this.tokenStorageKey, response.token);
       }),
     );
   }
@@ -72,7 +72,10 @@ export class AuthService {
   }
 
   logout(): void {
-    this.clearToken();
-    this.router.navigate(['/']);
+    this.accessToken = null;
+    localStorage.removeItem(this.tokenStorageKey);
+    sessionStorage.removeItem(this.tokenStorageKey);
+
+    this.router.navigateByUrl('/', { replaceUrl: true });
   }
 }

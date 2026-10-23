@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../app/services/auth';
 
 interface MenuItem {
@@ -24,13 +24,9 @@ export class MenuComponent {
     { label: 'Posts', link: '/posts' },
   ];
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-  ) {}
+  constructor(public authService: AuthService) {}
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 }

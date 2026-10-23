@@ -32,7 +32,6 @@ export class Login implements OnInit {
       password: ['', [Validators.required]],
     });
 
-    // If already logged in, return to the requested page.
     if (this.authService.isLoggedIn()) {
       this.navigateToReturnUrl();
     }
@@ -42,12 +41,12 @@ export class Login implements OnInit {
     return this.loginForm.controls;
   }
 
-  private navigateToReturnUrl(): void {
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/posts';
+  private navigateToReturnUrl(defaultUrl: string = '/posts'): void {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || defaultUrl;
 
     // Only allow internal application URLs.
     if (!returnUrl.startsWith('/') || returnUrl.startsWith('//')) {
-      this.router.navigateByUrl('/posts');
+      this.router.navigateByUrl(defaultUrl);
       return;
     }
 
