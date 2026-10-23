@@ -19,6 +19,7 @@ export const routes: Routes = [
     path: '',
     component: LoginPage,
     title: 'Login',
+    pathMatch: 'full',
   },
   {
     path: 'registration',

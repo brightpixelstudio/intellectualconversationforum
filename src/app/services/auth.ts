@@ -10,8 +10,10 @@ import { LoginResponse } from '../models/login/loginresponse';
 })
 export class AuthService {
   private readonly apiUrl = 'https://localhost:7043/api/Auth';
+  private readonly tokenStorageKey = 'accessToken';
 
-  private accessToken: string | null = null;
+  //  private accessToken: string | null = localStorage.getItem(this.tokenStorageKey);
+  private accessToken: string | null = localStorage.getItem('accessToken');
 
   constructor(
     private http: HttpClient,
@@ -22,6 +24,8 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
       tap((response) => {
         this.accessToken = response.token;
+        localStorage.setItem('accessToken', response.token);
+        //sessionStorage.setItem(this.tokenStorageKey, response.token);
       }),
     );
   }
@@ -39,29 +43,36 @@ export class AuthService {
       const payload = this.accessToken.split('.')[1];
 
       if (!payload) {
-        this.logout();
+        this.clearToken();
         return false;
       }
 
-      const decodedPayload = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+      const decodedPayload = JSON.parse(
+        atob(this.accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')),
+      );
 
       // JWT expiration is expressed in seconds.
       const expiration = decodedPayload.exp;
 
       if (typeof expiration !== 'number' || expiration * 1000 <= Date.now()) {
-        this.logout();
+        this.clearToken();
         return false;
       }
 
       return true;
     } catch {
-      this.logout();
+      this.clearToken();
       return false;
     }
   }
 
-  logout(): void {
+  private clearToken(): void {
     this.accessToken = null;
+    sessionStorage.removeItem(this.tokenStorageKey);
+  }
+
+  logout(): void {
+    this.clearToken();
     this.router.navigate(['/']);
   }
 }

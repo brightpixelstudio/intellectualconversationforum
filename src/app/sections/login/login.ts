@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -23,6 +23,7 @@ export class Login implements OnInit {
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -30,10 +31,27 @@ export class Login implements OnInit {
       login: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+
+    // If already logged in, return to the requested page.
+    if (this.authService.isLoggedIn()) {
+      this.navigateToReturnUrl();
+    }
   }
 
   get f() {
     return this.loginForm.controls;
+  }
+
+  private navigateToReturnUrl(): void {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/posts';
+
+    // Only allow internal application URLs.
+    if (!returnUrl.startsWith('/') || returnUrl.startsWith('//')) {
+      this.router.navigateByUrl('/posts');
+      return;
+    }
+
+    this.router.navigateByUrl(returnUrl);
   }
 
   onSubmit(): void {
@@ -54,12 +72,12 @@ export class Login implements OnInit {
         password: this.loginForm.get('password')?.value,
       })
       .subscribe({
-        next: (response) => {
+        next: () => {
           // AuthService stores the JWT token.
           this.isSubmitting = false;
 
-          // Navigate to the posts page.
-          this.router.navigate(['/posts']);
+          // Return to the requested page, including its query string.
+          this.navigateToReturnUrl();
         },
         error: (error: HttpErrorResponse) => {
           this.showSuccess = false;
