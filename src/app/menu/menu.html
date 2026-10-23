@@ -1,8 +1,24 @@
-<div class="navbar">
-  @if (!authService.isLoggedIn()) {
+@if (!authService.isLoggedIn()) {
+  <ul class="nav-links">
+    @for (item of menuItems; track item.label) {
+      @if (item.label === 'Login' || item.label === 'Registration') {
+        <li>
+          <a
+            [routerLink]="item.link"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    }
+  </ul>
+} @else {
+  <div class="logged-in-menu">
     <ul class="nav-links">
       @for (item of menuItems; track item.label) {
-        @if (item.label === 'Login' || item.label === 'Registration') {
+        @if (item.label !== 'Login' && item.label !== 'Registration') {
           <li>
             <a
               [routerLink]="item.link"
@@ -15,24 +31,21 @@
         }
       }
     </ul>
-  } @else {
-    <div class="logged-in-menu">
-      <ul class="nav-links">
-        @for (item of menuItems; track item.label) {
-          @if (item.label !== 'Login' && item.label !== 'Registration') {
-            <li>
-              <a
-                [routerLink]="item.link"
-                routerLinkActive="active-link"
-                [routerLinkActiveOptions]="{ exact: true }"
-              >
-                {{ item.label }}
-              </a>
-            </li>
-          }
-        }
+    <div class="btn-group">
+      <a
+        role="button"
+        class="btn btn-primary dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Profile
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">View Profile</a></li>
+        <li><a class="dropdown-item" href="#">Update Profile</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" (click)="logout()" href="#">Logout</a></li>
       </ul>
-      <a class="logout-link" (click)="logout()" role="button"> Logout </a>
     </div>
-  }
-</div>
+  </div>
+}

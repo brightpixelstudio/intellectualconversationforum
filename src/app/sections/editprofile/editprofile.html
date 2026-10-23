@@ -135,57 +135,6 @@
               ) {
                 <div class="error-message">Zipcode must be 5 number.</div>
               }
-              <input
-                style="min-width: 300px"
-                type="password"
-                formControlName="password"
-                placeholder="Please enter a password..."
-                class="form-control"
-              />
-
-              @if (f['password'].touched && f['password'].errors) {
-                <div class="error-message">
-                  @if (f['password'].errors['required']) {
-                    Password is required.<br />
-                  }
-                  @if (f['password'].errors['minlength']) {
-                    Password must be at least 8 characters long.<br />
-                  }
-                  @if (f['password'].errors['passwordStrength']) {
-                    <div class="error-message">
-                      @if (!f['password'].errors['passwordStrength'].hasUpperCase) {
-                        Must include an uppercase letter.<br />
-                      }
-                      @if (!f['password'].errors['passwordStrength'].hasLowerCase) {
-                        Must include a lowercase letter.<br />
-                      }
-                      @if (!f['password'].errors['passwordStrength'].hasNumeric) {
-                        Must include a number.<br />
-                      }
-                      @if (!f['password'].errors['passwordStrength'].hasSpecial) {
-                        Must include a special character.<br />
-                      }
-                    </div>
-                  }
-                </div>
-              }
-              <input
-                style="min-width: 300px"
-                type="password"
-                formControlName="confirmPassword"
-                placeholder="Please confirm your password..."
-                class="form-control"
-              />
-              @if (f['confirmPassword'].touched && f['confirmPassword'].errors) {
-                <div class="error-message">
-                  @if (f['confirmPassword'].errors['required']) {
-                    Please confirm your password.<br />
-                  }
-                  @if (f['confirmPassword'].errors['passwordMismatch']) {
-                    Passwords do not match.
-                  }
-                </div>
-              }
               <textarea
                 style="min-width: 300px"
                 type="text"

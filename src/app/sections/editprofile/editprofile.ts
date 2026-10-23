@@ -9,10 +9,6 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import {
-  passwordStrengthValidator,
-  confirmPasswordValidator,
-} from '../../utils/password-validators/password-validators';
 import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
@@ -49,47 +45,32 @@ export class EditProfile implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.updateProfileForm = this.fb.group(
-      {
-        name: new FormControl('', [
-          Validators.required,
-          Validators.minLength(8),
-          profanityValidator(),
-        ]),
-        username: new FormControl('', [
-          Validators.required,
-          Validators.minLength(7),
-          Validators.pattern(/^\S*$/),
-          profanityValidator(),
-        ]),
-        email: ['', [Validators.required, Validators.email]],
-        zipcode: new FormControl('', [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
-          Validators.pattern(/^[0-9]{5}$/),
-        ]),
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(8), // Native length check
-            passwordStrengthValidator(), // Custom strength check
-          ],
-        ],
-        confirmPassword: ['', [Validators.required]],
-        profile: new FormControl('', [
-          Validators.required,
-          Validators.minLength(30),
-          Validators.maxLength(1000),
-          profanityValidator(),
-        ]),
-      },
-      {
-        // Apply cross-field validation rules to the whole FormGroup
-        validators: [confirmPasswordValidator('password', 'confirmPassword')],
-      },
-    );
+    this.updateProfileForm = this.fb.group({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        profanityValidator(),
+      ]),
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.pattern(/^\S*$/),
+        profanityValidator(),
+      ]),
+      email: ['', [Validators.required, Validators.email]],
+      zipcode: new FormControl('', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(5),
+        Validators.pattern(/^[0-9]{5}$/),
+      ]),
+      profile: new FormControl('', [
+        Validators.required,
+        Validators.minLength(30),
+        Validators.maxLength(1000),
+        profanityValidator(),
+      ]),
+    });
 
     // get the query string value
     const userguid = this.route.snapshot.queryParamMap.get('userguid');
