@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Registration } from '../../sections/registration/registration';
 
 @Component({
-  selector: 'home',
+  selector: 'registrationpage',
   imports: [Registration],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './registrationpage.html',
+  styleUrl: './registrationpage.css',
 })
-export class Home {}
+export class RegistrationPage {}

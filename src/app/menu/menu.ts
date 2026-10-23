@@ -16,7 +16,8 @@ interface MenuItem {
 })
 export class MenuComponent {
   menuItems: MenuItem[] = [
-    { label: 'Registration', link: '/' },
+    { label: 'Login', link: '/' },
+    { label: 'Registration', link: '/registration' },
     { label: 'Members', link: '/members' },
     { label: 'Statistics', link: '/statistics' },
     { label: 'Posts', link: '/posts' },
