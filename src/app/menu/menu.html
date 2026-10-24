@@ -32,19 +32,27 @@
       }
     </ul>
     <div class="btn-group">
-      <a
-        role="button"
-        class="btn btn-primary dropdown-toggle"
+      <button
+        type="button"
+        class="btn profile-button dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
         Profile
-      </a>
+      </button>
+
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">View Profile</a></li>
-        <li><a class="dropdown-item" href="#">Update Profile</a></li>
+        <li>
+          <button type="button" class="dropdown-item" (click)="editprofile()">
+            Update Profile
+          </button>
+        </li>
+
         <li><hr class="dropdown-divider" /></li>
-        <li><a class="dropdown-item" (click)="logout()" href="#">Logout</a></li>
+
+        <li>
+          <button type="button" class="dropdown-item" (click)="logout()">Logout</button>
+        </li>
       </ul>
     </div>
   </div>

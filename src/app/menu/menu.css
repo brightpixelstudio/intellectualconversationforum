@@ -14,25 +14,32 @@
 }
 
 .nav-links a,
-.logout-link {
+.logout-link,
+.profile-button {
   color: white;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1rem !important;
   padding: 8px 12px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
 .nav-links a:hover,
-.logout-link:hover {
-  background-color: #555;
+.logout-link:hover,
+.profile-button {
+  background-color: #555 !important;
 }
 
-.nav-links a.active-link {
+.nav-links a.active-link, .profile-button {
   background-color: #006adb;
   color: white;
 }
 
 .btn-group {
   margin-left: auto;
+}
+
+.dropdown-item{
+  font-size: 1rem !important;
+  padding: 2px 10px 2px 10px !important;
 }

@@ -74,7 +74,9 @@ export class EditProfile implements OnInit {
 
     // get the query string value
     const userguid = this.route.snapshot.queryParamMap.get('userguid');
-    if (!userguid) return;
+    if (!userguid) {
+      return;
+    }
     this.userguid = userguid;
 
     // load the members profile
@@ -148,9 +150,9 @@ export class EditProfile implements OnInit {
     this.showSuccess = false;
     this.showError = false;
 
-    if (!this.updateProfileForm.valid) {
+    if (this.updateProfileForm.invalid) {
       this.updateProfileForm.markAllAsTouched();
-      console.log('Form is invalid');
+      return;
     }
 
     // Validate the zipcode

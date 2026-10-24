@@ -11,6 +11,8 @@ import { LoginResponse } from '../models/login/loginresponse';
 export class AuthService {
   private readonly apiUrl = 'https://localhost:7043/api/Auth';
   private readonly tokenStorageKey = 'accessToken';
+  private readonly userGuidStorageKey = 'userGuid';
+  private userGuid: string | null = localStorage.getItem(this.userGuidStorageKey);
 
   //  private accessToken: string | null = localStorage.getItem(this.tokenStorageKey);
   private accessToken: string | null = localStorage.getItem('accessToken');
@@ -24,10 +26,17 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
       tap((response) => {
         this.accessToken = response.token;
-        //localStorage.setItem('accessToken', response.token);
+        this.userGuid = response.userGuid;
         localStorage.setItem(this.tokenStorageKey, response.token);
+        if (this.userGuid) {
+          localStorage.setItem(this.userGuidStorageKey, this.userGuid);
+        }
       }),
     );
+  }
+
+  getUserGuid(): string | null {
+    return this.userGuid;
   }
 
   getAccessToken(): string | null {
@@ -73,7 +82,9 @@ export class AuthService {
 
   logout(): void {
     this.accessToken = null;
+    this.userGuid = null;
     localStorage.removeItem(this.tokenStorageKey);
+    localStorage.removeItem(this.userGuidStorageKey);
     sessionStorage.removeItem(this.tokenStorageKey);
 
     this.router.navigateByUrl('/', { replaceUrl: true });

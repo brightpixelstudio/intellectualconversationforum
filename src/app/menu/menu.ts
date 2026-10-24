@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../app/services/auth';
 
 interface MenuItem {
@@ -24,7 +24,23 @@ export class MenuComponent {
     { label: 'Posts', link: '/posts' },
   ];
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+  ) {}
+
+  editprofile(): void {
+    const userGuid = this.authService.getUserGuid();
+
+    if (!userGuid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.router.navigate(['/editprofile'], {
+      queryParams: { userguid: userGuid },
+    });
+  }
 
   logout(): void {
     this.authService.logout();
