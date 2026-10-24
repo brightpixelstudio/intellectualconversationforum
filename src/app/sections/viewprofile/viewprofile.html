@@ -9,16 +9,16 @@
             <p class="title">
               <!--
               <img
-                [src]="thePost?.profileimageurl || '/images/default-profile.png'"
-                [alt]="thePost?.name + ' profile image'"
+                [src]="getUserProfile?.profileimageurl || '/images/default-profile.png'"
+                [alt]="getUserProfile?.name + ' profile image'"
                 class="post-profile-image me-2"
                 width="40"
                 height="40"
               />
-              <strong>{{ thePost?.name }}</strong
+              <strong>{{ getUserProfile?.name }}</strong
               >,<i>
-                {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
-                {{ thePost?.count }} comments, {{ timePassed }}, {{ rating }} rating</i
+                {{ getUserProfile?.catagory }}, {{ getUserProfile?.dateadded | date: 'mediumDate' }},
+                {{ getUserProfile?.count }} comments, {{ timePassed }}, {{ rating }} rating</i
               >
               -->
             </p>

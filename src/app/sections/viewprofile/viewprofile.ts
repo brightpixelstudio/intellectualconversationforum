@@ -1,7 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceUser } from '../../services/userservice';
-import { forkJoin } from 'rxjs';
-import { GetProfileMember } from '../../models/member/getprofilemember';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewProfile implements OnInit {
   userguid: string = '';
-  getUserProfileStatisticsInformation: any = '';
+  getUserProfile: any = '';
 
   // image
   profileImage: File | null = null;
@@ -36,7 +34,7 @@ export class ViewProfile implements OnInit {
     this.apiServiceUser.getUserProfileStatistics(this.userguid).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
-        this.getUserProfileStatisticsInformation = data;
+        this.getUserProfile = data;
 
         this.cdr.detectChanges();
       },
