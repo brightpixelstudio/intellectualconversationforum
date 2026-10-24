@@ -12,7 +12,7 @@ import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist'
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, JsonPipe],
+  imports: [DatePipe],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
