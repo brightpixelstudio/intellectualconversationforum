@@ -50,18 +50,18 @@ export class ApiServiceUser {
     const getCommentsMember$ = this.http.get(
       this.apiUrl + `/getCommentsMember?userguid=${userguid}`,
     );
-    const getUserPostRatings$ = this.http.get(
-      this.apiUrl + `/getUserPostRatings?userguid=${userguid}`,
+    const getPostRatingsMember$ = this.http.get(
+      this.apiUrl + `/getPostRatingsMember?userguid=${userguid}`,
     );
-    const getUserCommentRatings$ = this.http.get(
-      this.apiUrl + `/getUserCommentRatings?userguid=${userguid}`,
+    const getCommentRatingsMember$ = this.http.get(
+      this.apiUrl + `/getCommentRatingsMember?userguid=${userguid}`,
     );
     return forkJoin({
       getUserProfile: getUserProfile$,
       getPostsMember: getPostsMember$,
       getCommentsMember: getCommentsMember$,
-      getUserPostRatings: getUserPostRatings$,
-      getUserCommentRatings: getUserCommentRatings$,
+      getPostRatingsMember: getPostRatingsMember$,
+      getCommentRatingsMember: getCommentRatingsMember$,
     });
   }
 
