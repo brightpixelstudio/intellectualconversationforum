@@ -41,6 +41,30 @@ export class ApiServiceUser {
     return this.http.get<GetUserList[]>(this.apiUrl + '/getUserList');
   }
 
+  getUserProfileStatistics(userguid: string | undefined): Observable<any> {
+    // definitions of models is not needed in this architecture
+    const getUserProfile$ = this.http.get<GetProfileMember>(
+      this.apiUrl + `/getProfileMember?userguid=${userguid}`,
+    );
+    const getPostsMember$ = this.http.get(this.apiUrl + `/getPostsMember?userguid=${userguid}`);
+    const getCommentsMember$ = this.http.get(
+      this.apiUrl + `/getCommentsMember?userguid=${userguid}`,
+    );
+    const getUserPostRatings$ = this.http.get(
+      this.apiUrl + `/getUserPostRatings?userguid=${userguid}`,
+    );
+    const getUserCommentRatings$ = this.http.get(
+      this.apiUrl + `/getUserCommentRatings?userguid=${userguid}`,
+    );
+    return forkJoin({
+      getUserProfile: getUserProfile$,
+      getPostsMember: getPostsMember$,
+      getCommentsMember: getCommentsMember$,
+      getUserPostRatings: getUserPostRatings$,
+      getUserCommentRatings: getUserCommentRatings$,
+    });
+  }
+
   getUserStatistics(userguid: string | undefined): Observable<any> {
     // NOTE - you dont need models for this architecture
     const getPostsMember$ = this.http.get(this.apiUrl + `/getPostsMember?userguid=${userguid}`);

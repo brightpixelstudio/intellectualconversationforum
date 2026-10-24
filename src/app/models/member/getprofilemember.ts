@@ -5,7 +5,6 @@ export interface GetProfileMember {
   name: string;
   username: string;
   email: string;
-  password: string;
   zipcode: number;
   count: number;
   profile: string;

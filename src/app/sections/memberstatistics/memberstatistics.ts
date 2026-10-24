@@ -26,15 +26,11 @@ export class MemberStatistics implements OnInit {
     if (!userguid) return;
     this.userguid = userguid;
 
-    // this.userId = 5; // testing
-
     // look at Sunray to call all procedures at once.
-    this.apiService.getUserStatistics(this.userguid).subscribe({
+    this.apiService.getUserProfileStatistics(this.userguid).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserStatisticsInformation = data;
-
-        // load a blog post
         this.cdr.detectChanges();
       },
       error: (err) => {
