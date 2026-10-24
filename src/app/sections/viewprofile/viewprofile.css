@@ -1,0 +1,20 @@
+    p.title {
+      font-size: 16px;
+      color: rgb(36, 123, 252)
+    }
+
+    .updatebtn
+    {
+      font-size: 16px !important;
+      padding: 6px 13px 6px 13px;
+    }
+
+    a,
+    a:hover {
+      text-decoration: none;
+      color: #df2121
+    }
+
+    a {
+      color: #33a9f8dc
+    }

@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ApiServiceUser } from '../../services/userservice';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'viewprofile',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './viewprofile.html',
   styleUrl: './viewprofile.css',
 })
@@ -17,9 +19,11 @@ export class ViewProfile implements OnInit {
   profileImagePreview: string | null = null;
 
   constructor(
+    public authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
     private apiServiceUser: ApiServiceUser,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +47,19 @@ export class ViewProfile implements OnInit {
         this.cdr.detectChanges();
         console.error('One or more requests failed:', err);
       },
+    });
+  }
+
+  editprofile(): void {
+    const userGuid = this.authService.getUserGuid();
+
+    if (!userGuid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.router.navigate(['/editprofile'], {
+      queryParams: { userguid: userGuid },
     });
   }
 }
