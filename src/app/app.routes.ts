@@ -11,6 +11,7 @@ import { NewCommentPage } from './pages/newcomment/newcommentpage';
 import { EditPostPage } from './pages/editpost/editpostpage';
 import { EditCommentPage } from './pages/editcomment/editcommentpage';
 import { PostPage } from './pages/post/posttpage';
+import { ViewProfilePage } from './pages/viewprofile/viewprofilepage';
 import { LoginPage } from './pages/login/login';
 
 export const routes: Routes = [
@@ -86,6 +87,12 @@ export const routes: Routes = [
     path: 'post',
     component: PostPage,
     title: 'View Full Post',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'viewprofile',
+    component: ViewProfilePage,
+    title: 'View Profile',
     canActivate: [authGuard],
   },
 ];
