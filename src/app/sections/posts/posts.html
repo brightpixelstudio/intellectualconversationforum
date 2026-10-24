@@ -86,12 +86,15 @@
                             height="40"
                           />
                           <div>
-                            <strong>{{ thePost.name }}</strong
-                            >,
-                            <span class="posttitleinfo">
-                              {{ thePost.catagory }}, {{ thePost.dateadded | date: 'mediumDate' }},
-                              {{ getTimePassed(thePost.dateadded) }}, {{ thePost.rating }} rating
-                            </span>
+                            <p class="title">
+                              <strong>{{ thePost.name }}</strong
+                              >,
+                              <span class="posttitleinfo">
+                                {{ thePost.catagory }},
+                                {{ thePost.dateadded | date: 'mediumDate' }},
+                                {{ getTimePassed(thePost.dateadded) }}, {{ thePost.rating }} rating
+                              </span>
+                            </p>
                           </div>
                         </div>
                       </div>
