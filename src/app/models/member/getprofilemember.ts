@@ -14,4 +14,5 @@ export interface GetProfileMember {
   blocked: boolean;
   profileImageKey: string | null;
   profileImage: string | null;
+  profileimageurl: string | null;
 }
