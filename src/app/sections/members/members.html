@@ -83,13 +83,15 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.blocked }}</td>
                       <td class="text-nowrap">
-                        <a
-                          class="btn actionbtn editBtn"
-                          title="Edit this member"
-                          [attr.href]="'/editprofile?userguid=' + theMember.userguid"
-                        >
-                          <fa-icon [icon]="faPencil" />
-                        </a>
+                        @if (theMember.userguid == userguid) {
+                          <a
+                            class="btn actionbtn editBtn"
+                            title="Edit this member"
+                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
+                          >
+                            <fa-icon [icon]="faPencil" />
+                          </a>
+                        }
                         <a
                           class="btn actionbtn statisticBtn"
                           title="View this member's statistics"
@@ -97,14 +99,16 @@
                         >
                           <fa-icon [icon]="faMagnifyingGlassChart" />
                         </a>
-                        <button
-                          type="button"
-                          class="btn actionbtn deleteBtn"
-                          title="Delete this member"
-                          (click)="onDeleteUser(theMember.userguid)"
-                        >
-                          <fa-icon [icon]="faTrash" />
-                        </button>
+                        @if (theMember.userguid == userguid) {
+                          <button
+                            type="button"
+                            class="btn actionbtn deleteBtn"
+                            title="Delete this member"
+                            (click)="onDeleteUser(theMember.userguid)"
+                          >
+                            <fa-icon [icon]="faTrash" />
+                          </button>
+                        }
                       </td>
                     </tr>
                   }
@@ -158,13 +162,15 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.blocked }}</td>
                       <td class="text-nowrap">
-                        <a
-                          class="btn actionbtn editBtn"
-                          title="Edit this member"
-                          [attr.href]="'/editprofile?userguid=' + theMember.userguid"
-                        >
-                          <fa-icon [icon]="faPencil" />
-                        </a>
+                        @if (theMember.userguid == userguid) {
+                          <a
+                            class="btn actionbtn editBtn"
+                            title="Edit this member"
+                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
+                          >
+                            <fa-icon [icon]="faPencil" />
+                          </a>
+                        }
                         <a
                           class="btn actionbtn statisticBtn"
                           title="View this member's statistics"
@@ -172,14 +178,16 @@
                         >
                           <fa-icon [icon]="faMagnifyingGlassChart" />
                         </a>
-                        <button
-                          type="button"
-                          class="btn actionbtn deleteBtn"
-                          title="Delete this member"
-                          (click)="onDeleteUser(theMember.userguid)"
-                        >
-                          <fa-icon [icon]="faTrash" />
-                        </button>
+                        @if (theMember.userguid == userguid) {
+                          <button
+                            type="button"
+                            class="btn actionbtn deleteBtn"
+                            title="Delete this member"
+                            (click)="onDeleteUser(theMember.userguid)"
+                          >
+                            <fa-icon [icon]="faTrash" />
+                          </button>
+                        }
                       </td>
                     </tr>
                   }
@@ -234,13 +242,15 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.blocked }}</td>
                       <td class="text-nowrap">
-                        <a
-                          class="btn actionbtn editBtn"
-                          title="Edit this member"
-                          [attr.href]="'/editprofile?userguid=' + theMember.userguid"
-                        >
-                          <fa-icon [icon]="faPencil" />
-                        </a>
+                        @if (theMember.userguid == userguid) {
+                          <a
+                            class="btn actionbtn editBtn"
+                            title="Edit this member"
+                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
+                          >
+                            <fa-icon [icon]="faPencil" />
+                          </a>
+                        }
                         <a
                           class="btn actionbtn statisticBtn"
                           title="View this member's statistics"
@@ -248,14 +258,16 @@
                         >
                           <fa-icon [icon]="faMagnifyingGlassChart" />
                         </a>
-                        <button
-                          type="button"
-                          class="btn actionbtn deleteBtn"
-                          title="Delete this member"
-                          (click)="onDeleteUser(theMember.userguid)"
-                        >
-                          <fa-icon [icon]="faTrash" />
-                        </button>
+                        @if (theMember.userguid == userguid) {
+                          <button
+                            type="button"
+                            class="btn actionbtn deleteBtn"
+                            title="Delete this member"
+                            (click)="onDeleteUser(theMember.userguid)"
+                          >
+                            <fa-icon [icon]="faTrash" />
+                          </button>
+                        }
                       </td>
                     </tr>
                   }
@@ -309,13 +321,15 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.blocked }}</td>
                       <td class="text-nowrap">
-                        <a
-                          class="btn actionbtn editBtn"
-                          title="Edit this member"
-                          [attr.href]="'/editprofile?userguid=' + theMember.userguid"
-                        >
-                          <fa-icon [icon]="faPencil" />
-                        </a>
+                        @if (theMember.userguid == userguid) {
+                          <a
+                            class="btn actionbtn editBtn"
+                            title="Edit this member"
+                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
+                          >
+                            <fa-icon [icon]="faPencil" />
+                          </a>
+                        }
                         <a
                           class="btn actionbtn statisticBtn"
                           title="View this member's statistics"
@@ -323,14 +337,16 @@
                         >
                           <fa-icon [icon]="faMagnifyingGlassChart" />
                         </a>
-                        <button
-                          type="button"
-                          class="btn actionbtn deleteBtn"
-                          title="Delete this member"
-                          (click)="onDeleteUser(theMember.userguid)"
-                        >
-                          <fa-icon [icon]="faTrash" />
-                        </button>
+                        @if (theMember.userguid == userguid) {
+                          <button
+                            type="button"
+                            class="btn actionbtn deleteBtn"
+                            title="Delete this member"
+                            (click)="onDeleteUser(theMember.userguid)"
+                          >
+                            <fa-icon [icon]="faTrash" />
+                          </button>
+                        }
                       </td>
                     </tr>
                   }

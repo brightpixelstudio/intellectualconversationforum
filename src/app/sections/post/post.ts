@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { AuthService } from '../../services/auth';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServicePost } from '../../services/postservice';
 import { GlobalService } from '../../services/globalservice';
@@ -33,6 +34,7 @@ export class Post implements OnInit {
   constructor(
     private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
+    public authService: AuthService,
     public globalService: GlobalService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -43,6 +45,7 @@ export class Post implements OnInit {
     const postguid = this.route.snapshot.queryParamMap.get('postguid');
     if (!postguid) return;
     this.postguid = postguid;
+    this.userguid = this.authService.getUserGuid() ?? '';
 
     // load the post / comments
     forkJoin({
@@ -57,7 +60,7 @@ export class Post implements OnInit {
         this.theComments = response.comments;
         this.thePostRatings = response.ratings;
         this.rating = this.thePost.rating;
-        this.userguid = this.userList[0].userguid;
+        //this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         // add all comment guid to list
         this.ratingCommentUserList = this.theComments.map((comment) => ({
@@ -120,10 +123,18 @@ export class Post implements OnInit {
     // have they set a userid for this comment?
     const rating = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
 
-    if (!rating || rating.userguid === '') {
+    if (!rating) {
       window.alert('Please select a user to rate this comment');
       return;
     }
+
+    rating.userguid = this.userguid;
+    /*
+    if (rating.userguid === '') {
+      window.alert('Please select a user to rate this comment');
+      return;
+    }
+    */
 
     if (!button) return;
 

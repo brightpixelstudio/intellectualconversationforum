@@ -48,6 +48,7 @@
               </div>
               <div class="col-2 mt-3">
                 <select
+                  disabled
                   #userid
                   name="userid"
                   id="userid"
@@ -55,7 +56,9 @@
                   (change)="onUserPostChange($event)"
                 >
                   @for (user of userList; track user.userid) {
-                    <option value="{{ user.userguid }}">{{ user.name }}</option>
+                    <option value="{{ user.userguid }}" [selected]="user.userguid === userguid">
+                      {{ user.name }}
+                    </option>
                   }
                 </select>
               </div>
@@ -188,13 +191,12 @@
                       </div>
                       <div class="col-2">
                         <select
+                          disabled
                           class="form-select userSelect mt-1"
                           (change)="onUserCommentChange($event, theComment.commentguid)"
                         >
-                          <option value="0">Select User</option>
-
                           @for (user of userList; track user.userid) {
-                            <option [value]="user.userguid">
+                            <option [value]="user.userguid" [selected]="user.userguid === userguid">
                               {{ user.name }}
                             </option>
                           }

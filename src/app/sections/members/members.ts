@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceStatistics } from '../../services/statisticservice';
 import { GetAllProfileMembers } from '../../models/getallprofilemembers';
@@ -24,6 +25,7 @@ export class Members implements OnInit {
   memberListLatestLoginsMembers: GetLatestLoginsMembers[] = [];
   protected MemberReportType = MemberReportType;
   reportType = MemberReportType.All;
+  userguid: string = '';
   faTrash = faTrash;
   faPencil = faPencil;
   faMagnifyingGlassChart = faMagnifyingGlassChart;
@@ -31,11 +33,13 @@ export class Members implements OnInit {
   constructor(
     private apiService: ApiServiceUser,
     private apiServiceStatistics: ApiServiceStatistics,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.onMemberTypeChange('all');
+    this.userguid = this.authService.getUserGuid() ?? '';
   }
 
   onMemberTypeChange(value: string) {

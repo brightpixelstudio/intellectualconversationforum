@@ -5,6 +5,7 @@ import { forkJoin } from 'rxjs';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
+import { AuthService } from '../../services/auth';
 import { GlobalService } from '../../services/globalservice';
 import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from '../../models/posts/getpostcomments';
@@ -21,6 +22,7 @@ export class Posts implements OnInit {
   noPosts: boolean = false;
   postId: number = 0;
   userguid: string | null = null;
+  userguidloggedin: string | null = null;
   rating: number = 0;
   userratingid: number = 0;
   catagoryid: number | null = null;
@@ -45,11 +47,14 @@ export class Posts implements OnInit {
     private apiServiceUser: ApiServiceUser,
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
+    public authService: AuthService,
     public globalService: GlobalService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
+    this.userguidloggedin = this.authService.getUserGuid() ?? '';
+
     forkJoin({
       users: this.apiServiceUser.getUserList(),
       catagories: this.apiServiceUtilities.getCatagoryList(),
@@ -233,33 +238,37 @@ export class Posts implements OnInit {
 
     // have they set a userid for this post?
     const rating = this.ratingPostUserList.find((x) => x.postguid === postguid);
+    if (!rating) return;
+    rating.userguid = this.userguidloggedin ?? '';
 
+    /*
     if (!rating || rating.userguid === '') {
       window.alert('Please select a user to rate this post');
       return;
     }
+    */
 
-    if (button) {
-      // Pass variables to the service
-      this.apiServiceUser
-        .submitPostUserRating(rating.userguid, postguid, +button.textContent?.trim())
-        .subscribe({
-          next: (response) => {
-            // Find the post in the listing
-            const post = this.postsList.find((post) => post.postguid === postguid);
+    if (!button) return;
 
-            if (post) {
-              // Update the post rating
-              post.rating = response.averageRating;
-              post.successrating = true;
-            }
-            this.cdr.detectChanges();
-          },
-          error: (error) => {
-            console.error('Failed to submit rating', error);
-          },
-        });
-    }
+    // Pass variables to the service
+    this.apiServiceUser
+      .submitPostUserRating(rating.userguid, postguid, +button.textContent?.trim())
+      .subscribe({
+        next: (response) => {
+          // Find the post in the listing
+          const post = this.postsList.find((post) => post.postguid === postguid);
+
+          if (post) {
+            // Update the post rating
+            post.rating = response.averageRating;
+            post.successrating = true;
+          }
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Failed to submit rating', error);
+        },
+      });
   }
 
   onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {
@@ -271,11 +280,15 @@ export class Posts implements OnInit {
 
     // have they set a userid for this comment?
     const rating = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
+    if (!rating) return;
+    rating.userguid = this.userguidloggedin ?? '';
 
+    /*
     if (!rating || rating.userguid === '') {
       window.alert('Please select a user to rate this comment');
       return;
     }
+    */
 
     if (!button) return;
 
