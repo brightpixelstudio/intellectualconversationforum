@@ -15,23 +15,23 @@
             />
             <div class="mt-3">
               <p class="title" style="font-size: 22px">
-                <strong>{{ getUserProfile.getUserProfile.name }}</strong
-                >, {{ getUserProfile.getUserProfile.email }}
+                <strong>{{ getUserProfile?.getUserProfile?.name }}</strong
+                >, {{ getUserProfile?.getUserProfile?.email }}
               </p>
             </div>
             <div>
-              <strong>User Type:</strong> {{ getUserProfile.getUserProfile.type }}<br />
-              <strong>Zipcode:</strong> {{ getUserProfile.getUserProfile.zipcode }}<br />
-              <strong>Posts:</strong> {{ getUserProfile.getUserProfile.count }}<br />
+              <strong>User Type:</strong> {{ getUserProfile?.getUserProfile?.type }}<br />
+              <strong>Zipcode:</strong> {{ getUserProfile?.getUserProfile?.zipcode }}<br />
+              <strong>Posts:</strong> {{ getUserProfile?.getUserProfile?.count }}<br />
               <strong>Joined:</strong>
-              {{ getUserProfile.getUserProfile.dateadded | date: 'mediumDate' }},
+              {{ getUserProfile?.getUserProfile?.dateadded | date: 'mediumDate' }},
               <strong>Last Post:</strong>
-              {{ getUserProfile.getUserProfile.datelastpost | date: 'mediumDate' }},
+              {{ getUserProfile?.getUserProfile?.datelastpost | date: 'mediumDate' }},
               <strong>Last Login:</strong>
-              {{ getUserProfile.getUserProfile.datelastlogin | date: 'mediumDate' }}
+              {{ getUserProfile?.getUserProfile?.datelastlogin | date: 'mediumDate' }}
             </div>
             <div class="mt-3">
-              <i>{{ getUserProfile.getUserProfile.profile }}</i>
+              <i>{{ getUserProfile?.getUserProfile?.profile }}</i>
             </div>
             <div class="mt-2">
               <button class="updatebtn btn btn-primary mt-2" (click)="editprofile()">
