@@ -12,6 +12,7 @@ import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServicePost } from '../../services/postservice';
 import { ApiServiceUser } from '../../services/userservice';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth';
 import { forkJoin } from 'rxjs';
 import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
@@ -25,6 +26,7 @@ import { QuillModule } from 'ngx-quill';
 export class NewComment implements OnInit {
   userList!: any[];
   postguid: string = '';
+  userguid: string = '';
 
   commentForm!: FormGroup;
   showSuccess = false;
@@ -41,14 +43,16 @@ export class NewComment implements OnInit {
     private apiServiceUser: ApiServiceUser,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
+    public authService: AuthService,
     private globalService: GlobalService,
   ) {
     this.modules = this.globalService.getQuillModuleToolbar();
   }
 
   ngOnInit(): void {
+    this.userguid = this.authService.getUserGuid() ?? '';
     this.commentForm = this.fb.group({
-      userguid: new FormControl('', [Validators.required]),
+      userguid: new FormControl({ value: this.userguid, disabled: true }, [Validators.required]),
       comment: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),
@@ -86,7 +90,8 @@ export class NewComment implements OnInit {
 
     if (this.commentForm.valid) {
       // Pass the raw form values to your service
-      this.apiServicePost.submitNewCommentForm(this.postguid, this.commentForm.value).subscribe({
+      const postData = this.commentForm.getRawValue();
+      this.apiServicePost.submitNewCommentForm(this.postguid, postData).subscribe({
         next: (response) => {
           this.commentForm.reset();
           this.showSuccess = true;

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { JsonPipe } from '@angular/common';
+import { AuthService } from '../../services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   FormsModule,
@@ -14,7 +14,6 @@ import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { forkJoin } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
 
@@ -25,6 +24,7 @@ import { QuillModule } from 'ngx-quill';
   styleUrl: './newpost.css',
 })
 export class NewPost implements OnInit {
+  userguid: string = '';
   userList!: any[];
   catagoryList!: any[];
   postForm!: FormGroup;
@@ -42,16 +42,17 @@ export class NewPost implements OnInit {
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    public authService: AuthService,
     private globalService: GlobalService,
   ) {
     this.modules = this.globalService.getQuillModuleToolbar();
   }
 
   ngOnInit(): void {
+    this.userguid = this.authService.getUserGuid() ?? '';
     this.postForm = this.fb.group({
       catagoryid: new FormControl('', [Validators.required]),
-      guid: new FormControl('', [Validators.required]),
+      guid: new FormControl({ value: this.userguid, disabled: true }, [Validators.required]),
       post: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),
@@ -86,7 +87,8 @@ export class NewPost implements OnInit {
     this.errorMsg = '';
 
     if (this.postForm.valid) {
-      this.apiServicePost.submitNewPostForm(this.postForm.value).subscribe({
+      const postData = this.postForm.getRawValue();
+      this.apiServicePost.submitNewPostForm(postData).subscribe({
         next: (response) => {
           this.postForm.reset();
           this.showSuccess = true;

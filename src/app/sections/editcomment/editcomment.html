@@ -10,6 +10,13 @@
             <form [formGroup]="updateCommentForm" (ngSubmit)="onSubmit()">
               <hr />
               <p class="title">
+                <img
+                  [src]="getComment?.profileimageurl || '/images/default-profile.png'"
+                  [alt]="getComment?.name + ' profile image'"
+                  class="post-profile-image me-2"
+                  width="60"
+                  height="60"
+                />
                 <strong>{{ getComment?.name }}</strong
                 >,<i>
                   {{ getComment?.catagory }}, {{ getComment?.dateadded | date: 'mediumDate' }},
@@ -49,14 +56,15 @@
                 </div>
                 <div class="col-3 mt-3">
                   <select
-                    #userid
-                    name="userid"
-                    id="userid"
+                    #userrating
+                    name="userrating"
+                    id="userrating"
+                    formControlName="userratingguid"
                     class="userSelect"
                     (change)="onUserChange($event)"
                   >
                     @for (user of userList; track user.userid) {
-                      <option value="{{ user.userguid }}">{{ user.name }}</option>
+                      <option [value]="user.userguid">{{ user.name }}</option>
                     }
                   </select>
                 </div>

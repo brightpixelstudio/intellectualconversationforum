@@ -13,6 +13,7 @@ import { profanityValidator } from '../../utils/bad-words-validator';
 import { ApiServicePost } from '../../services/postservice';
 import { ApiServiceUser } from '../../services/userservice';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth';
 import { forkJoin } from 'rxjs';
 import { GetComment } from '../../models/posts/getcomment';
 import { GlobalService } from '../../services/globalservice';
@@ -45,6 +46,7 @@ export class EditComment implements OnInit {
     private fb: FormBuilder,
     private apiServicePost: ApiServicePost,
     private apiServiceUser: ApiServiceUser,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private globalService: GlobalService,
@@ -53,8 +55,10 @@ export class EditComment implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userguid = this.authService.getUserGuid() ?? '';
     this.updateCommentForm = this.fb.group({
-      userguid: new FormControl('', [Validators.required]),
+      userguid: new FormControl({ value: this.userguid, disabled: true }, [Validators.required]),
+      userratingguid: new FormControl({ value: this.userguid, disabled: true }),
       comment: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),
@@ -107,21 +111,21 @@ export class EditComment implements OnInit {
     const target = event.target as HTMLElement;
     const button = target.closest('button');
 
-    if (button) {
-      // Pass variables to the service
-      this.apiServiceUser
-        .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
-        .subscribe({
-          next: (response) => {
-            this.rating = response.averageRating;
-            this.showRatingSuccess = true;
-            this.cdr.detectChanges();
-          },
-          error: (error) => {
-            console.error('Failed to submit rating', error);
-          },
-        });
-    }
+    if (!button) return;
+
+    // Pass variables to the service
+    this.apiServiceUser
+      .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
+      .subscribe({
+        next: (response) => {
+          this.rating = response.averageRating;
+          this.showRatingSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Failed to submit rating', error);
+        },
+      });
   }
 
   onSubmit() {
@@ -130,30 +134,29 @@ export class EditComment implements OnInit {
 
     if (this.updateCommentForm.valid) {
       // Pass the raw form values to your service
-      this.apiServicePost
-        .submitUpdateCommentForm(this.commentguid, this.updateCommentForm.value)
-        .subscribe({
-          next: (response) => {
-            this.showSuccess = true;
-            this.cdr.detectChanges();
-          },
-          error: (error: HttpErrorResponse) => {
-            this.showError = true;
+      const postData = this.updateCommentForm.getRawValue();
+      this.apiServicePost.submitUpdateCommentForm(this.commentguid, postData).subscribe({
+        next: (response) => {
+          this.showSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showError = true;
 
-            if (error.status === 400) {
-              this.errorMsg =
-                error.error?.message || 'Invalid data submitted. Please check your form.';
-            } else if (error.status === 409) {
-              // Duplicate post
-              this.errorMsg = error.error?.message || 'You have already posted this text.';
-            } else {
-              this.errorMsg =
-                error.error?.message || 'An unexpected error occurred. Please try again.';
-            }
+          if (error.status === 400) {
+            this.errorMsg =
+              error.error?.message || 'Invalid data submitted. Please check your form.';
+          } else if (error.status === 409) {
+            // Duplicate post
+            this.errorMsg = error.error?.message || 'You have already posted this text.';
+          } else {
+            this.errorMsg =
+              error.error?.message || 'An unexpected error occurred. Please try again.';
+          }
 
-            this.cdr.detectChanges();
-          },
-        });
+          this.cdr.detectChanges();
+        },
+      });
     } else {
       console.log('Form is invalid');
     }

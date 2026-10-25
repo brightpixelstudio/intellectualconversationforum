@@ -62,14 +62,17 @@
                 </div>
                 <div class="col-3 mt-3">
                   <select
-                    #userid
-                    name="userid"
-                    id="userid"
+                    #user
+                    name="user"
+                    id="user"
+                    formControlName="guid"
                     class="userSelect"
                     (change)="onUserChange($event)"
                   >
                     @for (user of userList; track user.userid) {
-                      <option value="{{ user.userguid }}">{{ user.name }}</option>
+                      <option [value]="user.userguid">
+                        {{ user.name }}
+                      </option>
                     }
                   </select>
                 </div>

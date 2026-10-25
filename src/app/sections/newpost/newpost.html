@@ -21,7 +21,9 @@
               </select>
               <select #user name="user" id="user" formControlName="guid">
                 @for (user of userList; track user.userid) {
-                  <option [value]="user.userguid">{{ user.name }}</option>
+                  <option [value]="user.userguid">
+                    {{ user.name }}
+                  </option>
                 }
               </select>
               <br />

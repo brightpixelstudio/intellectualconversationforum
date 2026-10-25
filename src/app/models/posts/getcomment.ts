@@ -9,4 +9,6 @@ export interface GetComment {
   catagory: string;
   rating: number;
   timePassed: string;
+  profileimagekey: string | null;
+  profileimageurl: string | null;
 }

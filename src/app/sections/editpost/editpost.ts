@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../../services/auth';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -48,6 +49,7 @@ export class EditPost implements OnInit {
     private apiServiceUtilities: ApiServiceUtility,
     private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private globalService: GlobalService,
@@ -56,9 +58,10 @@ export class EditPost implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userguid = this.authService.getUserGuid() ?? '';
     this.updatePostForm = this.fb.group({
       postcatagoryid: new FormControl('', [Validators.required]),
-      userid: new FormControl('', [Validators.required]),
+      guid: new FormControl({ value: this.userguid, disabled: true }, [Validators.required]),
       post: new FormControl('', [
         Validators.required,
         Validators.maxLength(5000),
@@ -74,7 +77,6 @@ export class EditPost implements OnInit {
       next: (response) => {
         this.catagoryList = response.catagories;
         this.userList = response.users;
-        this.userguid = this.userList[0].userguid;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
@@ -115,21 +117,21 @@ export class EditPost implements OnInit {
     const target = event.target as HTMLElement;
     const button = target.closest('button');
 
-    if (button) {
-      // Pass variables to the service
-      this.apiServiceUser
-        .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
-        .subscribe({
-          next: (response) => {
-            this.rating = response.averageRating;
-            this.showRatingSuccess = true;
-            this.cdr.detectChanges();
-          },
-          error: (error) => {
-            console.error('Failed to submit rating', error);
-          },
-        });
-    }
+    if (!button) return;
+
+    // Pass variables to the service
+    this.apiServiceUser
+      .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
+      .subscribe({
+        next: (response) => {
+          this.rating = response.averageRating;
+          this.showRatingSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Failed to submit rating', error);
+        },
+      });
   }
 
   onSubmit() {
@@ -138,7 +140,8 @@ export class EditPost implements OnInit {
 
     if (this.updatePostForm.valid) {
       // Pass the raw form values to your service
-      this.apiServicePost.submitUpdatePostForm(this.postguid, this.updatePostForm.value).subscribe({
+      const postData = this.updatePostForm.getRawValue();
+      this.apiServicePost.submitUpdatePostForm(this.postguid, postData).subscribe({
         next: (response) => {
           this.showSuccess = true;
           this.cdr.detectChanges();
