@@ -311,13 +311,15 @@
                           >
                             Full Post
                           </a>
-                          <a
-                            class="btn btn-primary mt-3 me-1"
-                            title="Edit Post"
-                            [attr.href]="'/editpost?postguid=' + thePost.postguid"
-                          >
-                            Edit Post
-                          </a>
+                          @if (thePost.userguid == this.userguidloggedin) {
+                            <a
+                              class="btn btn-primary mt-3 me-1"
+                              title="Edit Post"
+                              [attr.href]="'/editpost?postguid=' + thePost.postguid"
+                            >
+                              Edit Post
+                            </a>
+                          }
                           <a
                             class="btn btn-primary mt-3"
                             title="Add Comment"
@@ -339,7 +341,7 @@
                             }}
                           </button>
                         }
-                        @if (!thePost.commentsclosed) {
+                        @if (!thePost.commentsclosed && thePost.userguid == this.userguidloggedin) {
                           <button
                             class="btn btn-danger deletebtn mt-3 ms-1"
                             id="button{{ thePost.postid }}"
