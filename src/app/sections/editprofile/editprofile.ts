@@ -83,7 +83,7 @@ export class EditProfile implements OnInit {
     this.apiService.getUserProfile(this.userguid).subscribe({
       next: (GetProfileMember) => {
         this.updateProfileForm.patchValue(GetProfileMember);
-        this.profileImagePreview = GetProfileMember.profileImage ?? null;
+        this.profileImagePreview = GetProfileMember.profileimageurl ?? null;
       },
       error: (err) => console.error('Failed to load user profile', err),
     });

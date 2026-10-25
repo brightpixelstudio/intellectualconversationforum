@@ -38,12 +38,17 @@ p.return{
   font-style: italic;
 }
 
-.post-profile-image {
+.post-profile-image, .post-profile-image-large {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+.post-profile-image-large {
+  width: 140px;
+  height: 140px;
 }
 
 /* posts */

@@ -39,9 +39,10 @@ export class ViewProfile implements OnInit {
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserProfile = data;
+        this.cdr.detectChanges();
+        console.log(this.getUserProfile);
       },
       error: (err) => {
-        this.cdr.detectChanges();
         console.error('One or more requests failed:', err);
       },
     });
