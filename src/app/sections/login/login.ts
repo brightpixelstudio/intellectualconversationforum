@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ReactiveFormsModule, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'login',

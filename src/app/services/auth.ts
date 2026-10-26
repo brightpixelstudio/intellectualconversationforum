@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { LoginRequest } from '../models/login/loginrequest';
@@ -9,7 +10,7 @@ import { LoginResponse } from '../models/login/loginresponse';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:7043/api/Auth';
+  private readonly apiUrl = `${environment.apiUrl}/Auth`;
   private readonly tokenStorageKey = 'accessToken';
   private readonly userGuidStorageKey = 'userGuid';
   private userGuid: string | null = localStorage.getItem(this.userGuidStorageKey);
