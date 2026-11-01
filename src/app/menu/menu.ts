@@ -42,6 +42,19 @@ export class MenuComponent {
     });
   }
 
+  usersettings(): void {
+    const userGuid = this.authService.getUserGuid();
+
+    if (!userGuid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.router.navigate(['/membersettings'], {
+      queryParams: { userguid: userGuid },
+    });
+  }
+
   editprofile(): void {
     const userGuid = this.authService.getUserGuid();
 

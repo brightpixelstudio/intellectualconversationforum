@@ -13,6 +13,7 @@ import { EditCommentPage } from './pages/editcomment/editcommentpage';
 import { PostPage } from './pages/post/posttpage';
 import { ViewProfilePage } from './pages/viewprofile/viewprofilepage';
 import { LoginPage } from './pages/login/login';
+import { MemberSettingsPage } from './pages/membersettings/membersettingspage';
 
 export const routes: Routes = [
   // Public routes
@@ -93,6 +94,12 @@ export const routes: Routes = [
     path: 'viewprofile',
     component: ViewProfilePage,
     title: 'View Profile',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'membersettings',
+    component: MemberSettingsPage,
+    title: 'Member Settings',
     canActivate: [authGuard],
   },
 ];

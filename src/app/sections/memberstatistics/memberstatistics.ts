@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { JsonPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ApiServiceUser } from '../../services/userservice';
-import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'memberstatistics',
@@ -10,23 +10,20 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './memberstatistics.css',
 })
 export class MemberStatistics implements OnInit {
-  userguid: string = '';
+  userguidloggedin: string = '';
   getUserStatisticsInformation: any = '';
 
   constructor(
     private apiService: ApiServiceUser,
-    private route: ActivatedRoute,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    // get the query string value
-    const userguid = this.route.snapshot.queryParamMap.get('userguid');
-    if (!userguid) return;
-    this.userguid = userguid;
+    this.userguidloggedin = this.authService.getUserGuid() ?? '';
 
-    // look at Sunray to call all procedures at once.
-    this.apiService.getUserProfileStatistics(this.userguid).subscribe({
+    // forkjoin in the service will call all the procedures at once and return the data in one object.
+    this.apiService.getUserProfileStatistics(this.userguidloggedin).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserStatisticsInformation = data;
