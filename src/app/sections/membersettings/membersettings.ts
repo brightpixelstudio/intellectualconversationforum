@@ -34,7 +34,6 @@ export class MemberSettings implements OnInit {
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserSettings = data.getUserSettings;
-        console.log(this.getUserSettings);
         this.userSettingsCatagories = data.getUserSettingsCatagories;
         this.userSettingsUser = data.getUserSettingsUser;
         this.cdr.detectChanges();
@@ -49,13 +48,15 @@ export class MemberSettings implements OnInit {
   // Events
   // **************************
   // Main Filters
-  onPostRatingChange(ratingIn: string) {
-    // ensure there is some value and it is between 1 and 10
-    const rating = ratingIn === '' ? 0 : Number(ratingIn);
+  onPostRatingChange(input: HTMLInputElement) {
+    const rating = input.value === '' ? 0 : Number(input.value);
+
     if (rating !== 0 && (rating < 1 || rating > 10)) {
+      input.value = '';
       return;
     }
-    //this.rating = +ratingIn;
+
+    this.getUserSettings[0].minpostrating = rating;
   }
   selectAllCategories(): void {
     this.userSettingsCatagories.forEach((record) => {

@@ -139,13 +139,14 @@ export class Posts implements OnInit {
     this.userguid = user;
   }
 
-  onPostRatingChange(ratingIn: string) {
-    // ensure there is some value and it is between 1 and 10
-    const rating = ratingIn === '' ? 0 : Number(ratingIn);
+  onPostRatingChange(input: HTMLInputElement) {
+    const rating = input.value === '' ? 0 : Number(input.value);
     if (rating !== 0 && (rating < 1 || rating > 10)) {
+      input.value = '';
       return;
     }
-    this.rating = +ratingIn;
+
+    this.rating = rating;
   }
 
   onSearchChange(value: string): void {
