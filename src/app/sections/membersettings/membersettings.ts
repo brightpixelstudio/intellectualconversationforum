@@ -69,4 +69,8 @@ export class MemberSettings implements OnInit {
       record.selected = 0;
     });
   }
+
+  updateSettings(): void {
+    console.log('Updated Settings:', this.getUserSettings);
+  }
 }

@@ -10,7 +10,7 @@
             <div class="mt-2">
               <input
                 #rating
-                placeholder="Minimum Rating"
+                placeholder="Rating"
                 type="number"
                 id="rating"
                 name="rating"
@@ -21,6 +21,8 @@
                 [value]="getUserSettings[0]?.minpostrating ?? ''"
                 (input)="onPostRatingChange(rating)"
               />
+              <label class="form-check-label ms-2 mt-2" for="rating"><p>Minimum rating</p></label>
+
               <div class="form-check form-switch ms-2 mt-3">
                 <input
                   class="form-check-input"
@@ -66,7 +68,10 @@
                   ><p>Add new categories to my feed</p></label
                 >
               </div>
-              <button class="updatebtn btn btn-primary mt-2 mb-2 editcommentbtn">
+              <button
+                class="updatebtn btn btn-primary mt-2 mb-2 editcommentbtn"
+                (click)="updateSettings()"
+              >
                 Update Settings
               </button>
             </div>
