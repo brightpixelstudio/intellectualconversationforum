@@ -104,6 +104,36 @@ export class MemberSettings implements OnInit {
     // turn off success and error messages
     this.showSuccessUser = false;
     this.showErrorUser = false;
+
+    // send in the user list
+    const users = this.userSettingsUser.map((user) => ({
+      userid: user.selecteduserid,
+      selected: Number(user.selected),
+    }));
+
+    const request = {
+      guid: this.userguidloggedin,
+      users: users,
+    };
+
+    // all the save service all
+    this.apiServiceUserSettings.saveUserMembers(request).subscribe({
+      next: (response) => {
+        this.showSuccessUser = true;
+        this.showErrorUser = false;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorUser = true;
+
+        if (error.status === 400) {
+          this.errorMsg = error.error?.message || 'Invalid data submitted. Please check your form.';
+        } else {
+          this.errorMsg = error.error?.message || 'An unexpected error occurred. Please try again.';
+        }
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   saveCategories(): void {

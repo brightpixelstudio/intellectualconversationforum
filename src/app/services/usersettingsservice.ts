@@ -42,6 +42,10 @@ export class ApiServiceUserSettings {
     );
   }
 
+  saveUserMembers(response: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/UpdateUserSettingsMembers`, response);
+  }
+
   saveUserCategories(response: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/updateUserSettingsCatagories`, response);
   }
