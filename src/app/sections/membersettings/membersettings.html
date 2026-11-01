@@ -70,12 +70,12 @@
               </div>
               <button
                 class="updatebtn btn btn-primary mt-2 mb-2 editcommentbtn"
-                (click)="updateSettings()"
+                (click)="saveSettings()"
               >
                 Update Settings
               </button>
               @if (showSuccess == true) {
-                <div class="successmsg">This post was updated.</div>
+                <div class="successmsg">Your settings were updated.</div>
               }
               @if (showError == true) {
                 <div class="errormsg">{{ errorMsg }}.</div>
@@ -123,7 +123,7 @@
                         role="tabpanel"
                         aria-labelledby="tab-0"
                       >
-                        <div class="col-12 mb-4">
+                        <div class="col-12 mb-3">
                           <button
                             type="button"
                             class="btn btn-success mt-2 me-1 editcommentbtn"
@@ -139,6 +139,9 @@
                           >
                             Deselect All Categories
                           </button>
+                          <p style="font-size: 14px" class="mt-2">
+                            <i>Selected categories are included in your feed</i>
+                          </p>
                         </div>
 
                         @for (theRecord of userSettingsCatagories; track $index) {
@@ -158,6 +161,19 @@
                               ><p>{{ theRecord.catagory }}</p></label
                             >
                           </div>
+                        }
+                        <button
+                          type="button"
+                          class="btn btn-success mt-2 mb-4"
+                          (click)="saveCategories()"
+                        >
+                          Save Categories
+                        </button>
+                        @if (showSuccessCatagories == true) {
+                          <div class="successmsg">Your categories were updated.</div>
+                        }
+                        @if (showErrorCatagories == true) {
+                          <div class="errormsg">{{ errorMsg }}.</div>
                         }
                       </div>
                       <div

@@ -29,7 +29,7 @@ export class ApiServiceUserSettings {
     });
   }
 
-  updateUserSettings(
+  saveUserSettings(
     userguid: string,
     showUnrated: number,
     minPostRating: number,
@@ -40,5 +40,9 @@ export class ApiServiceUserSettings {
       `${this.apiUrl}/updateUserSettings?userguid=${encodeURIComponent(userguid)}&showUnrated=${showUnrated}&minPostRating=${minPostRating}&addNewUsers=${addNewUsers}&addNewCatagories=${addNewCatagories}`,
       {},
     );
+  }
+
+  saveUserCategories(response: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/updateUserSettingsCatagories`, response);
   }
 }

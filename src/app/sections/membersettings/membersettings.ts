@@ -19,6 +19,10 @@ export class MemberSettings implements OnInit {
   getUserSettings: any[] = [];
   showSuccess = false;
   showError = false;
+  showSuccessCatagories = false;
+  showErrorCatagories = false;
+  showSuccessUser = false;
+  showErrorUser = false;
   errorMsg = '';
 
   constructor(
@@ -71,12 +75,48 @@ export class MemberSettings implements OnInit {
     });
   }
 
-  updateSettings(): void {
+  saveCategories(): void {
+    // turn off success and error messages
+    this.showSuccessCatagories = false;
+    this.showErrorCatagories = false;
+
+    //send in the catagory list
+    const categories = this.userSettingsCatagories.map((category) => ({
+      postcatagoryid: category.postcatagoryid,
+      selected: Number(category.selected),
+    }));
+
+    const request = {
+      guid: this.userguidloggedin,
+      categories: categories,
+    };
+
+    // all the save service all
+    this.apiServiceUserSettings.saveUserCategories(request).subscribe({
+      next: (response) => {
+        this.showSuccessCatagories = true;
+        this.showErrorCatagories = false;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorCatagories = true;
+
+        if (error.status === 400) {
+          this.errorMsg = error.error?.message || 'Invalid data submitted. Please check your form.';
+        } else {
+          this.errorMsg = error.error?.message || 'An unexpected error occurred. Please try again.';
+        }
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  saveSettings(): void {
     this.showSuccess = false;
     this.showError = false;
 
     this.apiServiceUserSettings
-      .updateUserSettings(
+      .saveUserSettings(
         this.userguidloggedin,
         this.getUserSettings[0].showunrated,
         this.getUserSettings[0].minpostrating,
