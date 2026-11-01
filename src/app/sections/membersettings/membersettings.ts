@@ -4,11 +4,12 @@ import { AuthService } from '../../services/auth';
 import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
 import { HttpErrorResponse } from '@angular/common/http';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'membersettings',
-  imports: [JsonPipe],
+  imports: [CommonModule, JsonPipe, FormsModule],
   templateUrl: './membersettings.html',
   styleUrl: './membersettings.css',
 })
@@ -17,6 +18,7 @@ export class MemberSettings implements OnInit {
   userSettingsCatagories: getusersettingscatagories[] = [];
   userSettingsUser: getusersettingsuser[] = [];
   getUserSettings: any[] = [];
+  userSearch: string = '';
   showSuccess = false;
   showError = false;
   showSuccessCatagories = false;
@@ -73,6 +75,35 @@ export class MemberSettings implements OnInit {
     this.userSettingsCatagories.forEach((record) => {
       record.selected = 0;
     });
+  }
+
+  selectAllUsers(): void {
+    this.userSettingsUser.forEach((record) => {
+      record.selected = 1;
+    });
+  }
+
+  deselectAllUsers(): void {
+    this.userSettingsUser.forEach((record) => {
+      record.selected = 0;
+    });
+  }
+
+  get filteredUsers() {
+    return this.userSettingsUser.filter((user) =>
+      user.name?.toLowerCase().includes(this.userSearch.toLowerCase()),
+    );
+  }
+
+  toggleUser(user: any, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    user.selected = checked ? 1 : 0;
+  }
+
+  saveUsers(): void {
+    // turn off success and error messages
+    this.showSuccessUser = false;
+    this.showErrorUser = false;
   }
 
   saveCategories(): void {
