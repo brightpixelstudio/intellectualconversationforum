@@ -2,8 +2,8 @@ export interface getusersettings {
   usersettingsid: number;
   userid: number;
   minpostrating: number;
-  showunrated: boolean;
-  addnewusers: boolean;
-  addnewcatagories: boolean;
+  showunrated: number;
+  addnewusers: number;
+  addnewcatagories: number;
   dateupdated: Date;
 }

@@ -1,16 +1,22 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceUserSettings } from '../../services/usersettingsservice';
 import { AuthService } from '../../services/auth';
+import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
+import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
+import { getusersettings } from '../../models/membersettings/getusersettings';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'membersettings',
-  imports: [],
+  imports: [JsonPipe],
   templateUrl: './membersettings.html',
   styleUrl: './membersettings.css',
 })
 export class MemberSettings implements OnInit {
   userguidloggedin: string = '';
-  getUserSettings: any = '';
+  userSettingsCatagories: getusersettingscatagories[] = [];
+  userSettingsUser: getusersettingsuser[] = [];
+  getUserSettings: any[] = [];
   //  userguidloggedin: string | null = null;
   //  rating: number = 0;
 
@@ -27,8 +33,10 @@ export class MemberSettings implements OnInit {
     this.apiServiceUserSettings.getUserSettings(this.userguidloggedin).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
-        this.getUserSettings = data;
+        this.getUserSettings = data.getUserSettings;
         console.log(this.getUserSettings);
+        this.userSettingsCatagories = data.getUserSettingsCatagories;
+        this.userSettingsUser = data.getUserSettingsUser;
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -48,5 +56,16 @@ export class MemberSettings implements OnInit {
       return;
     }
     //this.rating = +ratingIn;
+  }
+  selectAllCategories(): void {
+    this.userSettingsCatagories.forEach((record) => {
+      record.selected = 1;
+    });
+  }
+
+  deselectAllCategories(): void {
+    this.userSettingsCatagories.forEach((record) => {
+      record.selected = 0;
+    });
   }
 }
