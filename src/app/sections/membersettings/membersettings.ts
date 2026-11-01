@@ -3,7 +3,7 @@ import { ApiServiceUserSettings } from '../../services/usersettingsservice';
 import { AuthService } from '../../services/auth';
 import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
-import { getusersettings } from '../../models/membersettings/getusersettings';
+import { HttpErrorResponse } from '@angular/common/http';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -17,8 +17,9 @@ export class MemberSettings implements OnInit {
   userSettingsCatagories: getusersettingscatagories[] = [];
   userSettingsUser: getusersettingsuser[] = [];
   getUserSettings: any[] = [];
-  //  userguidloggedin: string | null = null;
-  //  rating: number = 0;
+  showSuccess = false;
+  showError = false;
+  errorMsg = '';
 
   constructor(
     private apiServiceUserSettings: ApiServiceUserSettings,
@@ -71,6 +72,37 @@ export class MemberSettings implements OnInit {
   }
 
   updateSettings(): void {
-    console.log('Updated Settings:', this.getUserSettings);
+    this.showSuccess = false;
+    this.showError = false;
+
+    this.apiServiceUserSettings
+      .updateUserSettings(
+        this.userguidloggedin,
+        this.getUserSettings[0].showunrated,
+        this.getUserSettings[0].minpostrating,
+        this.getUserSettings[0].addnewusers,
+        this.getUserSettings[0].addnewcatagories,
+      )
+      .subscribe({
+        next: (response) => {
+          this.showSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showError = true;
+
+          if (error.status === 400) {
+            this.errorMsg =
+              error.error?.message || 'Invalid data submitted. Please check your form.';
+          } else if (error.status === 409) {
+            // Duplicate post
+            this.errorMsg = error.error?.message || 'You have already posted this text.';
+          } else {
+            this.errorMsg =
+              error.error?.message || 'An unexpected error occurred. Please try again.';
+          }
+          this.cdr.detectChanges();
+        },
+      });
   }
 }

@@ -13,10 +13,6 @@ export class ApiServiceUserSettings {
   private apiUrl = environment.apiUrl + '/usersettings'; // Uses the API URL from environment
 
   // GET request to fetch data
-  getUserProfile(userguid: string): Observable<GetProfileMember> {
-    return this.http.get<GetProfileMember>(this.apiUrl + `/getProfileMember?userguid=${userguid}`);
-  }
-
   getUserSettings(userguid: string | undefined): Observable<any> {
     // NOTE - you dont need models for this architecture
     const getUserSettings$ = this.http.get(this.apiUrl + `/getUserSettings?userguid=${userguid}`);
@@ -33,9 +29,16 @@ export class ApiServiceUserSettings {
     });
   }
 
-  /* 
-  submitUpdateProfileForm(userguid: string, formData: any): Observable<any> {
-    return this.http.post(this.apiUrl + `/updateMemberProfile?userguid=${userguid}`, formData);
+  updateUserSettings(
+    userguid: string,
+    showUnrated: number,
+    minPostRating: number,
+    addNewUsers: number,
+    addNewCatagories: number,
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/updateUserSettings?userguid=${encodeURIComponent(userguid)}&showUnrated=${showUnrated}&minPostRating=${minPostRating}&addNewUsers=${addNewUsers}&addNewCatagories=${addNewCatagories}`,
+      {},
+    );
   }
-*/
 }

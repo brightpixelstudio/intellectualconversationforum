@@ -74,6 +74,12 @@
               >
                 Update Settings
               </button>
+              @if (showSuccess == true) {
+                <div class="successmsg">This post was updated.</div>
+              }
+              @if (showError == true) {
+                <div class="errormsg">{{ errorMsg }}.</div>
+              }
             </div>
             <div class="row">
               <div class="col-12">
