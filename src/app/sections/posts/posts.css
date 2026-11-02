@@ -34,6 +34,13 @@ select.userSelect {
   padding: 6px;
 }
 
+.readonly-select {
+  pointer-events: none;
+  appearance: none;
+  background-image: none;
+  cursor: default;
+}
+
 .see-more {
   color: #007bff;
   cursor: pointer;

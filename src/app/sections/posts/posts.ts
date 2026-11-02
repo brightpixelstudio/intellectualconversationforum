@@ -76,8 +76,8 @@ export class Posts implements OnInit {
           this.userguid = user;
         }
 
-        // load posts
-        this.loadPosts();
+        // default to my feed
+        this.loadMyFeedPosts();
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
@@ -107,6 +107,8 @@ export class Posts implements OnInit {
       });
     });
   }
+
+  loadMyFeedPosts() {}
 
   loadPosts() {
     // get posts
