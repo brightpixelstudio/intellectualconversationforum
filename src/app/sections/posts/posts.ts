@@ -22,6 +22,7 @@ import { getusersettingsuser } from '../../models/membersettings/getusersettings
   styleUrl: './posts.css',
 })
 export class Posts implements OnInit {
+  activeTab = 0;
   noPosts: boolean = false;
   errormsg: string = '';
   postId: number = 0;
@@ -93,8 +94,13 @@ export class Posts implements OnInit {
           this.userguid = user;
         }
 
-        // default to my feed
-        this.loadMyFeedPosts();
+        // if any parameters were sent in, load the posts based on those parameters, otherwise default to my feed
+        if (catagory || user) {
+          this.activeTab = 1;
+          this.loadPosts();
+        } else {
+          this.loadMyFeedPosts();
+        }
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
@@ -123,6 +129,12 @@ export class Posts implements OnInit {
         });
       });
     });
+  }
+
+  selectTab(tab: number, event: Event): void {
+    event.preventDefault();
+    this.activeTab = tab;
+    this.clearPosts();
   }
 
   clearPosts(): void {
