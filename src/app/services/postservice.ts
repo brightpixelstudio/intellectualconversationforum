@@ -55,6 +55,17 @@ export class ApiServicePost {
     );
   }
 
+  getPostsMyFeed(userGuid: string | null): Observable<GetPostsByCategoryUserRating[]> {
+    let params = new HttpParams();
+    if (userGuid != null && userGuid.trim().length !== 0) {
+      params = params.append('userGuid', userGuid.trim());
+    }
+
+    return this.http.get<GetPostsByCategoryUserRating[]>(this.apiUrl + '/getPostsMyFeed', {
+      params,
+    });
+  }
+
   // GET request to fetch data
   getPost(postguid: string): Observable<GetPost[]> {
     return this.http.get<GetPost[]>(this.apiUrl + `/getPost?postguid=${postguid}`);

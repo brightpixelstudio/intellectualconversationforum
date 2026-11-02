@@ -142,6 +142,23 @@ export class Posts implements OnInit {
       this.cdr.detectChanges();
       return;
     }
+
+    // get posts
+    this.apiServicePost.getPostsMyFeed(this.userguidloggedin).subscribe({
+      next: (data: GetPostsByCategoryUserRating[]) => {
+        this.postsList = data;
+        this.noPosts = false;
+        this.setratingPostUserList();
+        // turn off all success messages
+        this.setPostSuccessMessages(false);
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.noPosts = true;
+        this.errormsg = 'There are no posts based on your selections.';
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   loadPosts() {
