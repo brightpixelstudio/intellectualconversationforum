@@ -3,6 +3,7 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { forkJoin } from 'rxjs';
 import { ApiServiceUser } from '../../services/userservice';
+import { ApiServiceUserSettings } from '../../services/usersettingsservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { AuthService } from '../../services/auth';
@@ -11,6 +12,8 @@ import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycateg
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingPostUserList } from '../../models/posts/ratingpostuserlist';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
+import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
+import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
 
 @Component({
   selector: 'posts',
@@ -23,6 +26,7 @@ export class Posts implements OnInit {
   postId: number = 0;
   userguid: string | null = null;
   userguidloggedin: string | null = null;
+  expandedPostGuids = new Set<string>();
   rating: number = 0;
   userratingid: number = 0;
   catagoryid: number | null = null;
@@ -32,7 +36,9 @@ export class Posts implements OnInit {
   postsList: GetPostsByCategoryUserRating[] = [];
   ratingPostUserList: RatingPostUserList[] = [];
   ratingCommentUserList: RatingCommentUserlist[] = [];
-  expandedPostGuids = new Set<string>();
+  userSettingsCatagories: getusersettingscatagories[] = [];
+  userSettingsUser: getusersettingsuser[] = [];
+  getUserSettings: any[] = [];
 
   // Comments stored separately for each post
   commentsByPostGuid = new Map<string, GetPostComments[]>();
@@ -45,6 +51,7 @@ export class Posts implements OnInit {
 
   constructor(
     private apiServiceUser: ApiServiceUser,
+    private apiServiceUserSettings: ApiServiceUserSettings,
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
     public authService: AuthService,
@@ -58,10 +65,14 @@ export class Posts implements OnInit {
     forkJoin({
       users: this.apiServiceUser.getUserList(),
       catagories: this.apiServiceUtilities.getCatagoryList(),
+      userSettings: this.apiServiceUserSettings.getUserSettings(this.userguidloggedin),
     }).subscribe({
-      next: (response) => {
-        this.userList = response.users;
-        this.catagoryList = response.catagories;
+      next: (data) => {
+        this.userList = data.users;
+        this.catagoryList = data.catagories;
+        this.getUserSettings = data.userSettings.getUserSettings;
+        this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;
+        this.userSettingsUser = data.userSettings.getUserSettingsUser;
         this.cdr.detectChanges();
 
         // any query strings sent in?
