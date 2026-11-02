@@ -11,7 +11,10 @@ import { environment } from '../../environments/environment';
 export class ApiServiceUserSettings {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/usersettings'; // Uses the API URL from environment
+
+  // caching
   private cachedUserGuid: string | null = null;
+  private userSettingsLoaded = false;
   private myFeedSettingsLoaded = false;
 
   // Main settings
@@ -48,6 +51,7 @@ export class ApiServiceUserSettings {
 
         // Remember which user owns this cache
         this.cachedUserGuid = userguid ?? null;
+        this.userSettingsLoaded = true;
       }),
     );
   }
@@ -100,6 +104,7 @@ export class ApiServiceUserSettings {
     this.cachedUserGuid = null;
 
     this.myFeedSettingsLoaded = false;
+    this.userSettingsLoaded = false;
 
     this.userSettingsState.set(null);
     this.userSettingsCatagoriesState.set([]);
