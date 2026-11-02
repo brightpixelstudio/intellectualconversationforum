@@ -4,12 +4,12 @@ import { AuthService } from '../../services/auth';
 import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'membersettings',
-  imports: [CommonModule, JsonPipe, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './membersettings.html',
   styleUrl: './membersettings.css',
 })
@@ -36,13 +36,13 @@ export class MemberSettings implements OnInit {
   ngOnInit(): void {
     this.userguidloggedin = this.authService.getUserGuid() ?? '';
 
-    // get the user settings
-    this.apiServiceUserSettings.getUserSettings(this.userguidloggedin).subscribe({
+    // Get the user settings from memory, if already loaded
+    this.apiServiceUserSettings.getUserSettingsCached(this.userguidloggedin).subscribe({
       next: (data) => {
-        // Data maps exactly to the keys defined in forkJoin
         this.getUserSettings = data.getUserSettings;
         this.userSettingsCatagories = data.getUserSettingsCatagories;
         this.userSettingsUser = data.getUserSettingsUser;
+
         this.cdr.detectChanges();
       },
       error: (err) => {

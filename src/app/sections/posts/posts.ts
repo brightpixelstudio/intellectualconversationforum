@@ -75,9 +75,12 @@ export class Posts implements OnInit {
       next: (data) => {
         this.userList = data.users;
         this.catagoryList = data.catagories;
+
         this.getUserSettings = data.userSettings.getUserSettings;
+
         this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;
         this.userSettingsUser = data.userSettings.getUserSettingsUser;
+
         this.userSettingsCatagoriesMyFeed = data.userSettingsMyFeed.getUserSettingsCatagories;
         this.userSettingsUserMyFeed = data.userSettingsMyFeed.getUserSettingsUser;
         this.cdr.detectChanges();

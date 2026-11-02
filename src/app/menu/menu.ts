@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../app/services/auth';
+import { ApiServiceUserSettings } from '../services/usersettingsservice';
 
 interface MenuItem {
   label: string;
@@ -26,6 +27,8 @@ export class MenuComponent {
 
   constructor(
     public authService: AuthService,
+    public apiServiceUserSettings: ApiServiceUserSettings,
+
     private router: Router,
   ) {}
 
@@ -69,6 +72,7 @@ export class MenuComponent {
   }
 
   logout(): void {
+    this.apiServiceUserSettings.clearUserSettingsCache();
     this.authService.logout();
   }
 }
