@@ -69,27 +69,27 @@ export class Posts implements OnInit {
     forkJoin({
       users: this.apiServiceUser.getUserList(),
       catagories: this.apiServiceUtilities.getCatagoryList(),
-      userSettings: this.apiServiceUserSettings.getUserSettings(this.userguidloggedin),
-      userSettingsMyFeed: this.apiServiceUserSettings.getUserSettingsMyFeed(this.userguidloggedin),
+      userSettings: this.apiServiceUserSettings.getUserSettingsCached(this.userguidloggedin),
+      userSettingsMyFeed: this.apiServiceUserSettings.getUserSettingsMyFeedCached(
+        this.userguidloggedin,
+      ),
     }).subscribe({
       next: (data) => {
         this.userList = data.users;
         this.catagoryList = data.catagories;
 
         this.getUserSettings = data.userSettings.getUserSettings;
-
         this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;
         this.userSettingsUser = data.userSettings.getUserSettingsUser;
-
         this.userSettingsCatagoriesMyFeed = data.userSettingsMyFeed.getUserSettingsCatagories;
         this.userSettingsUserMyFeed = data.userSettingsMyFeed.getUserSettingsUser;
+
         this.cdr.detectChanges();
 
-        // any query strings sent in?
+        // Any query strings sent in?
         const urlParams = new URLSearchParams(window.location.search);
         const catagory = urlParams.get('catagoryid');
         const user = urlParams.get('userguid');
-
         if (catagory) {
           this.catagoryid = +catagory;
         }
@@ -97,7 +97,7 @@ export class Posts implements OnInit {
           this.userguid = user;
         }
 
-        // if any parameters were sent in, load the posts based on those parameters, otherwise default to my feed
+        // Load posts based on parameters or default to My Feed
         if (catagory || user) {
           this.activeTab = 1;
           this.loadPosts();
