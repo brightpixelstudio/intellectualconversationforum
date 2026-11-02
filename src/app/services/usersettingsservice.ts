@@ -100,6 +100,42 @@ export class ApiServiceUserSettings {
     return this.getUserSettingsMyFeed(userguid);
   }
 
+  getUserSettingsMainCached(userguid: string): Observable<any> {
+    return this.http.get(this.apiUrl + `/getUserSettings?userguid=${userguid}`).pipe(
+      tap((data) => {
+        this.userSettingsState.set(data);
+        this.userSettingsLoaded = true;
+        this.cachedUserGuid = userguid;
+      }),
+    );
+  }
+
+  refreshUserSettingsCategories(userguid: string): Observable<any> {
+    return forkJoin({
+      categories: this.http.get(this.apiUrl + `/getUserSettingsCatagories?userguid=${userguid}`),
+      myFeedCategories: this.http.get(
+        this.apiUrl + `/getUserSettingsCatagoriesMyFeed?userguid=${userguid}`,
+      ),
+    }).pipe(
+      tap((data) => {
+        this.userSettingsCatagoriesState.set(data.categories as any[]);
+        this.userSettingsMyFeedCatagoriesState.set(data.myFeedCategories as any[]);
+      }),
+    );
+  }
+
+  refreshUserSettingsUsers(userguid: string): Observable<any> {
+    return forkJoin({
+      users: this.http.get(this.apiUrl + `/getUserSettingsUser?userguid=${userguid}`),
+      myFeedUsers: this.http.get(this.apiUrl + `/getUserSettingsUserMyFeed?userguid=${userguid}`),
+    }).pipe(
+      tap((data) => {
+        this.userSettingsUsersState.set(data.users as any[]);
+        this.userSettingsMyFeedUsersState.set(data.myFeedUsers as any[]);
+      }),
+    );
+  }
+
   clearUserSettingsCache(): void {
     this.cachedUserGuid = null;
 

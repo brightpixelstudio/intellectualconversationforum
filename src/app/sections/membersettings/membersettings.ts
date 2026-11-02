@@ -101,11 +101,11 @@ export class MemberSettings implements OnInit {
   }
 
   saveUsers(): void {
-    // turn off success and error messages
+    // Turn off success and error messages
     this.showSuccessUser = false;
     this.showErrorUser = false;
 
-    // send in the user list
+    // Send in the user list
     const users = this.userSettingsUser.map((user) => ({
       userid: user.selecteduserid,
       selected: Number(user.selected),
@@ -116,12 +116,26 @@ export class MemberSettings implements OnInit {
       users: users,
     };
 
-    // all the save service all
+    // Save the user list
     this.apiServiceUserSettings.saveUserMembers(request).subscribe({
-      next: (response) => {
-        this.showSuccessUser = true;
-        this.showErrorUser = false;
-        this.cdr.detectChanges();
+      next: () => {
+        // Refresh both user caches
+        this.apiServiceUserSettings.refreshUserSettingsUsers(this.userguidloggedin).subscribe({
+          next: () => {
+            // Update component data from cache
+            this.userSettingsUser = this.apiServiceUserSettings.userSettingsUsers();
+
+            this.showSuccessUser = true;
+            this.showErrorUser = false;
+
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Unable to refresh user cache:', error);
+            this.showErrorUser = true;
+            this.cdr.detectChanges();
+          },
+        });
       },
       error: (error: HttpErrorResponse) => {
         this.showErrorUser = true;
@@ -131,17 +145,18 @@ export class MemberSettings implements OnInit {
         } else {
           this.errorMsg = error.error?.message || 'An unexpected error occurred. Please try again.';
         }
+
         this.cdr.detectChanges();
       },
     });
   }
 
   saveCategories(): void {
-    // turn off success and error messages
+    // Turn off success and error messages
     this.showSuccessCatagories = false;
     this.showErrorCatagories = false;
 
-    //send in the catagory list
+    // Send in the category list
     const categories = this.userSettingsCatagories.map((category) => ({
       postcatagoryid: category.postcatagoryid,
       selected: Number(category.selected),
@@ -152,12 +167,26 @@ export class MemberSettings implements OnInit {
       categories: categories,
     };
 
-    // all the save service all
+    // Save the category list
     this.apiServiceUserSettings.saveUserCategories(request).subscribe({
-      next: (response) => {
-        this.showSuccessCatagories = true;
-        this.showErrorCatagories = false;
-        this.cdr.detectChanges();
+      next: () => {
+        // Refresh both category caches
+        this.apiServiceUserSettings.refreshUserSettingsCategories(this.userguidloggedin).subscribe({
+          next: () => {
+            // Update component data from cache
+            this.userSettingsCatagories = this.apiServiceUserSettings.userSettingsCatagories();
+
+            this.showSuccessCatagories = true;
+            this.showErrorCatagories = false;
+
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Unable to refresh category cache:', error);
+            this.showErrorCatagories = true;
+            this.cdr.detectChanges();
+          },
+        });
       },
       error: (error: HttpErrorResponse) => {
         this.showErrorCatagories = true;
@@ -167,6 +196,7 @@ export class MemberSettings implements OnInit {
         } else {
           this.errorMsg = error.error?.message || 'An unexpected error occurred. Please try again.';
         }
+
         this.cdr.detectChanges();
       },
     });
@@ -185,9 +215,20 @@ export class MemberSettings implements OnInit {
         this.getUserSettings[0].addnewcatagories,
       )
       .subscribe({
-        next: (response) => {
-          this.showSuccess = true;
-          this.cdr.detectChanges();
+        next: () => {
+          // Reload main settings cache
+          this.apiServiceUserSettings.getUserSettingsMainCached(this.userguidloggedin).subscribe({
+            next: (data) => {
+              this.getUserSettings = data;
+              this.showSuccess = true;
+              this.cdr.detectChanges();
+            },
+            error: (error) => {
+              console.error('Unable to refresh settings cache:', error);
+              this.showError = true;
+              this.cdr.detectChanges();
+            },
+          });
         },
         error: (error: HttpErrorResponse) => {
           this.showError = true;
@@ -196,12 +237,12 @@ export class MemberSettings implements OnInit {
             this.errorMsg =
               error.error?.message || 'Invalid data submitted. Please check your form.';
           } else if (error.status === 409) {
-            // Duplicate post
             this.errorMsg = error.error?.message || 'You have already posted this text.';
           } else {
             this.errorMsg =
               error.error?.message || 'An unexpected error occurred. Please try again.';
           }
+
           this.cdr.detectChanges();
         },
       });
