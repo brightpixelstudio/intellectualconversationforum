@@ -29,6 +29,22 @@ export class ApiServiceUserSettings {
     });
   }
 
+  getUserSettingsMyFeed(userguid: string | undefined): Observable<any> {
+    // NOTE - you dont need models for this architecture
+    const getUserSettings$ = this.http.get(this.apiUrl + `/getUserSettings?userguid=${userguid}`);
+    const getUserSettingsCatagories$ = this.http.get(
+      this.apiUrl + `/getUserSettingsCatagoriesMyFeed?userguid=${userguid}`,
+    );
+    const getUserSettingsUser$ = this.http.get(
+      this.apiUrl + `/getUserSettingsUserMyFeed?userguid=${userguid}`,
+    );
+    return forkJoin({
+      getUserSettings: getUserSettings$,
+      getUserSettingsCatagories: getUserSettingsCatagories$,
+      getUserSettingsUser: getUserSettingsUser$,
+    });
+  }
+
   saveUserSettings(
     userguid: string,
     showUnrated: number,

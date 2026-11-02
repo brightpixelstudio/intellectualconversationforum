@@ -27,6 +27,7 @@
                       role="tab"
                       aria-controls="simple-tabpanel-0"
                       aria-selected="true"
+                      (click)="clearPosts()"
                       >My Feed</a
                     >
                   </li>
@@ -39,6 +40,7 @@
                       role="tab"
                       aria-controls="simple-tabpanel-1"
                       aria-selected="false"
+                      (click)="clearPosts()"
                       >Explore All Posts</a
                     >
                   </li>
@@ -61,10 +63,8 @@
                         >
                           >
                           <option value="0">My Feed Catagories</option>
-                          @for (theRecord of userSettingsCatagories; track $index) {
-                            @if (theRecord.selected) {
-                              <option>{{ theRecord.catagory }}</option>
-                            }
+                          @for (theRecord of userSettingsCatagoriesMyFeed; track $index) {
+                            <option>{{ theRecord.catagory }}</option>
                           }
                         </select>
                         <select
@@ -74,10 +74,8 @@
                           (change)="usermyfeed.selectedIndex = 0"
                         >
                           <option value="0">My Feed Users</option>
-                          @for (theRecord of userSettingsUser; track $index) {
-                            @if (theRecord.selected) {
-                              <option>{{ theRecord.name }}</option>
-                            }
+                          @for (theRecord of userSettingsUserMyFeed; track $index) {
+                            <option>{{ theRecord.name }}</option>
                           }
                         </select>
                       </div>
@@ -523,7 +521,7 @@
                     </div>
                   }
                 } @else {
-                  <div class="errormsg">There are no posts based on your selections.</div>
+                  <div class="errormsg">{{ errormsg }}</div>
                 }
               </div>
             </div>

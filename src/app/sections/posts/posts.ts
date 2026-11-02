@@ -23,6 +23,7 @@ import { getusersettingsuser } from '../../models/membersettings/getusersettings
 })
 export class Posts implements OnInit {
   noPosts: boolean = false;
+  errormsg: string = '';
   postId: number = 0;
   userguid: string | null = null;
   userguidloggedin: string | null = null;
@@ -38,6 +39,8 @@ export class Posts implements OnInit {
   ratingCommentUserList: RatingCommentUserlist[] = [];
   userSettingsCatagories: getusersettingscatagories[] = [];
   userSettingsUser: getusersettingsuser[] = [];
+  userSettingsCatagoriesMyFeed: getusersettingscatagories[] = [];
+  userSettingsUserMyFeed: getusersettingsuser[] = [];
   getUserSettings: any[] = [];
 
   // Comments stored separately for each post
@@ -66,6 +69,7 @@ export class Posts implements OnInit {
       users: this.apiServiceUser.getUserList(),
       catagories: this.apiServiceUtilities.getCatagoryList(),
       userSettings: this.apiServiceUserSettings.getUserSettings(this.userguidloggedin),
+      userSettingsMyFeed: this.apiServiceUserSettings.getUserSettingsMyFeed(this.userguidloggedin),
     }).subscribe({
       next: (data) => {
         this.userList = data.users;
@@ -73,6 +77,8 @@ export class Posts implements OnInit {
         this.getUserSettings = data.userSettings.getUserSettings;
         this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;
         this.userSettingsUser = data.userSettings.getUserSettingsUser;
+        this.userSettingsCatagoriesMyFeed = data.userSettingsMyFeed.getUserSettingsCatagories;
+        this.userSettingsUserMyFeed = data.userSettingsMyFeed.getUserSettingsUser;
         this.cdr.detectChanges();
 
         // any query strings sent in?
@@ -119,7 +125,24 @@ export class Posts implements OnInit {
     });
   }
 
-  loadMyFeedPosts() {}
+  clearPosts(): void {
+    this.noPosts = false;
+    this.postsList = [];
+  }
+
+  loadMyFeedPosts() {
+    // If no catagories or users are selected, show error message and return
+    if (
+      this.userSettingsCatagoriesMyFeed.length === 0 ||
+      this.userSettingsUserMyFeed.length === 0
+    ) {
+      this.noPosts = true;
+      this.errormsg =
+        "Your feed is ready! You haven't selected any categories or members yet. Visit My Settings to customize the posts you'd like to see.";
+      this.cdr.detectChanges();
+      return;
+    }
+  }
 
   loadPosts() {
     // get posts
@@ -136,6 +159,7 @@ export class Posts implements OnInit {
         },
         error: (err) => {
           this.noPosts = true;
+          this.errormsg = 'There are no posts based on your selections.';
           this.cdr.detectChanges();
         },
       });
