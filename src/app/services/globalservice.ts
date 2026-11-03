@@ -6,6 +6,9 @@ import { Injectable } from '@angular/core';
 export class GlobalService {
   private maxPostLengthAbbreviated = 200;
   private maxProfileFileMaxLength = 250 * 1024; // 250k;
+  private allowedImageTypes: string[] = ['image/jpeg', 'image/jfif', 'image/png', 'image/webp'];
+  private maxPostImages = 3;
+  private maxPostFileMaxLength = 1024 * 1024;
 
   getTimePassed(postDate: Date): string {
     const currentDate: Date = new Date();
@@ -62,6 +65,18 @@ export class GlobalService {
     return this.maxProfileFileMaxLength;
   }
 
+  getAllowedImageTypes(): string[] {
+    return this.allowedImageTypes;
+  }
+
+  getMaxPostImages(): number {
+    return this.maxPostImages;
+  }
+
+  getMaxPostFileMaxLength(): number {
+    return this.maxPostFileMaxLength;
+  }
+
   stripHtml(html: string): string {
     return html
       .replace(/<[^>]*>/g, '')
@@ -72,11 +87,4 @@ export class GlobalService {
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'");
   }
-
-  readonly allowedProfileImageTypes: string[] = [
-    'image/jpeg',
-    'image/jfif',
-    'image/png',
-    'image/webp',
-  ];
 }

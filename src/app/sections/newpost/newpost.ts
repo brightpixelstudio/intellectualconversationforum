@@ -86,6 +86,23 @@ export class NewPost implements OnInit {
     this.showError = false;
     this.errorMsg = '';
 
+    /* Validate images
+    if (!this.globalService.getAllowedImageTypes().includes(file.type)) {
+      this.imageError = 'Unsupported image type.';
+      return;
+    }
+
+    if (file.size > this.globalService.getMaxPostFileMaxLength()) {
+      this.imageError = 'Image exceeds the maximum file size.';
+      return;
+    }
+
+    if (this.selectedImages.length + files.length > this.globalService.getMaxPostImages()) {
+      this.imageError = 'Maximum of 3 images allowed.';
+      return;
+    }
+      */
+
     if (this.postForm.valid) {
       const postData = this.postForm.getRawValue();
       this.apiServicePost.submitNewPostForm(postData).subscribe({

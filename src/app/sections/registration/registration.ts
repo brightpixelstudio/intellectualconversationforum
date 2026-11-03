@@ -129,7 +129,7 @@ export class Registration implements OnInit {
     }
 
     // is it the correct type?
-    if (!this.globalService.allowedProfileImageTypes.includes(file.type)) {
+    if (!this.globalService.getAllowedImageTypes().includes(file.type)) {
       this.profileImageError = 'Please select a JPG, JPEG, JFIF, PNG, or WebP image.';
       input.value = '';
       return;
