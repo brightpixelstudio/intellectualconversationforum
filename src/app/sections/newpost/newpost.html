@@ -43,6 +43,63 @@
                 <div class="error-message">Please remove inappropriate language.</div>
               }
 
+              <!-- Post image upload -->
+              <div class="mb-1">
+                <p>Post Images (optional)</p>
+
+                <input
+                  type="file"
+                  id="postImages"
+                  name="postImages"
+                  class="form-control"
+                  accept=".jpg, .jpeg, .jfif, .png, .webp, image/jpeg, image/png, image/webp"
+                  multiple
+                  [disabled]="selectedImages.length >= globalService.getMaxPostImages()"
+                  (change)="onPostImagesSelected($event)"
+                />
+
+                <small class="text-muted">
+                  JPG, JPEG, JFIF, PNG, or WebP. Maximum size: 1 MB per image. Maximum
+                  {{ globalService.getMaxPostImages() }} images.
+                </small>
+
+                @if (postImagesError) {
+                  <div class="errormsg">{{ postImagesError }}</div>
+                }
+
+                @if (selectedImages.length > 0) {
+                  <div class="row mt-3 g-3">
+                    @for (image of selectedImages; track image.previewUrl; let i = $index) {
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="border rounded p-2 h-100">
+                          <img
+                            [src]="image.previewUrl"
+                            [alt]="'Post image preview ' + (i + 1)"
+                            class="img-fluid rounded"
+                            style="max-height: 250px; width: auto; max-width: 100%"
+                          />
+
+                          <div>
+                            <button
+                              type="button"
+                              class="btn btn-danger deletecommentbtn mt-2"
+                              (click)="removePostImage(i)"
+                            >
+                              Remove Image
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <small class="text-muted d-block mt-2">
+                  {{ selectedImages.length }} of {{ globalService.getMaxPostImages() }} images
+                  selected.
+                </small>
+              </div>
+
               <!-- Disable submit button if form rules aren't met -->
               <button type="submit" [disabled]="postForm.invalid" class="btn btn-primary mt-4">
                 Create Post!

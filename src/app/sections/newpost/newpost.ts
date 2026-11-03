@@ -16,6 +16,7 @@ import { ApiServicePost } from '../../services/postservice';
 import { forkJoin } from 'rxjs';
 import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
+import { SelectedPostImage } from '../../models/posts/seletedpostimage';
 
 @Component({
   selector: 'newpost',
@@ -27,10 +28,12 @@ export class NewPost implements OnInit {
   userguid: string = '';
   userList!: any[];
   catagoryList!: any[];
+  selectedImages: SelectedPostImage[] = [];
   postForm!: FormGroup;
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  postImagesError: string = '';
   // quill
   modules: any;
   maxLimit: number = 5000;
@@ -43,7 +46,7 @@ export class NewPost implements OnInit {
     private apiServicePost: ApiServicePost,
     private cdr: ChangeDetectorRef,
     public authService: AuthService,
-    private globalService: GlobalService,
+    public globalService: GlobalService,
   ) {
     this.modules = this.globalService.getQuillModuleToolbar();
   }
@@ -81,27 +84,70 @@ export class NewPost implements OnInit {
     return this.postForm.controls;
   }
 
+  // images
+  onPostImagesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+
+    this.postImagesError = '';
+
+    // Allow selecting the same file again
+    input.value = '';
+
+    if (files.length === 0) {
+      return;
+    }
+
+    // Check maximum number of images
+    if (this.selectedImages.length + files.length > this.globalService.getMaxPostImages()) {
+      this.postImagesError = `You can upload a maximum of ${this.globalService.getMaxPostImages()} images.`;
+      return;
+    }
+
+    // Validate all selected files before adding any
+    for (const file of files) {
+      if (!this.globalService.getAllowedImageTypes().includes(file.type)) {
+        this.postImagesError = `${file.name} is not a supported image type.`;
+        return;
+      }
+
+      if (file.size > this.globalService.getMaxPostFileMaxLength()) {
+        this.postImagesError = `${file.name} exceeds the maximum image size of 1 MB.`;
+        return;
+      }
+    }
+
+    // Add images and generate previews
+    for (const file of files) {
+      this.selectedImages.push({
+        file: file,
+        previewUrl: URL.createObjectURL(file),
+      });
+    }
+  }
+
+  removePostImage(index: number): void {
+    const image = this.selectedImages[index];
+
+    if (!image) {
+      return;
+    }
+
+    // Release the preview URL
+    URL.revokeObjectURL(image.previewUrl);
+
+    // Remove image from selected images
+    this.selectedImages.splice(index, 1);
+
+    // Clear any previous validation error
+    this.postImagesError = '';
+  }
+
+  // save
   onSubmit() {
     this.showSuccess = false;
     this.showError = false;
     this.errorMsg = '';
-
-    /* Validate images
-    if (!this.globalService.getAllowedImageTypes().includes(file.type)) {
-      this.imageError = 'Unsupported image type.';
-      return;
-    }
-
-    if (file.size > this.globalService.getMaxPostFileMaxLength()) {
-      this.imageError = 'Image exceeds the maximum file size.';
-      return;
-    }
-
-    if (this.selectedImages.length + files.length > this.globalService.getMaxPostImages()) {
-      this.imageError = 'Maximum of 3 images allowed.';
-      return;
-    }
-      */
 
     if (this.postForm.valid) {
       const postData = this.postForm.getRawValue();
