@@ -144,16 +144,40 @@ export class NewPost implements OnInit {
   }
 
   // save
-  onSubmit() {
+  onSubmit(): void {
     this.showSuccess = false;
     this.showError = false;
     this.errorMsg = '';
 
     if (this.postForm.valid) {
       const postData = this.postForm.getRawValue();
-      this.apiServicePost.submitNewPostForm(postData).subscribe({
+
+      const formData = new FormData();
+
+      // Add existing post fields
+      Object.entries(postData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, String(value));
+        }
+      });
+
+      // Add selected images
+      this.selectedImages.forEach((image) => {
+        formData.append('images', image.file, image.file.name);
+      });
+
+      this.apiServicePost.submitNewPostForm(formData).subscribe({
         next: (response) => {
           this.postForm.reset();
+
+          // Release preview URLs
+          this.selectedImages.forEach((image) => {
+            URL.revokeObjectURL(image.previewUrl);
+          });
+
+          this.selectedImages = [];
+          this.postImagesError = '';
+
           this.showSuccess = true;
           this.cdr.detectChanges();
         },
@@ -165,7 +189,6 @@ export class NewPost implements OnInit {
             this.errorMsg =
               error.error?.message || 'Invalid data submitted. Please check your form.';
           } else if (error.status === 409) {
-            // Duplicate post
             this.errorMsg = error.error?.message || 'You have already posted this text.';
           } else {
             this.errorMsg =
