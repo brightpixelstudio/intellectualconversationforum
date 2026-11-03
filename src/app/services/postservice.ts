@@ -75,7 +75,7 @@ export class ApiServicePost {
     return this.http.get<GetComment[]>(this.apiUrl + `/getComment?commentguid=${commentguid}`);
   }
 
-  submitNewPostForm(formData: any): Observable<any> {
+  submitNewPostForm(formData: FormData): Observable<any> {
     return this.http.post(this.apiUrl + '/addPost', formData);
   }
 
