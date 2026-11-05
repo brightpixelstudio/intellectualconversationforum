@@ -32,6 +32,7 @@ export class EditPost implements OnInit {
   userguid: string = '';
   getPost: GetPost | null = null;
   rating: number = 0;
+  ratingcount: number = 0;
   catagoryList!: any[];
   userList!: any[];
   updatePostForm!: FormGroup;
@@ -125,6 +126,7 @@ export class EditPost implements OnInit {
       .subscribe({
         next: (response) => {
           this.rating = response.averageRating;
+          this.ratingcount = response.ratingCount;
           this.showRatingSuccess = true;
           this.cdr.detectChanges();
         },

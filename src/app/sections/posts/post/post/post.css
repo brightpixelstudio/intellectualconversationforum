@@ -1,0 +1,47 @@
+span.posttitleinfo {
+  font-size: 16px;
+  font-style: italic;
+}
+
+.commentsbtn,
+.deletebtn {
+  font-size: 16px !important;
+  padding: 6px 13px 6px 13px;
+}
+
+.commentsbtn {
+  background-color: rgb(3, 85, 207);
+}
+
+hr {
+  margin-bottom: 30px;
+}
+
+p.title {
+  font-size: 16px;
+  color: rgb(36, 123, 252);
+}
+
+select.userSelect {
+  font-size: 16px !important;
+  margin: 0px;
+  padding: 6px;
+}
+
+.readonly-select {
+  pointer-events: none;
+  appearance: none;
+  background-image: none;
+  cursor: default;
+}
+
+.see-more {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.see-more:hover {
+  text-decoration: underline;
+}

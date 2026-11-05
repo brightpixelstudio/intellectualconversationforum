@@ -8,6 +8,7 @@ export interface GetPost {
   catagory: string;
   count: number;
   rating: number;
+  ratingcount: number;
   dateadded: Date;
   successrating: boolean;
   commentsclosed: number;

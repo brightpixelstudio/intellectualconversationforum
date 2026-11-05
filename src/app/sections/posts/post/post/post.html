@@ -1,0 +1,246 @@
+<div class="row">
+  <div class="col-12">
+    <div class="posttitle d-flex align-items-center gap-2">
+      <img
+        [src]="post.profileimageurl || '/images/default-profile.png'"
+        [alt]="post.name + ' profile image'"
+        class="post-profile-image"
+        width="40"
+        height="40"
+      />
+      <div>
+        <p class="title">
+          <strong>{{ post.name }}</strong
+          >,
+          <span class="posttitleinfo">
+            {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
+            {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (post.commentsclosed) {
+  <div class="row">
+    <div class="col-12">
+      <p class="posttitle mt-3">
+        <span class="posttitleinfo danger"> This posts comments have been closed </span>
+      </p>
+    </div>
+  </div>
+}
+
+<div class="row">
+  <div class="col-12">
+    <p class="text-break">
+      <span
+        [innerHTML]="
+          isPostExpanded()
+            ? post.post
+            : getPostPreview(post.post, globalService.getPostMaxLengthAbbreviated())
+        "
+      ></span>
+
+      @if (hasMoreText(post.post)) {
+        <p></p>
+        <a href="#" class="see-more" (click)="$event.preventDefault(); togglePost()">
+          {{ isPostExpanded() ? 'See less' : 'See more' }}
+        </a>
+      }
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  @if (commentsExpanded) {
+    <div class="mt-3 ms-5">
+      @if (loadingComments) {
+        <p>Loading comments...</p>
+      } @else {
+        @for (theComment of comments; track theComment.postcommentid) {
+          <div class="row mb-3">
+            <div class="col-12">
+              <p class="comment">
+                <img
+                  [src]="theComment?.commentprofileimageurl || '/images/default-profile.png'"
+                  [alt]="theComment?.name + ' profile image'"
+                  class="post-profile-image me-2"
+                  width="40"
+                  height="40"
+                />
+
+                <strong>{{ theComment.name }}, </strong>
+                <span class="posttitleinfo">
+                  {{ theComment.dateadded | date: 'medium' }},
+                  {{ globalService.getTimePassed(theComment.dateadded) }},
+                  {{ theComment.rating }} rating
+                </span>
+              </p>
+
+              <div class="row">
+                <div class="col-12">
+                  <p class="text-break">
+                    <span [innerHTML]="theComment.comment"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (!post.commentsclosed) {
+            <div class="row">
+              <div class="col-12">
+                <div class="row">
+                  @if (theComment.userguid === userguidloggedin) {
+                    <div class="col-3">
+                      <a
+                        [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
+                        class="btn btn-primary editcommentbtn mt-2 me-1"
+                      >
+                        Edit Comment
+                      </a>
+
+                      <button
+                        type="button"
+                        class="btn btn-danger deletecommentbtn mt-2"
+                        (click)="onDeleteCommentClick(theComment.commentguid)"
+                      >
+                        Delete This Comment
+                      </button>
+                    </div>
+                  }
+
+                  <div class="col-3">
+                    <div
+                      class="btn-toolbar"
+                      role="toolbar"
+                      aria-label="Rate this commment"
+                      (click)="onCommentRatingToolbarClick($event, theComment.commentguid)"
+                    >
+                      <span class="mt-3">
+                        <p class="title">Rate:</p>
+                      </span>
+
+                      <div class="btn-group" role="group" aria-label="First group">
+                        @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
+                          <button type="button" class="btn btn-warning ratingBtn">
+                            {{ number }}
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-3"></div>
+              <div class="col-7">
+                @if (theComment.successrating) {
+                  <div class="successmsg">Your comment rating was succesfully saved</div>
+                }
+              </div>
+            </div>
+          }
+
+          <hr />
+        } @empty {
+          <p>No comments found for this post.</p>
+        }
+      }
+    </div>
+  }
+</div>
+
+<div class="row">
+  <div class="col-5">
+    @if (!post.commentsclosed) {
+      <a
+        class="btn btn-primary mt-3 me-1"
+        title="View Full Post"
+        [attr.href]="'/post?postguid=' + post.postguid"
+        target="_blank"
+      >
+        Full Post
+      </a>
+
+      @if (post.userguid == userguidloggedin) {
+        <a
+          class="btn btn-primary mt-3 me-1"
+          title="Edit Post"
+          [attr.href]="'/editpost?postguid=' + post.postguid"
+        >
+          Edit Post
+        </a>
+      }
+
+      <a
+        class="btn btn-primary mt-3"
+        title="Add Comment"
+        [attr.href]="'/newcomment?postguid=' + post.postguid"
+      >
+        Add Comment
+      </a>
+    }
+
+    @if (post.count > 0) {
+      <button
+        type="button"
+        class="btn btn-primary commentsbtn mt-3 ms-1"
+        (click)="onViewCommentsClick()"
+      >
+        {{ commentsExpanded ? 'Hide Comments' : 'View Comments' }}
+      </button>
+    }
+
+    @if (!post.commentsclosed && post.userguid == userguidloggedin) {
+      <button
+        class="btn btn-danger deletebtn mt-3 ms-1"
+        id="button{{ post.postid }}"
+        (click)="onDeletePostClick()"
+      >
+        Delete This Post
+      </button>
+    }
+  </div>
+
+  @if (!post.commentsclosed) {
+    <div class="col-7">
+      <div class="row">
+        <div class="col-4">
+          <div
+            class="btn-toolbar mt-1"
+            role="toolbar"
+            aria-label="Rate this post"
+            (click)="onPostRatingToolbarClick($event)"
+          >
+            <span class="mt-3">
+              <p class="title">Rate:</p>
+            </span>
+
+            <div class="btn-group" role="group" aria-label="First group">
+              @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
+                <button type="button" class="btn btn-primary ratingBtn">
+                  {{ number }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @if (post.successrating) {
+        <div class="successmsg">Your post rating was succesfully saved</div>
+      }
+    </div>
+  }
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr />
+  </div>
+</div>

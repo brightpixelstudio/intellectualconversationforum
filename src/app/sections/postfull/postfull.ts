@@ -22,6 +22,7 @@ export class PostFull implements OnInit {
   postguid: string = '';
   userguid: string = '';
   rating: number = 0;
+  ratingcount: number = 0;
   userList!: any[];
 
   showRatings = false;
@@ -103,6 +104,7 @@ export class PostFull implements OnInit {
         .subscribe({
           next: (response) => {
             this.rating = response.averageRating;
+            this.ratingcount = response.ratingCount;
             this.showRatingSuccess = true;
             this.cdr.detectChanges();
           },
@@ -129,12 +131,6 @@ export class PostFull implements OnInit {
     }
 
     rating.userguid = this.userguid;
-    /*
-    if (rating.userguid === '') {
-      window.alert('Please select a user to rate this comment');
-      return;
-    }
-    */
 
     if (!button) return;
 
