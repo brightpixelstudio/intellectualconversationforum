@@ -3,15 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Post } from './post';
 
 describe('Post', () => {
-  let component: Post;
-  let fixture: ComponentFixture<Post>;
+  let component: PostFull;
+  let fixture: ComponentFixture<PostFull>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Post],
+      imports: [PostFull],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Post);
+    fixture = TestBed.createComponent(PostFull);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

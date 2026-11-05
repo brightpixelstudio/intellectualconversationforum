@@ -12,12 +12,12 @@ import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 
 @Component({
-  selector: 'post',
+  selector: 'postfull',
   imports: [DatePipe],
-  templateUrl: './post.html',
-  styleUrl: './post.css',
+  templateUrl: './postfull.html',
+  styleUrl: './postfull.css',
 })
-export class Post implements OnInit {
+export class PostFull implements OnInit {
   timePassed?: string;
   postguid: string = '';
   userguid: string = '';
