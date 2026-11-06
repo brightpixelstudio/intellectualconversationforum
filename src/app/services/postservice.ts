@@ -24,6 +24,7 @@ export class ApiServicePost {
     userGuid: string | null,
     ratingparam: number | null,
     searchString: string | null,
+    userloggedinguid: string | null,
   ): Observable<GetPostsByCategoryUserRating[]> {
     const catagoryParam =
       catagoryidparam == null || catagoryidparam == 0 ? '' : `postcatagoryId=${catagoryidparam}`;
@@ -46,7 +47,9 @@ export class ApiServicePost {
     if (searchString != null && searchString.trim().length !== 0) {
       params = params.append('searchString', searchString.trim());
     }
-
+    if (userloggedinguid != null && userloggedinguid.trim().length !== 0) {
+      params = params.append('userloginguid', userloggedinguid.trim());
+    }
     return this.http.get<GetPostsByCategoryUserRating[]>(
       this.apiUrl + '/getPostsByCategoryUserRating',
       {
@@ -67,8 +70,10 @@ export class ApiServicePost {
   }
 
   // GET request to fetch data
-  getPost(postguid: string): Observable<GetPost[]> {
-    return this.http.get<GetPost[]>(this.apiUrl + `/getPost?postguid=${postguid}`);
+  getPost(postguid: string, userguid: string | null): Observable<GetPost[]> {
+    return this.http.get<GetPost[]>(
+      this.apiUrl + `/getPost?postguid=${postguid}&userguid=${userguid}`,
+    );
   }
 
   getComment(commentguid: string): Observable<GetComment[]> {

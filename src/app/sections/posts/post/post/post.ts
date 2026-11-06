@@ -119,8 +119,9 @@ export class PostComponent {
       )
       .subscribe({
         next: (response) => {
-          this.post.rating = response.averageRating;
+          this.post.rating = response.ratingAverage;
           this.post.ratingcount = response.ratingCount;
+          this.post.userrating = response.userRating;
           this.post.successrating = true;
           this.cdr.detectChanges();
         },

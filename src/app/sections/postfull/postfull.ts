@@ -30,7 +30,6 @@ export class PostFull implements OnInit {
   thePost: GetPost | null = null;
   theComments: GetPostComments[] = [];
   thePostRatings: GetPostRatings[] = [];
-  ratingCommentUserList: RatingCommentUserlist[] = [];
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -51,7 +50,7 @@ export class PostFull implements OnInit {
     // load the post / comments
     forkJoin({
       users: this.apiServiceUser.getUserList(),
-      post: this.apiServicePost.getPost(this.postguid),
+      post: this.apiServicePost.getPost(this.postguid, this.userguid),
       comments: this.apiServicePost.getComments(this.postguid),
       ratings: this.apiServicePost.getpostratings(this.postguid),
     }).subscribe({
@@ -63,33 +62,10 @@ export class PostFull implements OnInit {
         this.rating = this.thePost.rating;
         //this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
-        // add all comment guid to list
-        this.ratingCommentUserList = this.theComments.map((comment) => ({
-          commentguid: comment.commentguid,
-          userguid: '',
-        }));
         this.cdr.detectChanges();
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
-  }
-
-  // dropdown
-  onUserPostChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.userguid = select.value;
-  }
-
-  onUserCommentChange(event: Event, commentguid: string): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const userguid = selectElement.value;
-
-    // update the record
-    const record = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
-
-    if (record) {
-      record.userguid = userguid;
-    }
   }
 
   onPostRatingToolbarClick(event: MouseEvent, postguid: string): void {
@@ -103,7 +79,7 @@ export class PostFull implements OnInit {
         .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
         .subscribe({
           next: (response) => {
-            this.rating = response.averageRating;
+            this.rating = response.ratingAverage;
             this.ratingcount = response.ratingCount;
             this.showRatingSuccess = true;
             this.cdr.detectChanges();

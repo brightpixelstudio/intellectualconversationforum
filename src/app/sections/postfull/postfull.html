@@ -33,34 +33,13 @@
                 >
                   <span class="mt-3"><p class="title">Rate:</p></span>
                   <div class="btn-group" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-primary ratingBtn">1</button>
-                    <button type="button" class="btn btn-primary ratingBtn">2</button>
-                    <button type="button" class="btn btn-primary ratingBtn">3</button>
-                    <button type="button" class="btn btn-primary ratingBtn">4</button>
-                    <button type="button" class="btn btn-primary ratingBtn">5</button>
-                    <button type="button" class="btn btn-primary ratingBtn">6</button>
-                    <button type="button" class="btn btn-primary ratingBtn">7</button>
-                    <button type="button" class="btn btn-primary ratingBtn">8</button>
-                    <button type="button" class="btn btn-primary ratingBtn">9</button>
-                    <button type="button" class="btn btn-primary ratingBtn">10</button>
+                    @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
+                      <button type="button" class="btn btn-primary ratingBtn">
+                        {{ number }}
+                      </button>
+                    }
                   </div>
                 </div>
-              </div>
-              <div class="col-2 mt-3">
-                <select
-                  disabled
-                  #userid
-                  name="userid"
-                  id="userid"
-                  class="userSelect"
-                  (change)="onUserPostChange($event)"
-                >
-                  @for (user of userList; track user.userid) {
-                    <option value="{{ user.userguid }}" [selected]="user.userguid === userguid">
-                      {{ user.name }}
-                    </option>
-                  }
-                </select>
               </div>
               @if (this.thePostRatings.length > 0) {
                 <div class="col-2">
@@ -74,10 +53,11 @@
                   </a>
                 </div>
               }
-
-              @if (showRatingSuccess == true) {
-                <div class="successmsg">Your rating was succesfully saved</div>
-              }
+              <div class="col-5">
+                @if (showRatingSuccess == true) {
+                  <div class="successmsg">Your rating was succesfully saved</div>
+                }
+              </div>
               <hr class="mt-3" />
             </div>
             @if (showRatings) {
@@ -178,41 +158,20 @@
                         >
                           <span class="mt-3"><p class="title">Rate:</p></span>
                           <div class="btn-group" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-warning ratingBtn">1</button>
-                            <button type="button" class="btn btn-warning ratingBtn">2</button>
-                            <button type="button" class="btn btn-warning ratingBtn">3</button>
-                            <button type="button" class="btn btn-warning ratingBtn">4</button>
-                            <button type="button" class="btn btn-warning ratingBtn">5</button>
-                            <button type="button" class="btn btn-warning ratingBtn">6</button>
-                            <button type="button" class="btn btn-warning ratingBtn">7</button>
-                            <button type="button" class="btn btn-warning ratingBtn">8</button>
-                            <button type="button" class="btn btn-warning ratingBtn">9</button>
-                            <button type="button" class="btn btn-warning ratingBtn">10</button>
+                            @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
+                              <button type="button" class="btn btn-warning ratingBtn">
+                                {{ number }}
+                              </button>
+                            }
                           </div>
                         </div>
                       </div>
-                      <div class="col-2">
-                        <select
-                          disabled
-                          class="form-select userSelect mt-1"
-                          (change)="onUserCommentChange($event, theComment.commentguid)"
-                        >
-                          @for (user of userList; track user.userid) {
-                            <option [value]="user.userguid" [selected]="user.userguid === userguid">
-                              {{ user.name }}
-                            </option>
-                          }
-                        </select>
+                      <div class="col-6">
+                        @if (theComment.successrating) {
+                          <div class="successmsg">Your comment rating was succesfully saved</div>
+                        }
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-3"></div>
-                  <div class="col-7">
-                    @if (theComment.successrating) {
-                      <div class="successmsg">Your comment rating was succesfully saved</div>
-                    }
                   </div>
                 </div>
               }

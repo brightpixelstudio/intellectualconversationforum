@@ -89,7 +89,7 @@ export class EditPost implements OnInit {
     this.postguid = postguid;
 
     // load the post
-    this.apiServicePost.getPost(this.postguid).subscribe({
+    this.apiServicePost.getPost(this.postguid, this.userguid).subscribe({
       next: (GetPost) => {
         this.getPost = GetPost[0];
         this.rating = this.getPost.rating;
@@ -125,7 +125,7 @@ export class EditPost implements OnInit {
       .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
       .subscribe({
         next: (response) => {
-          this.rating = response.averageRating;
+          this.rating = response.ratingAverage;
           this.ratingcount = response.ratingCount;
           this.showRatingSuccess = true;
           this.cdr.detectChanges();
