@@ -19,10 +19,12 @@ import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
 import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
+import { RatingComponent } from './../rating/rating';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'editpost',
-  imports: [ReactiveFormsModule, FormsModule, DatePipe, QuillModule],
+  imports: [ReactiveFormsModule, FormsModule, DatePipe, QuillModule, RatingComponent, DecimalPipe],
   templateUrl: './editpost.html',
   styleUrl: './editpost.css',
 })
@@ -30,13 +32,10 @@ export class EditPost implements OnInit {
   timePassed?: string;
   postguid: string = '';
   userguid: string = '';
-  getPost: GetPost | null = null;
-  rating: number = 0;
-  ratingcount: number = 0;
+  thePost: GetPost | null = null;
   catagoryList!: any[];
   userList!: any[];
   updatePostForm!: FormGroup;
-  showRatingSuccess = false;
   showSuccess = false;
   showError = false;
   errorMsg = '';
@@ -91,10 +90,9 @@ export class EditPost implements OnInit {
     // load the post
     this.apiServicePost.getPost(this.postguid, this.userguid).subscribe({
       next: (GetPost) => {
-        this.getPost = GetPost[0];
-        this.rating = this.getPost.rating;
+        this.thePost = GetPost[0];
         this.updatePostForm.patchValue(GetPost[0]);
-        this.timePassed = this.globalService.getTimePassed(this.getPost.dateadded);
+        this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
       },
       error: (err) => console.error('Failed to load post', err),
     });
@@ -108,32 +106,27 @@ export class EditPost implements OnInit {
     return this.updatePostForm.controls;
   }
 
-  onUserChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.userguid = select.value;
-  }
+  // Post rating
+  onPostRatingSelected(rating: number): void {
+    if (!this.thePost) return;
 
-  onRatingToolbarClick(event: MouseEvent, postguid: string): void {
-    this.showRatingSuccess = false;
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
+    this.thePost.successrating = false;
 
-    if (!button) return;
+    this.apiServiceUser.submitPostUserRating(this.userguid, this.postguid, rating).subscribe({
+      next: (response) => {
+        if (!this.thePost) return;
 
-    // Pass variables to the service
-    this.apiServiceUser
-      .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
-      .subscribe({
-        next: (response) => {
-          this.rating = response.ratingAverage;
-          this.ratingcount = response.ratingCount;
-          this.showRatingSuccess = true;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Failed to submit rating', error);
-        },
-      });
+        this.thePost.rating = response.ratingAverage;
+        this.thePost.ratingcount = response.ratingCount;
+        this.thePost.userrating = rating;
+        this.thePost.successrating = true;
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to submit rating', error);
+      },
+    });
   }
 
   onSubmit() {

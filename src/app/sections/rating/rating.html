@@ -2,8 +2,8 @@
   <div class="rating-header ms-2">
     <span class="title"><strong>Rating:</strong></span>
     <i
-      ><span class="average-rating"> Average: {{ rating }}, </span>
-      <span class="rating-count"> {{ ratingCount }} ratings </span></i
+      ><span class="average-rating"> Average: {{ rating | number: '1.1-1' }}, </span>
+      <span class="rating-count"> Ratings: {{ ratingCount }} </span></i
     >
   </div>
 
@@ -24,6 +24,6 @@
   </div>
 
   @if (success) {
-    <div class="successmsg">Your post rating was successfully saved.</div>
+    <div class="successmsg ms-3">Your post rating was successfully saved.</div>
   }
 </div>

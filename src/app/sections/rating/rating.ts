@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'rating',
+  imports: [DecimalPipe],
   standalone: true,
   templateUrl: './rating.html',
   styleUrl: './rating.css',

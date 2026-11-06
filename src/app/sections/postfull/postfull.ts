@@ -10,10 +10,12 @@ import { GetPost } from '../../models/posts/getpost';
 import { GetPostRatings } from '../../models/posts/getpostratings';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
+import { RatingComponent } from './../rating/rating';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'postfull',
-  imports: [DatePipe],
+  imports: [DatePipe, RatingComponent, DecimalPipe],
   templateUrl: './postfull.html',
   styleUrl: './postfull.css',
 })
@@ -21,12 +23,9 @@ export class PostFull implements OnInit {
   timePassed?: string;
   postguid: string = '';
   userguid: string = '';
-  rating: number = 0;
-  ratingcount: number = 0;
   userList!: any[];
 
   showRatings = false;
-  showRatingSuccess = false;
   thePost: GetPost | null = null;
   theComments: GetPostComments[] = [];
   thePostRatings: GetPostRatings[] = [];
@@ -59,7 +58,6 @@ export class PostFull implements OnInit {
         this.thePost = response.post[0];
         this.theComments = response.comments;
         this.thePostRatings = response.ratings;
-        this.rating = this.thePost.rating;
         //this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         this.cdr.detectChanges();
@@ -68,27 +66,27 @@ export class PostFull implements OnInit {
     });
   }
 
-  onPostRatingToolbarClick(event: MouseEvent, postguid: string): void {
-    this.showRatingSuccess = false;
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
+  // Post rating
+  onPostRatingSelected(rating: number): void {
+    if (!this.thePost) return;
 
-    if (button) {
-      // Pass variables to the service
-      this.apiServiceUser
-        .submitPostUserRating(this.userguid, postguid, +button.textContent?.trim())
-        .subscribe({
-          next: (response) => {
-            this.rating = response.ratingAverage;
-            this.ratingcount = response.ratingCount;
-            this.showRatingSuccess = true;
-            this.cdr.detectChanges();
-          },
-          error: (error) => {
-            console.error('Failed to submit rating', error);
-          },
-        });
-    }
+    this.thePost.successrating = false;
+
+    this.apiServiceUser.submitPostUserRating(this.userguid, this.postguid, rating).subscribe({
+      next: (response) => {
+        if (!this.thePost) return;
+
+        this.thePost.rating = response.ratingAverage;
+        this.thePost.ratingcount = response.ratingCount;
+        this.thePost.userrating = rating;
+        this.thePost.successrating = true;
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to submit rating', error);
+      },
+    });
   }
 
   onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {

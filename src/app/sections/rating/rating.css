@@ -9,7 +9,7 @@
 }
 
 .ratingBtn {
-  min-width: 35px;
+  min-width: 32px;
 }
 
 .selected-rating {
@@ -19,5 +19,6 @@
 }
 
 .successmsg {
-  margin-top: 8px;
+  margin-top: 0px;
+  width: 300px;
 }
