@@ -5,8 +5,8 @@
         <div class="row pt-4">
           <div class="col-1"></div>
           <div class="col-10">
-            <h3 class="pb-3">Update Comment</h3>
-            <p>Update the comment below:</p>
+            <h3 class="pb-3">Edit Comment</h3>
+            <p>Edit your comment below:</p>
             <form [formGroup]="updateCommentForm" (ngSubmit)="onSubmit()">
               <hr />
               <p class="title">
@@ -32,45 +32,6 @@
                     }
                   </select>
                 </div>
-                <div class="col-3 mt-2 ms-4">
-                  <div
-                    class="btn-toolbar"
-                    role="toolbar"
-                    aria-label="Rate this commment"
-                    (click)="onRatingToolbarClick($event, commentguid)"
-                  >
-                    <span class="mt-3"><p class="title">Rate:</p></span>
-                    <div class="btn-group" role="group" aria-label="First group">
-                      <button type="button" class="btn btn-warning ratingBtn">1</button>
-                      <button type="button" class="btn btn-warning ratingBtn">2</button>
-                      <button type="button" class="btn btn-warning ratingBtn">3</button>
-                      <button type="button" class="btn btn-warning ratingBtn">4</button>
-                      <button type="button" class="btn btn-warning ratingBtn">5</button>
-                      <button type="button" class="btn btn-warning ratingBtn">6</button>
-                      <button type="button" class="btn btn-warning ratingBtn">7</button>
-                      <button type="button" class="btn btn-warning ratingBtn">8</button>
-                      <button type="button" class="btn btn-warning ratingBtn">9</button>
-                      <button type="button" class="btn btn-warning ratingBtn">10</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-3 mt-3">
-                  <select
-                    #userrating
-                    name="userrating"
-                    id="userrating"
-                    formControlName="userratingguid"
-                    class="userSelect"
-                    (change)="onUserChange($event)"
-                  >
-                    @for (user of userList; track user.userid) {
-                      <option [value]="user.userguid">{{ user.name }}</option>
-                    }
-                  </select>
-                </div>
-                @if (showRatingSuccess == true) {
-                  <div class="successmsg">Your rating was succesfully saved</div>
-                }
               </div>
               <quill-editor
                 [modules]="modules"

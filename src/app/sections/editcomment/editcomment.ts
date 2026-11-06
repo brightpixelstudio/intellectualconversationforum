@@ -101,33 +101,6 @@ export class EditComment implements OnInit {
     return this.updateCommentForm.controls;
   }
 
-  onUserChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.userguid = select.value;
-  }
-
-  onRatingToolbarClick(event: MouseEvent, commentguid: string): void {
-    this.showRatingSuccess = false;
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
-
-    if (!button) return;
-
-    // Pass variables to the service
-    this.apiServiceUser
-      .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
-      .subscribe({
-        next: (response) => {
-          this.rating = response.averageRating;
-          this.showRatingSuccess = true;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Failed to submit rating', error);
-        },
-      });
-  }
-
   onSubmit() {
     this.showSuccess = false;
     this.showError = false;

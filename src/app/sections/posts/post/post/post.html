@@ -215,6 +215,7 @@
             [rating]="post.rating"
             [ratingCount]="post.ratingcount"
             [userRating]="post.userrating"
+            [canRate]="post?.userguid !== userguidloggedin"
             [success]="post.successrating"
             (ratingSelected)="onPostRatingSelected($event)"
           >

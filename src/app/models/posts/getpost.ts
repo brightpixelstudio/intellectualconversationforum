@@ -2,6 +2,7 @@ export interface GetPost {
   postid: number;
   post: string;
   userid: number;
+  userguid: string;
   name: string;
   username: string;
   postcatagoryid: number;

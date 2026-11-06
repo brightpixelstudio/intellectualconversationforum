@@ -25,11 +25,12 @@
             </p>
             <hr />
             <div class="row">
-              <div class="col-3 mt-2">
+              <div class="col-4 mt-2">
                 <rating
                   [rating]="thePost?.rating ?? 0"
                   [ratingCount]="thePost?.ratingcount ?? 0"
                   [userRating]="thePost?.userrating ?? null"
+                  [canRate]="thePost?.userguid !== userguid"
                   [success]="thePost?.successrating ?? false"
                   (ratingSelected)="onPostRatingSelected($event)"
                 >
@@ -138,27 +139,16 @@
                         </div>
                       }
 
-                      <div class="col-3">
-                        <div
-                          class="btn-toolbar"
-                          role="toolbar"
-                          aria-label="Rate this commment"
-                          (click)="onCommentRatingToolbarClick($event, theComment.commentguid)"
+                      <div class="col-9">
+                        <rating
+                          [rating]="theComment.rating"
+                          [ratingCount]="theComment.ratingcount"
+                          [userRating]="theComment.userrating"
+                          [success]="theComment.successrating"
+                          [canRate]="theComment.userguid === userguid"
+                          (ratingSelected)="onCommentRatingSelected($event, theComment.commentguid)"
                         >
-                          <span class="mt-3"><p class="title">Rate:</p></span>
-                          <div class="btn-group" role="group" aria-label="First group">
-                            @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
-                              <button type="button" class="btn btn-warning ratingBtn">
-                                {{ number }}
-                              </button>
-                            }
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        @if (theComment.successrating) {
-                          <div class="successmsg">Your comment rating was succesfully saved</div>
-                        }
+                        </rating>
                       </div>
                     </div>
                   </div>

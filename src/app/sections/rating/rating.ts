@@ -12,6 +12,7 @@ export class RatingComponent {
   @Input() rating: number = 0;
   @Input() ratingCount: number = 0;
   @Input() userRating: number | null = null;
+  @Input() canRate: boolean = true;
   @Input() success: boolean = false;
 
   @Output() ratingSelected = new EventEmitter<number>();

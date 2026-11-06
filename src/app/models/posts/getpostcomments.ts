@@ -10,6 +10,8 @@ export interface GetPostComments {
   dateadded: Date;
   catagory: string;
   rating: number;
+  ratingcount: number;
+  userrating: number | null;
   successrating: boolean;
   comment: string;
   commentprofileimagekey: string | null;

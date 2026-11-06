@@ -88,9 +88,11 @@ export class ApiServicePost {
     return this.http.post(this.apiUrl + `/addComment?postguid=${postguid}`, formData);
   }
 
-  getComments(postGuid: string): Observable<GetPostComments[]> {
+  getComments(postGuid: string, userGuid: string): Observable<GetPostComments[]> {
     return this.http
-      .get<GetPostComments[]>(this.apiUrl + `/GetPostComments?postGuid=${postGuid}`)
+      .get<GetPostComments[]>(
+        this.apiUrl + `/GetPostComments?postGuid=${postGuid}&userGuid=${userGuid}`,
+      )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) {

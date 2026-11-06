@@ -86,7 +86,7 @@ export class PostComponent {
 
     this.loadingComments = true;
 
-    this.apiServicePost.getComments(this.post.postguid).subscribe({
+    this.apiServicePost.getComments(this.post.postguid, this.post.userguid).subscribe({
       next: (comments: GetPostComments[]) => {
         this.comments = comments;
         this.commentsLoaded = true;

@@ -50,7 +50,7 @@ export class PostFull implements OnInit {
     forkJoin({
       users: this.apiServiceUser.getUserList(),
       post: this.apiServicePost.getPost(this.postguid, this.userguid),
-      comments: this.apiServicePost.getComments(this.postguid),
+      comments: this.apiServicePost.getComments(this.postguid, this.userguid),
       ratings: this.apiServicePost.getpostratings(this.postguid),
     }).subscribe({
       next: (response) => {
@@ -58,7 +58,6 @@ export class PostFull implements OnInit {
         this.thePost = response.post[0];
         this.theComments = response.comments;
         this.thePostRatings = response.ratings;
-        //this.userguid = this.userList[0].userguid;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         this.cdr.detectChanges();
       },
@@ -89,28 +88,27 @@ export class PostFull implements OnInit {
     });
   }
 
-  onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
-
-    // turn off all success messages
+  onCommentRatingSelected(rating: number, commentguid: string): void {
+    // Turn off all comment success messages
     this.setCommentSuccessMessages(false);
 
-    if (!button) return;
+    this.apiServiceUser.submitCommentUserRating(this.userguid, commentguid, rating).subscribe({
+      next: (response) => {
+        const comment = this.theComments.find((c) => c.commentguid === commentguid);
 
-    // Pass variables to the service
-    this.apiServiceUser
-      .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
-      .subscribe({
-        next: (response) => {
-          // Update the comment and rating
-          this.setCommentRating(commentguid, response.averageRating, true);
-          this.cdr.markForCheck();
-        },
-        error: (error) => {
-          console.error('Failed to submit comment rating', error);
-        },
-      });
+        if (comment) {
+          comment.rating = response.averageRating;
+          comment.ratingcount = response.ratingCount;
+          comment.userrating = rating;
+          comment.successrating = true;
+        }
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to submit comment rating', error);
+      },
+    });
   }
 
   onDeleteCommentClick(postguid: string, commentguid: string) {

@@ -6,7 +6,7 @@
           <div class="col-1"></div>
           <div class="col-10">
             <h3 class="pb-3">Edit Post</h3>
-            <p>Edit the post below:</p>
+            <p>Edit your post below:</p>
             <form [formGroup]="updatePostForm" (ngSubmit)="onSubmit()">
               <hr />
               <p class="title">
@@ -44,6 +44,7 @@
                     [rating]="thePost?.rating ?? 0"
                     [ratingCount]="thePost?.ratingcount ?? 0"
                     [userRating]="thePost?.userrating ?? null"
+                    [canRate]="thePost?.userguid !== userguid"
                     [success]="thePost?.successrating ?? false"
                     (ratingSelected)="onPostRatingSelected($event)"
                   >
