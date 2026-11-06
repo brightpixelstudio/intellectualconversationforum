@@ -98,21 +98,11 @@ export class PostFull implements OnInit {
     // turn off all success messages
     this.setCommentSuccessMessages(false);
 
-    // have they set a userid for this comment?
-    const rating = this.ratingCommentUserList.find((x) => x.commentguid === commentguid);
-
-    if (!rating) {
-      window.alert('Please select a user to rate this comment');
-      return;
-    }
-
-    rating.userguid = this.userguid;
-
     if (!button) return;
 
     // Pass variables to the service
     this.apiServiceUser
-      .submitCommentUserRating(rating.userguid, commentguid, +button.textContent?.trim())
+      .submitCommentUserRating(this.userguid, commentguid, +button.textContent?.trim())
       .subscribe({
         next: (response) => {
           // Update the comment and rating
