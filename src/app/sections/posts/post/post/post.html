@@ -211,24 +211,14 @@
     <div class="col-7">
       <div class="row">
         <div class="col-4">
-          <div
-            class="btn-toolbar mt-1"
-            role="toolbar"
-            aria-label="Rate this post"
-            (click)="onPostRatingToolbarClick($event)"
+          <rating
+            [rating]="post.rating"
+            [ratingCount]="post.ratingcount"
+            [userRating]="post.userrating"
+            [success]="post.successrating"
+            (ratingSelected)="onPostRatingSelected($event)"
           >
-            <span class="mt-3">
-              <p class="title">Rate:</p>
-            </span>
-
-            <div class="btn-group" role="group" aria-label="First group">
-              @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
-                <button type="button" class="btn btn-primary ratingBtn">
-                  {{ number }}
-                </button>
-              }
-            </div>
-          </div>
+          </rating>
         </div>
       </div>
 

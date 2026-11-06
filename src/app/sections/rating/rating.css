@@ -1,0 +1,23 @@
+.rating-container {
+  width: 100%;
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ratingBtn {
+  min-width: 35px;
+}
+
+.selected-rating {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+
+.successmsg {
+  margin-top: 8px;
+}

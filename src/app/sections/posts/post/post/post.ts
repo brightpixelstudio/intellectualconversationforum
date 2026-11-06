@@ -7,10 +7,11 @@ import { GlobalService } from './../../../../services/globalservice';
 
 import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
+import { RatingComponent } from './../../../rating/rating';
 
 @Component({
   selector: 'post',
-  imports: [DatePipe],
+  imports: [DatePipe, RatingComponent],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -101,28 +102,18 @@ export class PostComponent {
   }
 
   // Post rating
-  onPostRatingToolbarClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
-
+  onPostRatingSelected(rating: number): void {
     this.post.successrating = false;
 
-    if (!button) {
-      return;
-    }
-
     this.apiServiceUser
-      .submitPostUserRating(
-        this.userguidloggedin ?? '',
-        this.post.postguid,
-        +button.textContent?.trim(),
-      )
+      .submitPostUserRating(this.userguidloggedin ?? '', this.post.postguid, rating)
       .subscribe({
         next: (response) => {
-          this.post.rating = response.ratingAverage;
+          this.post.rating = response.averageRating;
           this.post.ratingcount = response.ratingCount;
-          this.post.userrating = response.userRating;
+          this.post.userrating = rating;
           this.post.successrating = true;
+
           this.cdr.detectChanges();
         },
         error: (error) => {

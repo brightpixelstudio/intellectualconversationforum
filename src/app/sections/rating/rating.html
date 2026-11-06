@@ -1,0 +1,29 @@
+<div class="rating-container">
+  <div class="rating-header ms-2">
+    <span class="title"><strong>Rating:</strong></span>
+    <i
+      ><span class="average-rating"> Average: {{ rating }}, </span>
+      <span class="rating-count"> {{ ratingCount }} ratings </span></i
+    >
+  </div>
+
+  <div class="btn-toolbar" role="toolbar" aria-label="Rate this post">
+    <div class="btn-group" role="group" aria-label="Rating from 1 to 10">
+      @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
+        <button
+          type="button"
+          class="btn btn-primary ratingBtn"
+          [class.selected-rating]="userRating === number"
+          [attr.aria-pressed]="userRating === number"
+          (click)="selectRating(number)"
+        >
+          {{ number }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (success) {
+    <div class="successmsg">Your post rating was successfully saved.</div>
+  }
+</div>
