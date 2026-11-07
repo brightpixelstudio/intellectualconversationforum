@@ -53,6 +53,14 @@
   </div>
 </div>
 
+@if (post.postimages?.length) {
+  <div class="row">
+    <div class="col-12">
+      <postimages [postimages]="post.postimages"></postimages>
+    </div>
+  </div>
+}
+
 <div class="row">
   @if (commentsExpanded) {
     <div class="mt-3 ms-5">

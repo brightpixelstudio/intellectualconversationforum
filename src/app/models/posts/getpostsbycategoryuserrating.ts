@@ -1,3 +1,5 @@
+import { PostImage } from './postimage';
+
 export interface GetPostsByCategoryUserRating {
   postid: number;
   userid: number;
@@ -18,4 +20,5 @@ export interface GetPostsByCategoryUserRating {
   userrating: number | null;
   successrating: boolean;
   commentsclosed: number;
+  postimages: PostImage[];
 }

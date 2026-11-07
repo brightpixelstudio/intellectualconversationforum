@@ -8,10 +8,11 @@ import { GlobalService } from './../../../../services/globalservice';
 import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
+import { PostImagesComponent } from './../../../postimages/postimages/postimages';
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, RatingComponent],
+  imports: [DatePipe, RatingComponent, PostImagesComponent],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
