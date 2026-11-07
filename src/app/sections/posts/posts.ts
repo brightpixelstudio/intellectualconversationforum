@@ -101,7 +101,7 @@ export class Posts implements OnInit {
   }
 
   loadMyFeedPosts() {
-    // If no catagories or users are selected, show error message and return
+    // If no categories or users are selected, show error message and return
     if (
       this.userSettingsCatagoriesMyFeed.length === 0 ||
       this.userSettingsUserMyFeed.length === 0
@@ -113,15 +113,17 @@ export class Posts implements OnInit {
       return;
     }
 
-    // get posts
+    // Get posts
     this.apiServicePost.getPostsMyFeed(this.userguidloggedin).subscribe({
       next: (data: GetPostsByCategoryUserRating[]) => {
         this.postsList = data;
-        this.noPosts = false;
-        // Reset post rating success messages
+
         this.postsList.forEach((post) => {
           post.successrating = false;
+          post.postimages ??= [];
         });
+
+        this.noPosts = this.postsList.length === 0;
         this.cdr.detectChanges();
       },
       error: (err) => {
