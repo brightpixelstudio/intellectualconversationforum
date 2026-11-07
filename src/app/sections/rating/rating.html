@@ -1,5 +1,8 @@
 <div class="rating-container">
   <div class="rating-header ms-2">
+    @if (!canRate) {
+      <span class="mt-5"></span>
+    }
     <span class="title"><strong>Rating:</strong></span>
     <i
       ><span class="average-rating"> Average: {{ rating | number: '1.1-1' }}, </span>

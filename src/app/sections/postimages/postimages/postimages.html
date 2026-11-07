@@ -7,9 +7,20 @@
         class="post-image"
         (click)="openPostImage(image.postimageurl)"
       />
+
+      @if (editMode) {
+        <button
+          type="button"
+          class="btn btn-danger deletecommentbtn mt-2"
+          (click)="onRemoveImage(image)"
+        >
+          Remove Image
+        </button>
+      }
     </div>
   }
 </div>
+
 @if (selectedPostImage) {
   <div class="post-image-modal" (click)="selectedPostImage = null">
     <button

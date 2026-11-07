@@ -66,7 +66,65 @@
               @if (f['post'].touched && f['post'].errors?.['profanity']) {
                 <div class="error-message">Please remove inappropriate language.</div>
               }
-              <br />
+              <br /><br />
+              <p>Post Images (optional)</p>
+
+              <!-- Existing images -->
+              <postimages
+                [postimages]="thePost?.postimages ?? []"
+                [editMode]="true"
+                (removeImage)="onRemovePostImage($event)"
+              />
+
+              <!-- New image selection -->
+              <div class="mt-3 mb-3">
+                <label for="postImages" class="form-label"> Add Images (Maximum 3 total) </label>
+
+                <input
+                  type="file"
+                  id="postImages"
+                  class="form-control"
+                  accept="image/jpeg,image/jfif,image/png,image/webp"
+                  multiple
+                  (change)="onPostImagesSelected($event)"
+                />
+                <small class="text-muted">
+                  JPG, JPEG, JFIF, PNG, or WebP. Maximum size: 1 MB per image. Maximum
+                  {{ globalService.getMaxPostImages() }} images.
+                </small>
+
+                @if (postImagesError) {
+                  <div class="error-message">{{ postImagesError }}</div>
+                }
+
+                <!-- New image previews -->
+                @if (selectedImages.length > 0) {
+                  <div class="row g-3">
+                    @for (image of selectedImages; track image.previewUrl; let i = $index) {
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="border rounded p-2 h-100">
+                          <img
+                            [src]="image.previewUrl"
+                            [alt]="'Post image preview ' + (i + 1)"
+                            class="img-fluid rounded"
+                            style="max-height: 250px; width: auto; max-width: 100%"
+                          />
+
+                          <div>
+                            <button
+                              type="button"
+                              class="btn btn-danger deletecommentbtn mt-2"
+                              (click)="removeSelectedPostImage(i)"
+                            >
+                              Remove Image
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
 
               <!-- Disable submit button if form rules aren't met -->
               <button type="submit" [disabled]="updatePostForm.invalid" class="btn btn-primary">

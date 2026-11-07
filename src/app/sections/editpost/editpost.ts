@@ -21,10 +21,21 @@ import { GlobalService } from '../../services/globalservice';
 import { QuillModule } from 'ngx-quill';
 import { RatingComponent } from './../rating/rating';
 import { DecimalPipe } from '@angular/common';
+import { PostImagesComponent } from './../postimages/postimages/postimages';
+import { PostImage } from '../../models/posts/postimage';
+import { SelectedPostImage } from '../../models/posts/seletedpostimage';
 
 @Component({
   selector: 'editpost',
-  imports: [ReactiveFormsModule, FormsModule, DatePipe, QuillModule, RatingComponent, DecimalPipe],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    DatePipe,
+    QuillModule,
+    RatingComponent,
+    DecimalPipe,
+    PostImagesComponent,
+  ],
   templateUrl: './editpost.html',
   styleUrl: './editpost.css',
 })
@@ -39,6 +50,11 @@ export class EditPost implements OnInit {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  // Post image management
+  removedPostImages: PostImage[] = [];
+  // Post image management
+  selectedImages: SelectedPostImage[] = [];
+  postImagesError: string = '';
   // quill
   modules: any;
   maxLimit: number = 5000;
@@ -52,7 +68,7 @@ export class EditPost implements OnInit {
     public authService: AuthService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private globalService: GlobalService,
+    public globalService: GlobalService,
   ) {
     this.modules = this.globalService.getQuillModuleToolbar();
   }
@@ -127,6 +143,79 @@ export class EditPost implements OnInit {
         console.error('Failed to submit rating', error);
       },
     });
+  }
+
+  // images
+  onPostImagesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+
+    this.postImagesError = '';
+
+    // Allow selecting the same file again
+    input.value = '';
+
+    if (files.length === 0) return;
+
+    const existingCount = this.thePost?.postimages?.length ?? 0;
+
+    // Check maximum number of images
+    if (
+      existingCount + this.selectedImages.length + files.length >
+      this.globalService.getMaxPostImages()
+    ) {
+      this.postImagesError = `You can upload a maximum of ${this.globalService.getMaxPostImages()} images.`;
+      return;
+    }
+
+    // Validate all selected files before adding any
+    for (const file of files) {
+      if (!this.globalService.getAllowedImageTypes().includes(file.type)) {
+        this.postImagesError = `${file.name} is not a supported image type.`;
+        return;
+      }
+
+      if (file.size > this.globalService.getMaxPostFileMaxLength()) {
+        this.postImagesError = `${file.name} exceeds the maximum image size of 1 MB.`;
+        return;
+      }
+    }
+
+    // Add images and generate previews
+    for (const file of files) {
+      this.selectedImages.push({
+        file,
+        previewUrl: URL.createObjectURL(file),
+      });
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  removeSelectedPostImage(index: number): void {
+    const image = this.selectedImages[index];
+
+    if (!image) return;
+
+    URL.revokeObjectURL(image.previewUrl);
+    this.selectedImages.splice(index, 1);
+    this.postImagesError = '';
+
+    this.cdr.detectChanges();
+  }
+
+  // remove the image from the post
+  onRemovePostImage(image: PostImage): void {
+    this.removedPostImages.push(image);
+
+    if (this.thePost) {
+      this.thePost.postimages = this.thePost.postimages.filter(
+        (img) => img.postimageid !== image.postimageid,
+      );
+    }
+
+    this.postImagesError = '';
+    this.cdr.detectChanges();
   }
 
   onSubmit() {

@@ -44,7 +44,7 @@
               }
 
               <!-- Post image upload -->
-              <div class="mb-1">
+              <div class="mb-1 mt-4">
                 <p>Post Images (optional)</p>
 
                 <input
@@ -101,12 +101,12 @@
               </div>
 
               <!-- Disable submit button if form rules aren't met -->
-              <button type="submit" [disabled]="postForm.invalid" class="btn btn-primary mt-4">
+              <button type="submit" [disabled]="postForm.invalid" class="btn btn-primary">
                 Create Post!
               </button>
 
               <a class="btn actionbtn editBtn" title="Return to Posts" [attr.href]="'/posts'">
-                <p class="return mt-5 ms-3">Return To Posts</p>
+                <p class="return mt-3 ms-3">Return To Posts</p>
               </a>
 
               @if (showSuccess == true) {
