@@ -1,0 +1,25 @@
+<div class="post-image-gallery mt-3 mb-3">
+  @for (image of postimages; track image.postimageid) {
+    <div class="post-image-container">
+      <img
+        [src]="image.postimageurl"
+        [alt]="'Post image ' + image.postimageid"
+        class="post-image"
+        (click)="openPostImage(image.postimageurl)"
+      />
+    </div>
+  }
+</div>
+@if (selectedPostImage) {
+  <div class="post-image-modal" (click)="selectedPostImage = null">
+    <button
+      type="button"
+      class="post-image-modal-close"
+      (click)="selectedPostImage = null; $event.stopPropagation()"
+    >
+      &times;
+    </button>
+
+    <img [src]="selectedPostImage" alt="Expanded post image" (click)="$event.stopPropagation()" />
+  </div>
+}

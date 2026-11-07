@@ -124,7 +124,6 @@ export class PostComponent {
   }
 
   // Comment rating
-  // Comment rating
   onCommentRatingSelected(rating: number, commentguid: string): void {
     // Turn off all comment success messages
     this.comments.forEach((comment) => {

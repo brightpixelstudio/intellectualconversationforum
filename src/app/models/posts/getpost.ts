@@ -1,3 +1,5 @@
+import { PostImage } from './postimage';
+
 export interface GetPost {
   postid: number;
   post: string;
@@ -16,4 +18,5 @@ export interface GetPost {
   commentsclosed: number;
   profileimagekey: string | null;
   profileimageurl: string | null;
+  postimages: PostImage[];
 }

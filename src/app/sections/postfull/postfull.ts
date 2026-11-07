@@ -7,15 +7,17 @@ import { GlobalService } from '../../services/globalservice';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
+import { PostImage } from '../../models/posts/postimage';
 import { GetPostRatings } from '../../models/posts/getpostratings';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 import { RatingComponent } from './../rating/rating';
 import { DecimalPipe } from '@angular/common';
+import { PostImagesComponent } from './../postimages/postimages/postimages';
 
 @Component({
   selector: 'postfull',
-  imports: [DatePipe, RatingComponent, DecimalPipe],
+  imports: [DatePipe, RatingComponent, DecimalPipe, PostImagesComponent],
   templateUrl: './postfull.html',
   styleUrl: './postfull.css',
 })
