@@ -124,30 +124,23 @@ export class PostComponent {
   }
 
   // Comment rating
-  onCommentRatingToolbarClick(event: MouseEvent, commentguid: string): void {
-    const target = event.target as HTMLElement;
-    const button = target.closest('button');
-
+  // Comment rating
+  onCommentRatingSelected(rating: number, commentguid: string): void {
+    // Turn off all comment success messages
     this.comments.forEach((comment) => {
       comment.successrating = false;
     });
 
-    if (!button) {
-      return;
-    }
-
     this.apiServiceUser
-      .submitCommentUserRating(
-        this.userguidloggedin ?? '',
-        commentguid,
-        +button.textContent?.trim(),
-      )
+      .submitCommentUserRating(this.userguidloggedin ?? '', commentguid, rating)
       .subscribe({
         next: (response) => {
           const comment = this.comments.find((item) => item.commentguid === commentguid);
 
           if (comment) {
             comment.rating = response.averageRating;
+            comment.ratingcount = response.ratingCount;
+            comment.userrating = rating;
             comment.successrating = true;
           }
 

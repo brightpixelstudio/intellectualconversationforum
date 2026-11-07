@@ -80,9 +80,10 @@ export class EditComment implements OnInit {
     const commentguid = this.route.snapshot.queryParamMap.get('commentguid');
     if (!commentguid) return;
     this.commentguid = commentguid;
+    this.userguid = this.authService.getUserGuid() ?? '';
 
     // load the comment
-    this.apiServicePost.getComment(this.commentguid).subscribe({
+    this.apiServicePost.getComment(this.commentguid, this.userguid).subscribe({
       next: (GetComment) => {
         this.getComment = GetComment[0];
         this.rating = this.getComment.rating;

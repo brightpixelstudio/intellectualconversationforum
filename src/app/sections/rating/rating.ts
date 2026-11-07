@@ -14,6 +14,7 @@ export class RatingComponent {
   @Input() userRating: number | null = null;
   @Input() canRate: boolean = true;
   @Input() success: boolean = false;
+  @Input() buttonColor: 'primary' | 'warning' = 'primary';
 
   @Output() ratingSelected = new EventEmitter<number>();
 

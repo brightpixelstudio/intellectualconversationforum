@@ -76,8 +76,10 @@ export class ApiServicePost {
     );
   }
 
-  getComment(commentguid: string): Observable<GetComment[]> {
-    return this.http.get<GetComment[]>(this.apiUrl + `/getComment?commentguid=${commentguid}`);
+  getComment(commentguid: string, userid: string): Observable<GetComment[]> {
+    return this.http.get<GetComment[]>(
+      this.apiUrl + `/getComment?commentguid=${commentguid}&userguidIn=${userid}`,
+    );
   }
 
   submitNewPostForm(formData: FormData): Observable<any> {

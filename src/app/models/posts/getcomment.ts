@@ -8,6 +8,8 @@ export interface GetComment {
   name: string;
   catagory: string;
   rating: number;
+  ratingcount: number;
+  userrating: number;
   timePassed: string;
   profileimagekey: string | null;
   profileimageurl: string | null;

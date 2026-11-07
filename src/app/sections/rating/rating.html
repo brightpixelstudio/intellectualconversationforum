@@ -13,7 +13,9 @@
         @for (number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track number) {
           <button
             type="button"
-            class="btn btn-primary ratingBtn"
+            class="btn ratingBtn"
+            [class.btn-primary]="buttonColor === 'primary'"
+            [class.btn-warning]="buttonColor === 'warning'"
             [class.selected-rating]="userRating === number"
             [attr.aria-pressed]="userRating === number"
             (click)="selectRating(number)"

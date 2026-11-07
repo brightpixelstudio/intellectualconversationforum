@@ -145,7 +145,8 @@
                           [ratingCount]="theComment.ratingcount"
                           [userRating]="theComment.userrating"
                           [success]="theComment.successrating"
-                          [canRate]="theComment.userguid === userguid"
+                          [buttonColor]="'warning'"
+                          [canRate]="theComment.userguid !== userguid"
                           (ratingSelected)="onCommentRatingSelected($event, theComment.commentguid)"
                         >
                         </rating>
