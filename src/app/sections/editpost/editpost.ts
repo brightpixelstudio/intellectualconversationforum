@@ -2,6 +2,8 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { from } from 'rxjs';
+import { concatMap, toArray } from 'rxjs/operators';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -104,13 +106,21 @@ export class EditPost implements OnInit {
     this.postguid = postguid;
 
     // load the post
+    this.loadPost();
+  }
+
+  loadPost(): void {
     this.apiServicePost.getPost(this.postguid, this.userguid).subscribe({
       next: (GetPost) => {
-        this.thePost = GetPost[0];
+        this.thePost = {
+          ...GetPost[0],
+          postimages: [...(GetPost[0].postimages ?? [])],
+        };
         this.updatePostForm.patchValue(GetPost[0]);
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Failed to load post', err),
+      error: (err) => console.error('Failed to refresh post', err),
     });
   }
 
@@ -222,32 +232,66 @@ export class EditPost implements OnInit {
     this.showSuccess = false;
     this.showError = false;
 
-    if (this.updatePostForm.valid) {
-      // Pass the raw form values to your service
-      const postData = this.updatePostForm.getRawValue();
-      this.apiServicePost.submitUpdatePostForm(this.postguid, postData).subscribe({
-        next: (response) => {
+    if (!this.updatePostForm.valid) {
+      console.log('Form is invalid');
+      return;
+    }
+
+    const postData = this.updatePostForm.getRawValue();
+
+    // Step 1: Update the post
+    this.apiServicePost
+      .submitUpdatePostForm(this.postguid, postData)
+      .pipe(
+        // Step 2: Upload newly selected images, one at a time
+        concatMap(() =>
+          from(this.selectedImages).pipe(
+            concatMap((image) => this.apiServicePost.submitAddPostImage(this.postguid, image.file)),
+            toArray(),
+          ),
+        ),
+
+        // Step 3: Delete existing images marked for removal
+        concatMap(() =>
+          from(this.removedPostImages).pipe(
+            concatMap((image) =>
+              this.apiServicePost.deletePostImage(this.postguid, image.postimageid),
+            ),
+            toArray(),
+          ),
+        ),
+      )
+      .subscribe({
+        next: () => {
+          // Release preview URLs
+          this.selectedImages.forEach((image) => URL.revokeObjectURL(image.previewUrl));
+
+          this.selectedImages = [];
+          this.removedPostImages = [];
+
+          this.loadPost();
+
           this.showSuccess = true;
           this.cdr.detectChanges();
         },
+
         error: (error: HttpErrorResponse) => {
           this.showError = true;
 
           if (error.status === 400) {
             this.errorMsg =
               error.error?.message || 'Invalid data submitted. Please check your form.';
+          } else if (error.status === 404) {
+            this.errorMsg = error.error?.message || 'The post or image could not be found.';
           } else if (error.status === 409) {
-            // Duplicate post
             this.errorMsg = error.error?.message || 'You have already posted this text.';
           } else {
             this.errorMsg =
               error.error?.message || 'An unexpected error occurred. Please try again.';
           }
+
           this.cdr.detectChanges();
         },
       });
-    } else {
-      console.log('Form is invalid');
-    }
   }
 }

@@ -128,6 +128,22 @@ export class ApiServicePost {
     return this.http.delete<any>(this.apiUrl + `/DeleteComment?guid=${guid}`);
   }
 
+  deletePostImage(postguid: string, postimageid: number): Observable<any> {
+    return this.http.delete(
+      this.apiUrl +
+        `/DeletePostImage?postguid=${encodeURIComponent(postguid)}&postimageid=${postimageid}`,
+    );
+  }
+
+  submitAddPostImage(postguid: string, image: File): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('postguid', postguid);
+    formData.append('image', image);
+
+    return this.http.post(this.apiUrl + '/AddPostImage', formData);
+  }
+
   submitUpdatePostForm(postguid: string, formData: any): Observable<any> {
     return this.http.post(this.apiUrl + `/updatePost?postguid=${postguid}`, formData);
   }
