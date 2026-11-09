@@ -3,6 +3,7 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -12,6 +13,7 @@ import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpost
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
+import { GetPostRatings } from '../../../../models/posts/getpostratings';
 
 @Component({
   selector: 'post',
@@ -36,6 +38,12 @@ export class PostComponent {
   postExpanded = false;
   UserType = UserType;
   faThumbtack = faThumbtack;
+  faUsers = faUsers;
+
+  // popup ratings
+  postRatings: GetPostRatings[] = [];
+  showPostRatings = false;
+  loadingPostRatings = false;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -55,6 +63,27 @@ export class PostComponent {
 
   get isAdmin(): boolean {
     return this.usertypeidloggedin === UserType.Admin;
+  }
+
+  loadPostRatings(): void {
+    this.showPostRatings = true;
+    this.loadingPostRatings = true;
+    this.postRatings = [];
+
+    this.apiServicePost.getpostratings(this.post.postguid).subscribe({
+      next: (ratings) => {
+        this.postRatings = ratings;
+        this.loadingPostRatings = false;
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.loadingPostRatings = false;
+        this.cdr.detectChanges();
+
+        console.error('Error loading post ratings:', err);
+      },
+    });
   }
 
   togglePinPost(): void {

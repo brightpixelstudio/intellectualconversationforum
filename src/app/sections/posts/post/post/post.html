@@ -34,6 +34,18 @@
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
               {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
+
+              @if (post.ratingcount > 0) {
+                <button
+                  type="button"
+                  class="pin-button"
+                  title="View individual ratings"
+                  aria-label="View individual ratings"
+                  (click)="loadPostRatings()"
+                >
+                  <fa-icon [icon]="faUsers"></fa-icon>
+                </button>
+              }
             </span>
           </p>
         </div>
@@ -241,3 +253,65 @@
     </div>
   </div>
 </div>
+
+@if (showPostRatings) {
+  <div class="modal-backdrop show"></div>
+
+  <div class="modal show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">Post Ratings</h5>
+            <div class="text-muted small">
+              Average: {{ post.rating }} / 10
+              <span class="ms-2">({{ post.ratingcount }} ratings)</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="showPostRatings = false"
+          ></button>
+        </div>
+        <div class="modal-body">
+          @if (loadingPostRatings) {
+            <div class="text-center">
+              <span class="spinner-border"></span>
+              <p>Loading ratings...</p>
+            </div>
+          } @else if (postRatings.length === 0) {
+            <p>No ratings available.</p>
+          } @else {
+            @for (rating of postRatings; track rating.userid) {
+              <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                <div>
+                  <strong>{{ rating.name }}</strong>
+                  <span class="text-muted small ms-2">
+                    {{ rating.dateupdated || rating.dateadded | date: 'mediumDate' }}
+                  </span>
+                </div>
+
+                <span class="badge bg-secondary">
+                  {{ rating.rating }}
+                </span>
+              </div>
+            }
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary commentsbtn"
+            (click)="showPostRatings = false"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
