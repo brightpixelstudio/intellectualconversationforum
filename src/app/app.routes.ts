@@ -14,6 +14,7 @@ import { PostFullPage } from './pages/postfull/postfullpage';
 import { ViewProfilePage } from './pages/viewprofile/viewprofilepage';
 import { LoginPage } from './pages/login/login';
 import { MemberSettingsPage } from './pages/membersettings/membersettingspage';
+import { AdminPage } from './pages/admin/adminpage';
 
 export const routes: Routes = [
   // Public routes
@@ -100,6 +101,12 @@ export const routes: Routes = [
     path: 'membersettings',
     component: MemberSettingsPage,
     title: 'Member Settings',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin',
+    component: AdminPage,
+    title: 'Administration',
     canActivate: [authGuard],
   },
 ];

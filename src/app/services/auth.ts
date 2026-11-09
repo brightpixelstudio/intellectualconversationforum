@@ -93,15 +93,22 @@ export class AuthService {
 
   private clearToken(): void {
     this.accessToken = null;
-    sessionStorage.removeItem(this.tokenStorageKey);
+    this.userGuid = null;
+    this.userTypeId = null;
+
+    localStorage.removeItem(this.tokenStorageKey);
+    localStorage.removeItem(this.userGuidStorageKey);
+    localStorage.removeItem('userTypeIdStorageKey');
   }
 
   logout(): void {
     this.accessToken = null;
     this.userGuid = null;
+    this.userTypeId = null;
+
     localStorage.removeItem(this.tokenStorageKey);
     localStorage.removeItem(this.userGuidStorageKey);
-    sessionStorage.removeItem(this.tokenStorageKey);
+    localStorage.removeItem('userTypeIdStorageKey');
 
     this.router.navigateByUrl('/', { replaceUrl: true });
   }
