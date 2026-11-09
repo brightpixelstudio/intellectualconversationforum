@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -12,7 +12,7 @@ import { PostImagesComponent } from './../../../postimages/postimages/postimages
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, RatingComponent, PostImagesComponent],
+  imports: [DatePipe, JsonPipe, RatingComponent, PostImagesComponent],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
