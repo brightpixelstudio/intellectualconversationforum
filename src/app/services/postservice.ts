@@ -151,4 +151,12 @@ export class ApiServicePost {
   submitUpdateCommentForm(commentguid: string, formData: any): Observable<any> {
     return this.http.post(this.apiUrl + `/updateComment?commentguid=${commentguid}`, formData);
   }
+
+  pinPost(postguid: string) {
+    return this.http.post(`${this.apiUrl}/Post/PinPost?postguid=${postguid}`, {});
+  }
+
+  unpinPost(postguid: string) {
+    return this.http.post(`${this.apiUrl}/Post/UnpinPost?postguid=${postguid}`, {});
+  }
 }
