@@ -50,7 +50,7 @@ export class PostComponent {
   }
 
   get isAdmin(): boolean {
-    return this.usertypeidloggedin === 1;
+    return this.usertypeidloggedin === UserType.Admin;
   }
 
   getPostPreview(post: string, maxlength: number): string {
