@@ -1,19 +1,18 @@
 export interface GetNewestMembers {
   userid: number;
   userguid: string;
-  usertypeid: number;
-  type: string;
-  name: string;
   username: string;
   email: string;
-  password: string;
+  name: string;
   zipcode: number;
+  usertypeid: number;
+  type: string;
+  accountstatusid: number;
+  accountstatus: string;
+  dateadded: Date;
+  datelastlogin: Date;
   count: number;
   profile: string;
-  datelastpost: Date;
-  datelastlogin: Date;
-  dateadded: Date;
-  blocked: boolean;
   profileimagekey: string | null;
   profileimageurl: string | null;
 }

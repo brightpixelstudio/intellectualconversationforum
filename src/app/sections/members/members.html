@@ -42,7 +42,7 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Blocked</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -81,7 +81,7 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.blocked }}</td>
+                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         @if (theMember.userguid == userguid) {
                           <a
@@ -129,7 +129,7 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Blocked</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -160,7 +160,7 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.blocked }}</td>
+                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         @if (theMember.userguid == userguid) {
                           <a
@@ -208,7 +208,7 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Blocked</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -240,7 +240,7 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.blocked }}</td>
+                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         @if (theMember.userguid == userguid) {
                           <a
@@ -288,7 +288,7 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Blocked</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -319,7 +319,7 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.blocked }}</td>
+                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         @if (theMember.userguid == userguid) {
                           <a

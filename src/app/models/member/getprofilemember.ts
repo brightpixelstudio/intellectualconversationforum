@@ -2,17 +2,17 @@ export interface GetProfileMember {
   userid: number;
   usertypeid: number;
   type: string;
+  accountstatusid: number;
+  accountstatus: string;
   name: string;
   username: string;
   email: string;
   zipcode: number;
   count: number;
   profile: string;
-  datelastpost: Date;
+  datelastpost: Date | null;
   datelastlogin: Date;
   dateadded: Date;
-  blocked: boolean;
-  profileImageKey: string | null;
-  profileImage: string | null;
+  profileimagekey: string | null;
   profileimageurl: string | null;
 }

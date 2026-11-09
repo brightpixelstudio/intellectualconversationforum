@@ -11,7 +11,8 @@ export interface GetAllProfileMembers {
   datelastlogin: Date;
   count: number;
   profile: string;
-  blocked: boolean;
   profileimagekey: string | null;
   profileimageurl: string | null;
+  accountstatusid: number;
+  accountstatus: string;
 }

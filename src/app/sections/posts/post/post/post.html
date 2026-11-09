@@ -12,6 +12,9 @@
         <p class="title">
           <strong>{{ post.name }}</strong
           >,
+          <span class="badge bg-secondary ms-2">
+            {{ post.type }}
+          </span>
           <span class="posttitleinfo">
             {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
             {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating

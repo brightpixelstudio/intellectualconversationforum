@@ -9,16 +9,18 @@ export interface GetPostsByCategoryUserRating {
   name: string;
   profileimagekey: string | null;
   profileimageurl: string | null;
-  postcatagoruid: string;
+  postcatagoryid: number;
   catagory: string;
   dateadded: Date;
   count: number;
   post: string;
-  comments: string;
   rating: number;
   ratingcount: number;
   userrating: number | null;
-  successrating: boolean;
   commentsclosed: number;
+  usertypeid: number;
+  type: string;
+
   postimages: PostImage[];
+  successrating: boolean;
 }
