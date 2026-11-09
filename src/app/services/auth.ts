@@ -14,6 +14,7 @@ export class AuthService {
   private readonly tokenStorageKey = 'accessToken';
   private readonly userGuidStorageKey = 'userGuid';
   private userGuid: string | null = localStorage.getItem(this.userGuidStorageKey);
+  private userTypeId: number | null = null;
 
   //  private accessToken: string | null = localStorage.getItem(this.tokenStorageKey);
   private accessToken: string | null = localStorage.getItem('accessToken');
@@ -29,6 +30,8 @@ export class AuthService {
         this.accessToken = response.token;
         this.userGuid = response.userGuid;
         localStorage.setItem(this.tokenStorageKey, response.token);
+        this.userTypeId = response.usertypeid;
+        localStorage.setItem('userTypeIdStorageKey', response.usertypeid.toString());
         if (this.userGuid) {
           localStorage.setItem(this.userGuidStorageKey, this.userGuid);
         }
@@ -42,6 +45,18 @@ export class AuthService {
 
   getAccessToken(): string | null {
     return this.accessToken;
+  }
+
+  getUserTypeId(): number | null {
+    if (this.userTypeId !== null) {
+      return this.userTypeId;
+    }
+
+    const storedValue = localStorage.getItem('userTypeIdStorageKey');
+
+    this.userTypeId = storedValue ? Number(storedValue) : null;
+
+    return this.userTypeId;
   }
 
   isLoggedIn(): boolean {

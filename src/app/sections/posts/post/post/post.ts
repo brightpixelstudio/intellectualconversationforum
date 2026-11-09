@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { UserType } from './../../../../enums/usertype';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -20,6 +21,7 @@ export class PostComponent {
   @Input({ required: true }) post!: GetPostsByCategoryUserRating;
   @Input() userList: any[] = [];
   @Input() userguidloggedin: string | null = null;
+  @Input() usertypeidloggedin: number | null = null;
 
   @Output() postDeleted = new EventEmitter<string>();
 
@@ -29,6 +31,7 @@ export class PostComponent {
   loadingComments = false;
   commentsLoaded = false;
   postExpanded = false;
+  UserType = UserType;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -44,6 +47,10 @@ export class PostComponent {
 
   isPostExpanded(): boolean {
     return this.postExpanded;
+  }
+
+  get isAdmin(): boolean {
+    return this.usertypeidloggedin === 1;
   }
 
   getPostPreview(post: string, maxlength: number): string {

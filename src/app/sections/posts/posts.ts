@@ -9,6 +9,7 @@ import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycateg
 import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
 import { PostComponent } from './post/post/post';
+import { UserType } from './../../enums/usertype';
 
 @Component({
   selector: 'posts',
@@ -22,6 +23,7 @@ export class Posts implements OnInit {
   errormsg: string = '';
   userguid: string | null = null;
   userguidloggedin: string | null = null;
+  usertypeidloggedin: UserType | null = null;
   rating: number = 0;
   catagoryid: number | null = null;
   searchString: string = '';
@@ -45,6 +47,7 @@ export class Posts implements OnInit {
 
   ngOnInit(): void {
     this.userguidloggedin = this.authService.getUserGuid() ?? '';
+    this.usertypeidloggedin = this.authService.getUserTypeId();
 
     forkJoin({
       users: this.apiServiceUser.getUserList(),

@@ -3,4 +3,5 @@ export interface LoginResponse {
   expiresAt: string;
   userGuid: string;
   username: string;
+  usertypeid: number;
 }
