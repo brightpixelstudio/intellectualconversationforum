@@ -8,7 +8,7 @@ import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
 import { PostImage } from '../../models/posts/postimage';
-import { GetPostRatings } from '../../models/posts/getpostratings';
+import { GetRatings } from '../../models/posts/getratings';
 import { GetPostComments } from '../../models/posts/getpostcomments';
 import { RatingCommentUserlist } from '../../models/posts/ratingcommentuserlist';
 import { RatingComponent } from './../rating/rating';
@@ -30,7 +30,7 @@ export class PostFull implements OnInit {
   showRatings = false;
   thePost: GetPost | null = null;
   theComments: GetPostComments[] = [];
-  thePostRatings: GetPostRatings[] = [];
+  thePostRatings: GetRatings[] = [];
 
   constructor(
     private apiServiceUser: ApiServiceUser,

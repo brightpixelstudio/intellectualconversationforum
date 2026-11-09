@@ -115,6 +115,17 @@
                     {{ theComment.dateadded | date: 'medium' }},
                     {{ globalService.getTimePassed(theComment.dateadded) }},
                     {{ theComment.rating }} rating
+                    @if (theComment.ratingcount > 0) {
+                      <button
+                        type="button"
+                        class="pin-button"
+                        title="View individual ratings"
+                        aria-label="View individual ratings"
+                        (click)="loadCommentRatings(theComment.commentguid)"
+                      >
+                        <fa-icon [icon]="faUsers"></fa-icon>
+                      </button>
+                    }
                   </span>
                 </p>
 
@@ -254,7 +265,7 @@
   </div>
 </div>
 
-@if (showPostRatings) {
+@if (showRatings) {
   <div class="modal-backdrop show"></div>
 
   <div class="modal show d-block" tabindex="-1" role="dialog" aria-modal="true">
@@ -262,10 +273,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <div>
-            <h5 class="modal-title">Post Ratings</h5>
+            <h5 class="modal-title">{{ ratingsTitle }}</h5>
             <div class="text-muted small">
-              Average: {{ post.rating }} / 10
-              <span class="ms-2">({{ post.ratingcount }} ratings)</span>
+              Average: {{ ratingsAverage }} / 10
+              <span class="ms-2">({{ ratingsCount }} ratings)</span>
             </div>
           </div>
 
@@ -273,19 +284,20 @@
             type="button"
             class="btn-close"
             aria-label="Close"
-            (click)="showPostRatings = false"
+            (click)="showRatings = false"
           ></button>
         </div>
+
         <div class="modal-body">
-          @if (loadingPostRatings) {
+          @if (loadingRatings) {
             <div class="text-center">
               <span class="spinner-border"></span>
               <p>Loading ratings...</p>
             </div>
-          } @else if (postRatings.length === 0) {
+          } @else if (ratings.length === 0) {
             <p>No ratings available.</p>
           } @else {
-            @for (rating of postRatings; track rating.userid) {
+            @for (rating of ratings; track rating.userid) {
               <div class="d-flex justify-content-between align-items-center border-bottom py-1">
                 <div>
                   <strong>{{ rating.name }}</strong>
@@ -303,11 +315,7 @@
         </div>
 
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary commentsbtn"
-            (click)="showPostRatings = false"
-          >
+          <button type="button" class="btn btn-secondary commentsbtn" (click)="showRatings = false">
             Close
           </button>
         </div>

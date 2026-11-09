@@ -13,11 +13,11 @@ import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpost
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
-import { GetPostRatings } from '../../../../models/posts/getpostratings';
+import { GetRatings } from '../../../../models/posts/getratings';
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, JsonPipe, RatingComponent, PostImagesComponent, FontAwesomeModule],
+  imports: [DatePipe, RatingComponent, PostImagesComponent, FontAwesomeModule],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -40,10 +40,13 @@ export class PostComponent {
   faThumbtack = faThumbtack;
   faUsers = faUsers;
 
-  // popup ratings
-  postRatings: GetPostRatings[] = [];
-  showPostRatings = false;
-  loadingPostRatings = false;
+  // Ratings dialog
+  ratings: GetRatings[] = [];
+  showRatings = false;
+  loadingRatings = false;
+  ratingsTitle = '';
+  ratingsAverage = 0;
+  ratingsCount = 0;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -66,26 +69,54 @@ export class PostComponent {
   }
 
   loadPostRatings(): void {
-    this.showPostRatings = true;
-    this.loadingPostRatings = true;
-    this.postRatings = [];
+    this.ratingsTitle = 'Post Ratings';
+    this.ratingsAverage = this.post.rating;
+    this.ratingsCount = this.post.ratingcount;
+
+    this.showRatings = true;
+    this.loadingRatings = true;
+    this.ratings = [];
 
     this.apiServicePost.getpostratings(this.post.postguid).subscribe({
       next: (ratings) => {
-        this.postRatings = ratings;
-        this.loadingPostRatings = false;
-
+        this.ratings = ratings;
+        this.loadingRatings = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.loadingPostRatings = false;
+        this.loadingRatings = false;
         this.cdr.detectChanges();
-
         console.error('Error loading post ratings:', err);
       },
     });
   }
 
+  loadCommentRatings(commentguid: string): void {
+    const comment = this.comments.find((item) => item.commentguid === commentguid);
+
+    if (!comment) return;
+
+    this.ratingsTitle = 'Comment Ratings';
+    this.ratingsAverage = comment.rating;
+    this.ratingsCount = comment.ratingcount;
+
+    this.showRatings = true;
+    this.loadingRatings = true;
+    this.ratings = [];
+
+    this.apiServicePost.getcommentratings(commentguid).subscribe({
+      next: (ratings) => {
+        this.ratings = ratings;
+        this.loadingRatings = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.loadingRatings = false;
+        this.cdr.detectChanges();
+        console.error('Error loading comment ratings:', err);
+      },
+    });
+  }
   togglePinPost(): void {
     if (this.post.ispinned) {
       this.apiServicePost.unpinPost(this.post.postguid).subscribe({
@@ -112,6 +143,7 @@ export class PostComponent {
       });
     }
   }
+
   getPostPreview(post: string, maxlength: number): string {
     if (!post) {
       return '';

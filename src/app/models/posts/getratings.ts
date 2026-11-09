@@ -1,4 +1,4 @@
-export interface GetPostRatings {
+export interface GetRatings {
   userid: number;
   rating: number;
   dateupdated: Date;
