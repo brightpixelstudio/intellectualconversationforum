@@ -190,6 +190,7 @@
                       [userguidloggedin]="userguidloggedin"
                       [usertypeidloggedin]="usertypeidloggedin"
                       (postDeleted)="onPostDeleted($event)"
+                      (pinStatusChanged)="loadPosts()"
                     >
                     </post>
                   }

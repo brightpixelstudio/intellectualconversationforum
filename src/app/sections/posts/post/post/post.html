@@ -1,224 +1,243 @@
-<div class="row">
-  <div class="col-12">
-    <div class="posttitle d-flex align-items-center gap-2">
-      <img
-        [src]="post.profileimageurl || '/images/default-profile.png'"
-        [alt]="post.name + ' profile image'"
-        class="post-profile-image"
-        width="40"
-        height="40"
-      />
-      <div>
-        <p class="title">
-          <strong>{{ post.name }}</strong>
-          <span class="badge bg-secondary ms-3 me-2"> {{ post.type }} </span>
-          <span class="posttitleinfo">
-            {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
-            {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
-          </span>
-        </p>
+<div [class.pinned-post]="post.ispinned" class="post-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="posttitle d-flex align-items-center gap-2">
+        <img
+          [src]="post.profileimageurl || '/images/default-profile.png'"
+          [alt]="post.name + ' profile image'"
+          class="post-profile-image"
+          width="40"
+          height="40"
+        />
+        <div>
+          <p class="title">
+            <strong>{{ post.name }}</strong>
+            @if (isAdmin) {
+              <button
+                type="button"
+                class="pin-button"
+                (click)="togglePinPost()"
+                [title]="post.ispinned ? 'Unpin post' : 'Pin post'"
+                [attr.aria-label]="post.ispinned ? 'Unpin post' : 'Pin post'"
+              >
+                <fa-icon
+                  [icon]="faThumbtack"
+                  [class.text-primary]="post.ispinned"
+                  [class.text-secondary]="!post.ispinned"
+                  [rotate]="post.ispinned ? undefined : 180"
+                ></fa-icon>
+              </button>
+            } @else if (post.ispinned) {
+              <fa-icon class="text-primary me-1" [icon]="faThumbtack"></fa-icon>
+            }
+            <span class="badge bg-secondary me-2"> {{ post.type }} </span>
+            <span class="posttitleinfo">
+              {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
+              {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-@if (post.commentsclosed) {
+  @if (post.commentsclosed) {
+    <div class="row">
+      <div class="col-12">
+        <p class="posttitle mt-3">
+          <span class="posttitleinfo danger"> This posts comments have been closed </span>
+        </p>
+      </div>
+    </div>
+  }
+
   <div class="row">
     <div class="col-12">
-      <p class="posttitle mt-3">
-        <span class="posttitleinfo danger"> This posts comments have been closed </span>
+      <p class="text-break">
+        <span
+          [innerHTML]="
+            isPostExpanded()
+              ? post.post
+              : getPostPreview(post.post, globalService.getPostMaxLengthAbbreviated())
+          "
+        ></span>
+
+        @if (hasMoreText(post.post)) {
+          <p></p>
+          <a href="#" class="see-more" (click)="$event.preventDefault(); togglePost()">
+            {{ isPostExpanded() ? 'See less' : 'See more' }}
+          </a>
+        }
       </p>
     </div>
   </div>
-}
 
-<div class="row">
-  <div class="col-12">
-    <p class="text-break">
-      <span
-        [innerHTML]="
-          isPostExpanded()
-            ? post.post
-            : getPostPreview(post.post, globalService.getPostMaxLengthAbbreviated())
-        "
-      ></span>
-
-      @if (hasMoreText(post.post)) {
-        <p></p>
-        <a href="#" class="see-more" (click)="$event.preventDefault(); togglePost()">
-          {{ isPostExpanded() ? 'See less' : 'See more' }}
-        </a>
-      }
-    </p>
-  </div>
-</div>
-
-@if (post.postimages?.length) {
-  <div class="row">
-    <div class="col-12">
-      <postimages [postimages]="post.postimages"></postimages>
+  @if (post.postimages?.length) {
+    <div class="row">
+      <div class="col-12">
+        <postimages [postimages]="post.postimages"></postimages>
+      </div>
     </div>
-  </div>
-}
+  }
 
-<div class="row">
-  @if (commentsExpanded) {
-    <div class="mt-3 ms-5">
-      @if (loadingComments) {
-        <p>Loading comments...</p>
-      } @else {
-        @for (theComment of comments; track theComment.postcommentid) {
-          <div class="row mb-3">
-            <div class="col-12">
-              <p class="comment">
-                <img
-                  [src]="theComment?.commentprofileimageurl || '/images/default-profile.png'"
-                  [alt]="theComment?.name + ' profile image'"
-                  class="post-profile-image me-2"
-                  width="40"
-                  height="40"
-                />
-
-                <strong>{{ theComment.name }}, </strong>
-                <span class="posttitleinfo">
-                  {{ theComment.dateadded | date: 'medium' }},
-                  {{ globalService.getTimePassed(theComment.dateadded) }},
-                  {{ theComment.rating }} rating
-                </span>
-              </p>
-
-              <div class="row">
-                <div class="col-12">
-                  <p class="text-break">
-                    <span [innerHTML]="theComment.comment"></span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          @if (!post.commentsclosed) {
-            <div class="row">
+  <div class="row">
+    @if (commentsExpanded) {
+      <div class="mt-3 ms-5">
+        @if (loadingComments) {
+          <p>Loading comments...</p>
+        } @else {
+          @for (theComment of comments; track theComment.postcommentid) {
+            <div class="row mb-3">
               <div class="col-12">
+                <p class="comment">
+                  <img
+                    [src]="theComment?.commentprofileimageurl || '/images/default-profile.png'"
+                    [alt]="theComment?.name + ' profile image'"
+                    class="post-profile-image me-2"
+                    width="40"
+                    height="40"
+                  />
+
+                  <strong>{{ theComment.name }}, </strong>
+                  <span class="posttitleinfo">
+                    {{ theComment.dateadded | date: 'medium' }},
+                    {{ globalService.getTimePassed(theComment.dateadded) }},
+                    {{ theComment.rating }} rating
+                  </span>
+                </p>
+
                 <div class="row">
-                  @if (theComment.userguid === userguidloggedin) {
-                    <div class="col-3">
-                      <a
-                        [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
-                        class="btn btn-primary editcommentbtn mt-2 me-1"
-                      >
-                        Edit Comment
-                      </a>
-
-                      <button
-                        type="button"
-                        class="btn btn-danger deletecommentbtn mt-2"
-                        (click)="onDeleteCommentClick(theComment.commentguid)"
-                      >
-                        Delete This Comment
-                      </button>
-                    </div>
-                  }
-
-                  <div class="col-3">
-                    <rating
-                      [rating]="theComment.rating"
-                      [ratingCount]="theComment.ratingcount"
-                      [userRating]="theComment.userrating"
-                      [success]="theComment.successrating"
-                      [canRate]="theComment.userguid !== userguidloggedin"
-                      [buttonColor]="'warning'"
-                      (ratingSelected)="onCommentRatingSelected($event, theComment.commentguid)"
-                    >
-                    </rating>
+                  <div class="col-12">
+                    <p class="text-break">
+                      <span [innerHTML]="theComment.comment"></span>
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
+
+            @if (!post.commentsclosed) {
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    @if (theComment.userguid === userguidloggedin) {
+                      <div class="col-3">
+                        <a
+                          [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
+                          class="btn btn-primary editcommentbtn mt-2 me-1"
+                        >
+                          Edit Comment
+                        </a>
+
+                        <button
+                          type="button"
+                          class="btn btn-danger deletecommentbtn mt-2"
+                          (click)="onDeleteCommentClick(theComment.commentguid)"
+                        >
+                          Delete This Comment
+                        </button>
+                      </div>
+                    }
+
+                    <div class="col-3">
+                      <rating
+                        [rating]="theComment.rating"
+                        [ratingCount]="theComment.ratingcount"
+                        [userRating]="theComment.userrating"
+                        [success]="theComment.successrating"
+                        [canRate]="theComment.userguid !== userguidloggedin"
+                        [buttonColor]="'warning'"
+                        (ratingSelected)="onCommentRatingSelected($event, theComment.commentguid)"
+                      >
+                      </rating>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <hr />
+          } @empty {
+            <p>No comments found for this post.</p>
           }
-
-          <hr />
-        } @empty {
-          <p>No comments found for this post.</p>
         }
-      }
-    </div>
-  }
-</div>
-
-<div class="row">
-  <div class="col-5">
-    @if (!post.commentsclosed) {
-      <a
-        class="btn btn-primary mt-3 me-1"
-        title="View Full Post"
-        [attr.href]="'/post?postguid=' + post.postguid"
-        target="_blank"
-      >
-        Full Post
-      </a>
-
-      @if (post.userguid == userguidloggedin) {
-        <a
-          class="btn btn-primary mt-3 me-1"
-          title="Edit Post"
-          [attr.href]="'/editpost?postguid=' + post.postguid"
-        >
-          Edit Post
-        </a>
-      }
-
-      <a
-        class="btn btn-primary mt-3"
-        title="Add Comment"
-        [attr.href]="'/newcomment?postguid=' + post.postguid"
-      >
-        Add Comment
-      </a>
-    }
-
-    @if (post.count > 0) {
-      <button
-        type="button"
-        class="btn btn-primary commentsbtn mt-3 ms-1"
-        (click)="onViewCommentsClick()"
-      >
-        {{ commentsExpanded ? 'Hide Comments' : 'View Comments' }}
-      </button>
-    }
-
-    @if (!post.commentsclosed && post.userguid == userguidloggedin) {
-      <button
-        class="btn btn-danger deletebtn mt-3 ms-1"
-        id="button{{ post.postid }}"
-        (click)="onDeletePostClick()"
-      >
-        Delete This Post
-      </button>
+      </div>
     }
   </div>
 
-  @if (!post.commentsclosed) {
-    <div class="col-7">
-      <div class="row">
-        <div class="col-4">
-          <rating
-            [rating]="post.rating"
-            [ratingCount]="post.ratingcount"
-            [userRating]="post.userrating"
-            [canRate]="post?.userguid !== userguidloggedin"
-            [success]="post.successrating"
-            (ratingSelected)="onPostRatingSelected($event)"
+  <div class="row">
+    <div class="col-5">
+      @if (!post.commentsclosed) {
+        <a
+          class="btn btn-primary mt-3 me-1"
+          title="View Full Post"
+          [attr.href]="'/post?postguid=' + post.postguid"
+          target="_blank"
+        >
+          Full Post
+        </a>
+
+        @if (post.userguid == userguidloggedin) {
+          <a
+            class="btn btn-primary mt-3 me-1"
+            title="Edit Post"
+            [attr.href]="'/editpost?postguid=' + post.postguid"
           >
-          </rating>
+            Edit Post
+          </a>
+        }
+
+        <a
+          class="btn btn-primary mt-3"
+          title="Add Comment"
+          [attr.href]="'/newcomment?postguid=' + post.postguid"
+        >
+          Add Comment
+        </a>
+      }
+
+      @if (post.count > 0) {
+        <button
+          type="button"
+          class="btn btn-primary commentsbtn mt-3 ms-1"
+          (click)="onViewCommentsClick()"
+        >
+          {{ commentsExpanded ? 'Hide Comments' : 'View Comments' }}
+        </button>
+      }
+
+      @if (!post.commentsclosed && post.userguid == userguidloggedin) {
+        <button
+          class="btn btn-danger deletebtn mt-3 ms-1"
+          id="button{{ post.postid }}"
+          (click)="onDeletePostClick()"
+        >
+          Delete This Post
+        </button>
+      }
+    </div>
+
+    @if (!post.commentsclosed) {
+      <div class="col-7">
+        <div class="row">
+          <div class="col-4">
+            <rating
+              [rating]="post.rating"
+              [ratingCount]="post.ratingcount"
+              [userRating]="post.userrating"
+              [canRate]="post?.userguid !== userguidloggedin"
+              [success]="post.successrating"
+              (ratingSelected)="onPostRatingSelected($event)"
+            >
+            </rating>
+          </div>
         </div>
       </div>
+    }
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <hr />
     </div>
-  }
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <hr />
   </div>
 </div>

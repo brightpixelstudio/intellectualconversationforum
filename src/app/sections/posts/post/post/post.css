@@ -45,3 +45,31 @@ select.userSelect {
 .see-more:hover {
   text-decoration: underline;
 }
+
+.post-container {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.post-container.pinned-post {
+  background-color: #d9eafd;
+}
+
+.pin-button {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+
+.pin-button:hover,
+.pin-button:focus,
+.pin-button:active,
+.pin-button:focus-visible {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

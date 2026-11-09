@@ -153,10 +153,10 @@ export class ApiServicePost {
   }
 
   pinPost(postguid: string) {
-    return this.http.post(`${this.apiUrl}/Post/PinPost?postguid=${postguid}`, {});
+    return this.http.post(this.apiUrl + `/PinPost?postguid=${postguid}`, {});
   }
 
   unpinPost(postguid: string) {
-    return this.http.post(`${this.apiUrl}/Post/UnpinPost?postguid=${postguid}`, {});
+    return this.http.post(this.apiUrl + `/UnpinPost?postguid=${postguid}`, {});
   }
 }

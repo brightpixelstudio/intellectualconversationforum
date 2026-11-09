@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
+import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -13,7 +15,7 @@ import { PostImagesComponent } from './../../../postimages/postimages/postimages
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, JsonPipe, RatingComponent, PostImagesComponent],
+  imports: [DatePipe, JsonPipe, RatingComponent, PostImagesComponent, FontAwesomeModule],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -24,6 +26,7 @@ export class PostComponent {
   @Input() usertypeidloggedin: number | null = null;
 
   @Output() postDeleted = new EventEmitter<string>();
+  @Output() pinStatusChanged = new EventEmitter<void>();
 
   comments: GetPostComments[] = [];
 
@@ -32,6 +35,7 @@ export class PostComponent {
   commentsLoaded = false;
   postExpanded = false;
   UserType = UserType;
+  faThumbtack = faThumbtack;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -53,6 +57,32 @@ export class PostComponent {
     return this.usertypeidloggedin === UserType.Admin;
   }
 
+  togglePinPost(): void {
+    if (this.post.ispinned) {
+      this.apiServicePost.unpinPost(this.post.postguid).subscribe({
+        next: () => {
+          this.post.ispinned = false;
+          this.post.datepinned = null;
+          this.post.pinnedbyuserid = null;
+          this.pinStatusChanged.emit();
+        },
+        error: (err) => {
+          console.error('Error unpinning post:', err);
+        },
+      });
+    } else {
+      this.apiServicePost.pinPost(this.post.postguid).subscribe({
+        next: () => {
+          this.post.ispinned = true;
+          this.post.datepinned = new Date();
+          this.pinStatusChanged.emit();
+        },
+        error: (err) => {
+          console.error('Error pinning post:', err);
+        },
+      });
+    }
+  }
   getPostPreview(post: string, maxlength: number): string {
     if (!post) {
       return '';
