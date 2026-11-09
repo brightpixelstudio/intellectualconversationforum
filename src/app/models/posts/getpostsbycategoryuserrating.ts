@@ -20,6 +20,9 @@ export interface GetPostsByCategoryUserRating {
   commentsclosed: number;
   usertypeid: number;
   type: string;
+  ispinned: number;
+  datepinned: Date;
+  pinnedbyuserid: number;
 
   postimages: PostImage[];
   successrating: boolean;
