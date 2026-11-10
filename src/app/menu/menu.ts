@@ -17,18 +17,19 @@ interface MenuItem {
   styleUrls: ['./menu.css'],
 })
 export class MenuComponent {
+  isAdmin = false;
   menuItems: MenuItem[] = [
     { label: 'Login', link: '/' },
     { label: 'Registration', link: '/registration' },
     { label: 'Members', link: '/members' },
     { label: 'Statistics', link: '/statistics' },
     { label: 'Posts', link: '/posts' },
+    { label: 'Administration', link: '/admin' },
   ];
 
   constructor(
     public authService: AuthService,
     public apiServiceUserSettings: ApiServiceUserSettings,
-
     private router: Router,
   ) {}
 

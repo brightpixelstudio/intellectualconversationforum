@@ -28,9 +28,9 @@
                 ></fa-icon>
               </button>
             } @else if (post.ispinned) {
-              <fa-icon class="text-primary me-1" [icon]="faThumbtack"></fa-icon>
+              <fa-icon class="text-primary ms-2" [icon]="faThumbtack"></fa-icon>
             }
-            <span class="badge bg-secondary me-2"> {{ post.type }} </span>
+            <span class="badge bg-secondary ms-2"> {{ post.type }} </span>
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
               {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
