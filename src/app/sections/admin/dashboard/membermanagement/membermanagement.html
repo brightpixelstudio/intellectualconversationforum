@@ -1,1 +1,5 @@
 <membersearch (memberSelected)="loadMemberProfile($event)"></membersearch>
+
+@if (selectedUserGuid) {
+  <memberprofile [userguid]="selectedUserGuid"></memberprofile>
+}
