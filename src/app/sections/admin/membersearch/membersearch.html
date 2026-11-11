@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-4">
+    <div>Search Members</div>
+    <input
+      id="memberSearch"
+      type="text"
+      style="width: 70%"
+      class="editcommentbtn"
+      placeholder="Name, username, or email"
+      [(ngModel)]="searchText"
+      (keyup.enter)="searchMembers()"
+    />
+
+    <button
+      type="button"
+      class="btn btn-primary editcommentbtn mt-1 ms-3"
+      [disabled]="searchText.trim().length < 3 || loading"
+      (click)="searchMembers()"
+    >
+      @if (loading) {
+        Searching...
+      } @else {
+        Search Users
+      }
+    </button>
+  </div>
+  @if (members.length > 0) {
+    <div class="col-md-5">
+      <div>Select a Member</div>
+      <select
+        id="memberResults"
+        class="editcommentbtn"
+        [(ngModel)]="selectedUserGuid"
+        (ngModelChange)="selectMember($event)"
+      >
+        <option value="">-- Select a member --</option>
+
+        @for (member of members; track member.userguid) {
+          <option [value]="member.userguid">
+            {{ member.name }} ({{ member.username }}) - {{ member.type }}
+          </option>
+        }
+      </select>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-info mt-3">
+      {{ errorMessage }}
+    </div>
+  }
+</div>

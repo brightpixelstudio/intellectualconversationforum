@@ -1,1 +1,92 @@
-<p>dashboard works!</p>
+<div class="row content-container">
+  <div class="col-12">
+    <div class="row">
+      <div class="content-container col-12 pb-4">
+        <div class="row pt-4">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="row">
+              <div class="col-12">
+                <h3 class="pb-3">Administration</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <p>Manage and view the sites Users, Activity and Controls</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link active"
+                      id="simple-tab-0"
+                      data-bs-toggle="tab"
+                      href="#simple-tabpanel-0"
+                      role="tab"
+                      aria-controls="simple-tabpanel-0"
+                      aria-selected="true"
+                      >Member Management</a
+                    >
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link"
+                      id="simple-tab-1"
+                      data-bs-toggle="tab"
+                      href="#simple-tabpanel-1"
+                      role="tab"
+                      aria-controls="simple-tabpanel-1"
+                      aria-selected="false"
+                      >Member Activity</a
+                    >
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link"
+                      id="simple-tab-2"
+                      data-bs-toggle="tab"
+                      href="#simple-tabpanel-2"
+                      role="tab"
+                      aria-controls="simple-tabpanel-2"
+                      aria-selected="false"
+                      >Site Management</a
+                    >
+                  </li>
+                </ul>
+                <div class="tab-content pt-3" id="tab-content">
+                  <div
+                    class="tab-pane active"
+                    id="simple-tabpanel-0"
+                    role="tabpanel"
+                    aria-labelledby="tab-0"
+                  >
+                    <membersearch (memberSelected)="loadMemberProfile($event)"></membersearch>
+                  </div>
+                  <div
+                    class="tab-pane"
+                    id="simple-tabpanel-1"
+                    role="tabpanel"
+                    aria-labelledby="tab-1"
+                  >
+                    Content tab 2
+                  </div>
+                  <div
+                    class="tab-pane"
+                    id="simple-tabpanel-2"
+                    role="tabpanel"
+                    aria-labelledby="tab-2"
+                  >
+                    Content tab 3
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
