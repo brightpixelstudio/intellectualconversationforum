@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'memberrecentposts',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './memberrecentposts.html',
   styleUrl: './memberrecentposts.css',
 })
