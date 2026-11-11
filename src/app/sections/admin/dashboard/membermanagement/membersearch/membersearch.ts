@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiServiceAdmin } from '../../../services/adminservice';
-import { MemberSearch } from '../../../models/admin/membersearch';
+import { ApiServiceAdmin } from '../../../../../services/adminservice';
+import { MemberSearch } from '../../../../../models/admin/membersearch';
 
 @Component({
   selector: 'membersearch',

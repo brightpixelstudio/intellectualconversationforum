@@ -39,18 +39,6 @@
                       role="tab"
                       aria-controls="simple-tabpanel-1"
                       aria-selected="false"
-                      >Member Activity</a
-                    >
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a
-                      class="nav-link"
-                      id="simple-tab-2"
-                      data-bs-toggle="tab"
-                      href="#simple-tabpanel-2"
-                      role="tab"
-                      aria-controls="simple-tabpanel-2"
-                      aria-selected="false"
                       >Site Management</a
                     >
                   </li>
@@ -62,7 +50,7 @@
                     role="tabpanel"
                     aria-labelledby="tab-0"
                   >
-                    <membersearch (memberSelected)="loadMemberProfile($event)"></membersearch>
+                    <membermanagement></membermanagement>
                   </div>
                   <div
                     class="tab-pane"
@@ -70,15 +58,7 @@
                     role="tabpanel"
                     aria-labelledby="tab-1"
                   >
-                    Content tab 2
-                  </div>
-                  <div
-                    class="tab-pane"
-                    id="simple-tabpanel-2"
-                    role="tabpanel"
-                    aria-labelledby="tab-2"
-                  >
-                    Content tab 3
+                    Content tab 1
                   </div>
                 </div>
               </div>

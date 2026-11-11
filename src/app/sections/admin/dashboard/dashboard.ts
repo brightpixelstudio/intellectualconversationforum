@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
-import { MemberSearchComponent } from '../membersearch/membersearch';
+import { MemberManagement } from './membermanagement/membermanagement';
 
 @Component({
   selector: 'dashboard',
-  imports: [MemberSearchComponent],
+  imports: [MemberManagement],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
-  loadMemberProfile(userguid: string): void {
-    console.log('Selected member:', userguid);
-  }
-}
+export class Dashboard {}
