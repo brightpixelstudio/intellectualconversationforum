@@ -12,6 +12,7 @@ import { MemberSearch } from '../../../models/admin/membersearch';
 })
 export class MemberSearchComponent {
   private apiServiceAdmin = inject(ApiServiceAdmin);
+  private cdr = inject(ChangeDetectorRef);
 
   @Output() memberSelected = new EventEmitter<string>();
 
@@ -21,7 +22,7 @@ export class MemberSearchComponent {
   loading = false;
   errorMessage = '';
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   searchMembers(): void {
     const search = this.searchText.trim();
@@ -47,6 +48,7 @@ export class MemberSearchComponent {
         console.error('Member search failed:', err);
         this.errorMessage = 'Unable to search members.';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
