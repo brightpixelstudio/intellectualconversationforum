@@ -3,10 +3,12 @@ import { DatePipe } from '@angular/common';
 import { ApiServiceUser } from '../../services/userservice';
 import { ActivatedRoute, RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { MemberActivity } from '../admin/dashboard/membermanagement/memberactivity/memberactivity';
+import { MemberProfile } from '../admin/dashboard/membermanagement/memberprofile/memberprofile';
 
 @Component({
   selector: 'viewprofile',
-  imports: [DatePipe],
+  imports: [MemberActivity, MemberProfile, DatePipe],
   templateUrl: './viewprofile.html',
   styleUrl: './viewprofile.css',
 })
@@ -40,7 +42,6 @@ export class ViewProfile implements OnInit {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserProfile = data;
         this.cdr.detectChanges();
-        console.log(this.getUserProfile);
       },
       error: (err) => {
         console.error('One or more requests failed:', err);

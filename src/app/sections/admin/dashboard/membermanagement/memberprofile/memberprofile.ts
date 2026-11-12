@@ -18,6 +18,7 @@ import { GetProfileMember } from '../../../../../models/member/getprofilemember'
 })
 export class MemberProfile implements OnChanges {
   @Input({ required: true }) getUserProfile: any = null;
+  @Input({ required: true }) isAdmin: boolean = false;
   loading = false;
   errorMessage = '';
 
