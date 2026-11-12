@@ -15,7 +15,7 @@
         </td>
         <td>{{ theStat.reason }}</td>
         <td style="white-space: nowrap">
-          {{ theStat.datechanged }}
+          {{ theStat.datechanged | date: 'mediumDate' }}
         </td>
         <td>{{ theStat.changedbyname }}</td>
       </tr>
