@@ -51,6 +51,18 @@
           >Comments They Rated</a
         >
       </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          id="member-tab-4"
+          data-bs-toggle="tab"
+          href="#member-tabpanel-4"
+          role="tab"
+          aria-controls="member-tabpanel-4"
+          aria-selected="false"
+          >Account Status History</a
+        >
+      </li>
     </ul>
     <div class="tab-content pt-3" id="tab-content">
       <div class="tab-pane active" id="member-tabpanel-0" role="tabpanel" aria-labelledby="tab-0">
@@ -66,6 +78,11 @@
         <membercommentratings
           [commentRatings]="memberProfile.getCommentRatingsMember"
         ></membercommentratings>
+      </div>
+      <div class="tab-pane" id="member-tabpanel-4" role="tabpanel" aria-labelledby="tab-4">
+        <memberaccountstatushistory
+          [accountStatusHistory]="memberProfile.getAccountStatusHistoryMember"
+        ></memberaccountstatushistory>
       </div>
     </div>
   </div>

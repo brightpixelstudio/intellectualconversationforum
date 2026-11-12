@@ -3,11 +3,18 @@ import { MemberRecentPosts } from '../memberactivity/memberrecentposts/memberrec
 import { MemberRecentComments } from '../memberactivity/memberrecentcomments/memberrecentcomments';
 import { MemberPostRatings } from '../memberactivity/memberpostratings/memberpostratings';
 import { MemberCommentRatings } from '../memberactivity/membercommentratings/membercommentratings';
+import { MemberAccountStatusHistory } from '../memberactivity/memberaccountstatushistory/memberaccountstatushistory';
 import { MemberProfile } from '../memberprofile/memberprofile';
 
 @Component({
   selector: 'memberactivity',
-  imports: [MemberRecentPosts, MemberRecentComments, MemberPostRatings, MemberCommentRatings],
+  imports: [
+    MemberRecentPosts,
+    MemberRecentComments,
+    MemberPostRatings,
+    MemberCommentRatings,
+    MemberAccountStatusHistory,
+  ],
   templateUrl: './memberactivity.html',
   styleUrl: './memberactivity.css',
 })

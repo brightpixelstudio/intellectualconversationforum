@@ -56,12 +56,16 @@ export class ApiServiceUser {
     const getCommentRatingsMember$ = this.http.get(
       this.apiUrl + `/getCommentRatingsMember?userguid=${userguid}`,
     );
+    const getAccountStatusHistoryMember$ = this.http.get(
+      this.apiUrl + `/getAccountStatusHistoryMember?userguid=${userguid}`,
+    );
     return forkJoin({
       getUserProfile: getUserProfile$,
       getPostsMember: getPostsMember$,
       getCommentsMember: getCommentsMember$,
       getPostRatingsMember: getPostRatingsMember$,
       getCommentRatingsMember: getCommentRatingsMember$,
+      getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
     });
   }
 

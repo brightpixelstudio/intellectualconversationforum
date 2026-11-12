@@ -1,0 +1,24 @@
+<table class="table table-striped table-hover">
+  <thead class="custom-thead">
+    <tr>
+      <th scope="col">Status</th>
+      <th scope="col">Reason</th>
+      <th scope="col">Date Changed</th>
+      <th scope="col">Changed By</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (theStat of accountStatusHistory; track theStat.accountstatushistoryid) {
+      <tr>
+        <td style="white-space: nowrap">
+          {{ theStat.accountstatus }}
+        </td>
+        <td>{{ theStat.reason }}</td>
+        <td style="white-space: nowrap">
+          {{ theStat.datechanged }}
+        </td>
+        <td>{{ theStat.changedbyname }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
