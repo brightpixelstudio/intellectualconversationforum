@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ApiServiceUser } from './../../../../../services/userservice';
+import { GetProfileMember } from '../../../../../models/member/getprofilemember';
 
 @Component({
   selector: 'memberprofile',
@@ -16,9 +17,7 @@ import { ApiServiceUser } from './../../../../../services/userservice';
   styleUrl: './memberprofile.css',
 })
 export class MemberProfile implements OnChanges {
-  @Input({ required: true }) userguid!: string;
-
-  getUserProfile: any = null;
+  @Input({ required: true }) getUserProfile: any = null;
   loading = false;
   errorMessage = '';
 
@@ -27,27 +26,11 @@ export class MemberProfile implements OnChanges {
     private cdr: ChangeDetectorRef,
   ) {}
 
+  @Input({ required: true }) member!: GetProfileMember;
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userguid'] && this.userguid) {
-      this.loadMemberProfile();
+    if (changes['getUserProfile'] && this.getUserProfile) {
+      // Update any local properties needed for displaying the profile.
     }
-  }
-
-  loadMemberProfile(): void {
-    this.loading = true;
-
-    this.apiServiceUser.getUserProfileStatistics(this.userguid).subscribe({
-      next: (data) => {
-        this.getUserProfile = data;
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Unable to load member profile:', err);
-        this.errorMessage = 'Unable to load member profile.';
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-    });
   }
 }

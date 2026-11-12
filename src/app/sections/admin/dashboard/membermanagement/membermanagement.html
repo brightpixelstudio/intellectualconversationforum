@@ -1,11 +1,7 @@
 <membersearch (memberSelected)="loadMemberProfile($event)"> </membersearch>
 
-@if (selectedUserGuid) {
-  <memberprofile [userguid]="selectedUserGuid"> </memberprofile>
-
-  @if (getUserProfile) {
-    <memberupdate [member]="getUserProfile.getUserProfile">></memberupdate>
-
-    <memberactivity [memberProfile]="getUserProfile"> </memberactivity>
-  }
+@if (getUserProfile) {
+  <memberprofile [getUserProfile]="getUserProfile.getUserProfile"></memberprofile>
+  <memberupdate [member]="getUserProfile.getUserProfile"></memberupdate>
+  <memberactivity [memberProfile]="getUserProfile"> </memberactivity>
 }

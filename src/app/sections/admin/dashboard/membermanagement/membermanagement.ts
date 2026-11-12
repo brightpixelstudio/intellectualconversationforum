@@ -12,8 +12,8 @@ import { ApiServiceUser } from '../../../../services/userservice';
   styleUrl: './membermanagement.css',
 })
 export class MemberManagement {
-  getUserProfile: any = null;
   selectedUserGuid: string | null = null;
+  getUserProfile: any = null;
 
   constructor(private apiServiceUser: ApiServiceUser) {}
 
