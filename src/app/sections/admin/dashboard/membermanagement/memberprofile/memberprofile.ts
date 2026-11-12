@@ -1,22 +1,10 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ApiServiceUser } from '../../../../../../services/userservice';
 import { DatePipe } from '@angular/common';
-import { MemberRecentPosts } from './memberrecentposts/memberrecentposts';
-import { MemberRecentComments } from './memberrecentcomments/memberrecentcomments';
-import { MemberPostRatings } from './memberpostratings/memberpostratings';
-import { MemberCommentRatings } from './membercommentratings/membercommentratings';
-import { MemberUpdate } from './memberupdate/memberupdate';
+import { ApiServiceUser } from './../../../../../services/userservice';
 
 @Component({
   selector: 'memberprofile',
-  imports: [
-    MemberRecentPosts,
-    MemberRecentComments,
-    MemberPostRatings,
-    MemberCommentRatings,
-    MemberUpdate,
-    DatePipe,
-  ],
+  imports: [DatePipe],
   templateUrl: './memberprofile.html',
   styleUrl: './memberprofile.css',
 })

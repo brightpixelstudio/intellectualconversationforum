@@ -1,17 +1,32 @@
 import { Component } from '@angular/core';
 import { MemberSearchComponent } from './membersearch/membersearch';
-import { MemberProfile } from './membersearch/memberprofile/memberprofile';
+import { MemberProfile } from './memberprofile/memberprofile';
+import { MemberUpdate } from './memberupdate/memberupdate';
+import { MemberActivity } from './memberactivity/memberactivity';
+import { ApiServiceUser } from '../../../../services/userservice';
 
 @Component({
   selector: 'membermanagement',
-  imports: [MemberSearchComponent, MemberProfile],
+  imports: [MemberSearchComponent, MemberProfile, MemberUpdate, MemberActivity],
   templateUrl: './membermanagement.html',
   styleUrl: './membermanagement.css',
 })
 export class MemberManagement {
+  getUserProfile: any;
   selectedUserGuid: string | null = null;
+
+  constructor(private apiServiceUser: ApiServiceUser) {}
 
   loadMemberProfile(userguid: string): void {
     this.selectedUserGuid = userguid;
+
+    this.apiServiceUser.getUserProfileStatistics(userguid).subscribe({
+      next: (data) => {
+        this.getUserProfile = data;
+      },
+      error: (err) => {
+        console.error('Unable to load member profile:', err);
+      },
+    });
   }
 }

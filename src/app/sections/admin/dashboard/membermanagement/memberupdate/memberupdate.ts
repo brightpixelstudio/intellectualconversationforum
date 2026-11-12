@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ApiServiceUser } from './../../../../../../../services/userservice';
-import { GetAccountStatuses } from '../../../../../../../models/member/getaccountstatuses';
+import { Component, EventEmitter, Output, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ApiServiceUser } from '../../../../../services/userservice';
+import { GetAccountStatuses } from '../../../../../models/member/getaccountstatuses';
+import { GetProfileMember } from '../../../../../models/member/getprofilemember';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './memberupdate.css',
 })
 export class MemberUpdate implements OnInit {
+  @Input({ required: true }) member!: GetProfileMember;
   @Output() memberSelected = new EventEmitter<number>();
 
   accountStatuses: GetAccountStatuses[] = [];
