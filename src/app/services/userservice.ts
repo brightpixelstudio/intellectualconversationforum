@@ -102,14 +102,6 @@ export class ApiServiceUser {
     );
   }
 
-  submitAccountStatus(userId: number, accountStatusId: number, reason: string): Observable<any> {
-    return this.http.post(
-      this.apiUrl +
-        `/updateAccountStatus?userid=${userId}&accountStatusId=${accountStatusId}&reason=${reason}`,
-      null,
-    );
-  }
-
   submitCommentUserRating(userguid: string, commentguid: string, rating: number): Observable<any> {
     return this.http.post(
       this.apiUrl +

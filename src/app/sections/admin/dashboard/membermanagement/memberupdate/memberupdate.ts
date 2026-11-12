@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceUser } from '../../../../../services/userservice';
+import { ApiServiceAdmin } from '../../../../../services/adminservice';
 import { GetAccountStatuses } from '../../../../../models/member/getaccountstatuses';
 import { GetProfileMember } from '../../../../../models/member/getprofilemember';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +24,8 @@ export class MemberUpdate implements OnInit {
 
   constructor(
     private apiServiceUser: ApiServiceUser,
+    private apiServiceAdmin: ApiServiceAdmin,
+
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -47,7 +50,7 @@ export class MemberUpdate implements OnInit {
     this.showSuccess = false;
     this.showError = false;
 
-    this.apiServiceUser
+    this.apiServiceAdmin
       .submitAccountStatus(this.member.userid, this.accountStatusId, reason)
       .subscribe({
         next: (data) => {
