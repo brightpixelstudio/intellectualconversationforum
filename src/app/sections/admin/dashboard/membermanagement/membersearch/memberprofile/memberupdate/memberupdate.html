@@ -1,0 +1,14 @@
+<div class="col-md-5">
+  <select
+    id="memberStatus"
+    class="editcommentbtn"
+    [(ngModel)]="accountStatusId"
+    (ngModelChange)="selectStatus($any($event))"
+  >
+    @for (status of accountStatuses; track status.accountstatusid) {
+      <option [value]="status.accountstatusid">
+        {{ status.accountstatus }}
+      </option>
+    }
+  </select>
+</div>

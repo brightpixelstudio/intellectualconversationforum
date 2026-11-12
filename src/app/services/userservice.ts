@@ -8,6 +8,7 @@ import { GetLatestLoginsMembers } from '../models/getlatestloginsmembers';
 import { GetProfileMember } from '../models/member/getprofilemember';
 import { GetUserList } from '../models/member/getuserlist';
 import { environment } from '../../environments/environment';
+import { GetAccountStatuses } from '../models/member/getaccountstatuses';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
@@ -16,29 +17,28 @@ export class ApiServiceUser {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/user'; // Uses the API URL from environment
 
-  // GET request to fetch data
   getAllProfileMembers(): Observable<GetAllProfileMembers[]> {
     return this.http.get<GetAllProfileMembers[]>(this.apiUrl + '/GetAllProfileMembers');
   }
 
-  // GET request to fetch data
   getNewestMembers(): Observable<GetNewestMembers[]> {
     return this.http.get<GetNewestMembers[]>(this.apiUrl + '/GetNewestMembers');
   }
 
-  // GET request to fetch data
   getLatestLoginsMembers(): Observable<GetLatestLoginsMembers[]> {
     return this.http.get<GetLatestLoginsMembers[]>(this.apiUrl + '/getLatestLoginsMembers');
   }
 
-  // GET request to fetch data
   getUserProfile(userguid: string): Observable<GetProfileMember> {
     return this.http.get<GetProfileMember>(this.apiUrl + `/getProfileMember?userguid=${userguid}`);
   }
 
-  // GET request to fetch data
   getUserList(): Observable<GetUserList[]> {
     return this.http.get<GetUserList[]>(this.apiUrl + '/getUserList');
+  }
+
+  getAccountStatuses(): Observable<GetAccountStatuses[]> {
+    return this.http.get<GetAccountStatuses[]>(this.apiUrl + '/getAccountStatuses');
   }
 
   getUserProfileStatistics(userguid: string | undefined): Observable<any> {

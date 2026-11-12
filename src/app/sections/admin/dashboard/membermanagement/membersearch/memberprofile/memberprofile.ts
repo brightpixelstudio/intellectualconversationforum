@@ -5,6 +5,7 @@ import { MemberRecentPosts } from './memberrecentposts/memberrecentposts';
 import { MemberRecentComments } from './memberrecentcomments/memberrecentcomments';
 import { MemberPostRatings } from './memberpostratings/memberpostratings';
 import { MemberCommentRatings } from './membercommentratings/membercommentratings';
+import { MemberUpdate } from './memberupdate/memberupdate';
 
 @Component({
   selector: 'memberprofile',
@@ -13,6 +14,7 @@ import { MemberCommentRatings } from './membercommentratings/membercommentrating
     MemberRecentComments,
     MemberPostRatings,
     MemberCommentRatings,
+    MemberUpdate,
     DatePipe,
   ],
   templateUrl: './memberprofile.html',
