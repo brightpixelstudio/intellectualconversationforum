@@ -1,1 +1,22 @@
-<p>catagories works!</p>
+<div class="row">
+  <div class="col-6 mb-5">Textbox - Button</div>
+</div>
+
+<table class="table table-striped table-hover">
+  <thead class="custom-thead">
+    <tr>
+      <th scope="col">Catagory</th>
+      <th scope="col">Date Added</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (theRecord of getCatagories; track theRecord.postcatagoryid) {
+      <tr>
+        <td>
+          {{ theRecord.catagory }}
+        </td>
+        <td>{{ theRecord.dateadded | date: 'mediumDate' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
