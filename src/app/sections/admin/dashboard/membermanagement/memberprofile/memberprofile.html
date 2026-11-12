@@ -2,16 +2,18 @@
   <div class="col-12">
     <div class="row">
       <div class="content-container col-12 pt-2">
-        <div class="row">
-          <div class="col-12">
-            <h3 class="pb-3 pt-3">My Profile</h3>
+        @if (!isAdmin) {
+          <div class="row">
+            <div class="col-12">
+              <h3 class="pb-3 pt-3">My Profile</h3>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p>View your profile and statistics</p>
+          <div class="row">
+            <div class="col-6">
+              <p>View your profile and statistics</p>
+            </div>
           </div>
-        </div>
+        }
 
         <div class="row">
           <div class="col-10 pt-2">
