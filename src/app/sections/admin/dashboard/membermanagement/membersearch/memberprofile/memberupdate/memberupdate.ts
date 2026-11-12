@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceUser } from './../../../../../../../services/userservice';
 import { GetAccountStatuses } from '../../../../../../../models/member/getaccountstatuses';
 import { FormsModule } from '@angular/forms';
@@ -16,12 +16,16 @@ export class MemberUpdate implements OnInit {
   accountStatuses: GetAccountStatuses[] = [];
   accountStatusId = 1;
 
-  constructor(private apiServiceUser: ApiServiceUser) {}
+  constructor(
+    private apiServiceUser: ApiServiceUser,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.apiServiceUser.getAccountStatuses().subscribe({
       next: (data) => {
         this.accountStatuses = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Unable to load member profile:', err);
