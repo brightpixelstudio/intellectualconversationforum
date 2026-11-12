@@ -33,6 +33,7 @@ export class MemberUpdate implements OnInit {
     this.apiServiceUser.getAccountStatuses().subscribe({
       next: (data) => {
         this.accountStatuses = data;
+        this.accountStatusId = this.member.accountstatusid;
         this.cdr.detectChanges();
       },
       error: (err) => {

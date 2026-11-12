@@ -22,10 +22,10 @@ export class ApiServiceAdmin {
   }
 
   submitAccountStatus(userid: number, accountStatusId: number, reason: string): Observable<any> {
-    return this.http.post(
-      this.apiUrl +
-        `/updateAccountStatus?userid=${userid}&accountStatusId=${accountStatusId}&reason=${reason}`,
-      null,
-    );
+    return this.http.post(`${this.apiUrl}/updateAccountStatus`, {
+      userId: userid,
+      accountStatusId: accountStatusId,
+      reason: reason,
+    });
   }
 }
