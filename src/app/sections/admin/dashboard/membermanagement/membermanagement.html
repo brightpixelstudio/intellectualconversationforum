@@ -3,7 +3,9 @@
 @if (selectedUserGuid) {
   <memberprofile [userguid]="selectedUserGuid"> </memberprofile>
 
-  <memberupdate [member]="getUserProfile.getUserProfile">></memberupdate>
+  @if (getUserProfile) {
+    <memberupdate [member]="getUserProfile.getUserProfile">></memberupdate>
 
-  <memberactivity [memberProfile]="getUserProfile"> </memberactivity>
+    <memberactivity [memberProfile]="getUserProfile"> </memberactivity>
+  }
 }

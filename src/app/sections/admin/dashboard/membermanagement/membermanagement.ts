@@ -12,13 +12,14 @@ import { ApiServiceUser } from '../../../../services/userservice';
   styleUrl: './membermanagement.css',
 })
 export class MemberManagement {
-  getUserProfile: any;
+  getUserProfile: any = null;
   selectedUserGuid: string | null = null;
 
   constructor(private apiServiceUser: ApiServiceUser) {}
 
   loadMemberProfile(userguid: string): void {
     this.selectedUserGuid = userguid;
+    this.getUserProfile = null;
 
     this.apiServiceUser.getUserProfileStatistics(userguid).subscribe({
       next: (data) => {

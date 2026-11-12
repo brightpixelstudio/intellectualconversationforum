@@ -41,8 +41,6 @@ export class MemberProfile implements OnChanges {
         this.getUserProfile = data;
         this.loading = false;
         this.cdr.detectChanges();
-
-        console.log(this.getUserProfile);
       },
       error: (err) => {
         console.error('Unable to load member profile:', err);
