@@ -2,15 +2,21 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceUtility } from '../../../../../services/utilityservice';
 import { DatePipe } from '@angular/common';
 import { GetCatagoryList } from '../../../../../models/utilities/getcatagorylist';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'catagories',
-  imports: [DatePipe],
+  standalone: true,
+  imports: [DatePipe, FormsModule],
   templateUrl: './catagories.html',
   styleUrl: './catagories.css',
 })
 export class Catagories implements OnInit {
+  catagoryText = '';
   getCatagories: GetCatagoryList[] = [];
+  showSuccess = false;
+  showError = false;
+  errorMsg = '';
 
   constructor(
     private apiService: ApiServiceUtility,
