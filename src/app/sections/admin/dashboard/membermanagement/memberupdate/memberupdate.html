@@ -3,18 +3,34 @@
 <div class="row">
   <div class="col-12 mt-1 mb-1">
     <div class="col-md-5">
-      <select
-        id="memberStatus"
-        class="editcommentbtn"
-        [(ngModel)]="accountStatusId"
-        (ngModelChange)="selectStatus($any($event))"
-      >
+      <select id="memberStatus" class="editcommentbtn" [(ngModel)]="accountStatusId">
         @for (status of accountStatuses; track status.accountstatusid) {
           <option [value]="status.accountstatusid">
             {{ status.accountstatus }}
           </option>
         }
       </select>
+      <input
+        id="reason"
+        type="text"
+        style="width: 70%"
+        class="editcommentbtn"
+        placeholder="Enter a reason for the change"
+        [(ngModel)]="reasonText"
+      />
+
+      <button
+        type="button"
+        class="btn btn-primary editcommentbtn mt-1 ms-3"
+        [disabled]="reasonText.trim().length < 20"
+        (click)="updateAccountStatus()"
+      ></button>
+      @if (showSuccess == true) {
+        <div class="successmsg">This users account status was updated.</div>
+      }
+      @if (showError == true) {
+        <div class="errormsg">{{ errorMsg }}.</div>
+      }
     </div>
   </div>
 </div>

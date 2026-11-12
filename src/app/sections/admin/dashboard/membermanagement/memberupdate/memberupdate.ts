@@ -13,10 +13,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class MemberUpdate implements OnInit {
   @Input({ required: true }) member!: GetProfileMember;
-  @Output() memberSelected = new EventEmitter<number>();
 
   accountStatuses: GetAccountStatuses[] = [];
   accountStatusId = 1;
+  reasonText = '';
+  showSuccess = false;
+  showError = false;
+  errorMsg = '';
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -35,8 +38,35 @@ export class MemberUpdate implements OnInit {
     });
   }
 
-  selectStatus(accountStatusId: number): void {
-    this.accountStatusId = accountStatusId;
-    this.memberSelected.emit(accountStatusId);
+  updateAccountStatus(): void {
+    const reason = this.reasonText.trim();
+
+    if (reason.length < 20) return;
+
+    this.errorMsg = '';
+    this.showSuccess = false;
+    this.showError = false;
+
+    this.apiServiceUser
+      .submitAccountStatus(this.member.userid, this.accountStatusId, reason)
+      .subscribe({
+        next: (data) => {
+          this.showSuccess = true;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            this.errorMsg =
+              error.error?.message || 'Invalid data submitted. Please check your form.';
+          } else if (error.status === 404) {
+            this.errorMsg = error.error?.message || 'The post or image could not be found.';
+          } else if (error.status === 409) {
+            this.errorMsg = error.error?.message || 'You have already posted this text.';
+          } else {
+            this.errorMsg =
+              error.error?.message || 'An unexpected error occurred. Please try again.';
+          }
+        },
+      });
   }
 }
