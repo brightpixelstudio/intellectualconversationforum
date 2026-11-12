@@ -1,36 +1,38 @@
 <hr />
 <h5 class="pb-1">Status Update</h5>
 <div class="row">
-  <div class="col-12 mt-1 mb-1">
-    <div class="col-md-5">
-      <select id="memberStatus" class="editcommentbtn" [(ngModel)]="accountStatusId">
-        @for (status of accountStatuses; track status.accountstatusid) {
-          <option [value]="status.accountstatusid">
-            {{ status.accountstatus }}
-          </option>
-        }
-      </select>
-      <input
-        id="reason"
-        type="text"
-        style="width: 70%"
-        class="editcommentbtn"
-        placeholder="Enter a reason for the change"
-        [(ngModel)]="reasonText"
-      />
-
-      <button
-        type="button"
-        class="btn btn-primary editcommentbtn mt-1 ms-3"
-        [disabled]="reasonText.trim().length < 20"
-        (click)="updateAccountStatus()"
-      ></button>
-      @if (showSuccess == true) {
-        <div class="successmsg">This users account status was updated.</div>
+  <div class="col-7 mt-1 mb-1">
+    <select id="memberStatus" class="editcommentbtn" [(ngModel)]="accountStatusId">
+      @for (status of accountStatuses; track status.accountstatusid) {
+        <option [value]="status.accountstatusid">
+          {{ status.accountstatus }}
+        </option>
       }
-      @if (showError == true) {
-        <div class="errormsg">{{ errorMsg }}.</div>
-      }
-    </div>
+    </select>
+    <input
+      id="reason"
+      type="text"
+      style="width: 50%"
+      class="editcommentbtn ms-2"
+      placeholder="Enter a reason for the change"
+      maxlength="1000"
+      [(ngModel)]="reasonText"
+    />
+    <button
+      type="button"
+      class="btn btn-primary editcommentbtn mt-1 ms-3"
+      [disabled]="reasonText.trim().length < 20"
+      (click)="updateAccountStatus()"
+    >
+      Update Account Status
+    </button>
+    @if (showSuccess == true) {
+      <div class="successmsg">This users account status was updated.</div>
+    }
+    @if (showError == true) {
+      <div class="errormsg">{{ errorMsg }}.</div>
+    }
+    <br />
+    <small class="text-muted"><i>You must type at least 20 characters</i></small>
   </div>
 </div>
