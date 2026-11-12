@@ -32,6 +32,9 @@
             </div>
             <div>
               <strong>User Type:</strong> {{ getUserProfile?.type }}<br />
+              @if (isAdmin) {
+                <strong>Account Status:</strong> {{ getUserProfile?.accountstatus }}<br />
+              }
               <strong>Zipcode:</strong> {{ getUserProfile?.zipcode }}<br />
               <strong>Posts:</strong> {{ getUserProfile?.count }}<br />
               <strong>Joined:</strong>
