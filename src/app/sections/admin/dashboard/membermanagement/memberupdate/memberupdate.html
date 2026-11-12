@@ -26,13 +26,13 @@
     >
       Update Account Status
     </button>
+    <br />
+    <small class="text-muted"><i>You must type at least 20 characters</i></small>
     @if (showSuccess == true) {
       <div class="successmsg">This users account status was updated.</div>
     }
     @if (showError == true) {
       <div class="errormsg">{{ errorMsg }}.</div>
     }
-    <br />
-    <small class="text-muted"><i>You must type at least 20 characters</i></small>
   </div>
 </div>
