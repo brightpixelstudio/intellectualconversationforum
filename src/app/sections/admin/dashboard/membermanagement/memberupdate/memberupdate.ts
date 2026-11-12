@@ -58,10 +58,6 @@ export class MemberUpdate implements OnInit {
           if (error.status === 400) {
             this.errorMsg =
               error.error?.message || 'Invalid data submitted. Please check your form.';
-          } else if (error.status === 404) {
-            this.errorMsg = error.error?.message || 'The post or image could not be found.';
-          } else if (error.status === 409) {
-            this.errorMsg = error.error?.message || 'You have already posted this text.';
           } else {
             this.errorMsg =
               error.error?.message || 'An unexpected error occurred. Please try again.';
