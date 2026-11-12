@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ApiServiceUser } from './../../../../../services/userservice';
 
@@ -8,7 +15,7 @@ import { ApiServiceUser } from './../../../../../services/userservice';
   templateUrl: './memberprofile.html',
   styleUrl: './memberprofile.css',
 })
-export class MemberProfile implements OnInit {
+export class MemberProfile implements OnChanges {
   @Input({ required: true }) userguid!: string;
 
   getUserProfile: any = null;
@@ -20,8 +27,10 @@ export class MemberProfile implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
-    this.loadMemberProfile();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userguid'] && this.userguid) {
+      this.loadMemberProfile();
+    }
   }
 
   loadMemberProfile(): void {
