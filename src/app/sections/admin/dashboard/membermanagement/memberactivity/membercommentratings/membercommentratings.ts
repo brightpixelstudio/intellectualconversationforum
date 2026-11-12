@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 @Component({
   selector: 'membercommentratings',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './membercommentratings.html',
   styleUrl: './membercommentratings.css',
 })

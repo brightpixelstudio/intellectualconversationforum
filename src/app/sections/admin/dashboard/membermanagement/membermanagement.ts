@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { MemberSearchComponent } from './membersearch/membersearch';
 import { MemberProfile } from './memberprofile/memberprofile';
 import { MemberUpdate } from './memberupdate/memberupdate';
@@ -14,6 +14,7 @@ import { ApiServiceUser } from '../../../../services/userservice';
 export class MemberManagement {
   selectedUserGuid: string | null = null;
   getUserProfile: any = null;
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(private apiServiceUser: ApiServiceUser) {}
 
@@ -24,6 +25,7 @@ export class MemberManagement {
     this.apiServiceUser.getUserProfileStatistics(userguid).subscribe({
       next: (data) => {
         this.getUserProfile = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Unable to load member profile:', err);
