@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { ApiServiceUser } from '../../services/userservice';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'memberstatistics',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './memberstatistics.html',
   styleUrl: './memberstatistics.css',
 })
