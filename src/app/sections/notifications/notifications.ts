@@ -2,11 +2,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ApiServiceNotifications } from '../../services/notificationservice';
 import { NotificationModel } from '../../models/notifications/notificationmodel';
 import { DatePipe } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'notifications',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, FontAwesomeModule],
   templateUrl: './notifications.html',
   styleUrl: './notifications.css',
 })
@@ -15,6 +17,7 @@ export class NotificationsComponent implements OnInit {
 
   notifications: NotificationModel[] = [];
   unreadCount = 0;
+  faBell = faBell;
 
   loading = false;
   errorMessage = '';

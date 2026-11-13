@@ -1,47 +1,42 @@
 .notification-bell {
-  color: inherit;
-  font-size: 20px;
+  color: white !important;
+  font-size: 22px;
   text-decoration: none;
   padding: 5px 12px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-bell.has-notifications {
+  color: #dc3545 !important;
+}
+
+.notification-bell:hover {
+  opacity: 0.8;
+}
+
+.notification-bell fa-icon {
+  font-size: 22px;
 }
 
 .notification-badge {
   position: absolute;
-  top: 0;
+  top: -2px;
   right: 2px;
   background-color: #dc3545;
   color: white;
+  border: 1px solid white;
   border-radius: 50px;
   font-size: 10px;
   font-weight: bold;
   min-width: 18px;
+  height: 18px;
   padding: 2px 5px;
-  text-align: center;
-}
-
-.notification-menu {
-  width: 350px;
-  max-width: 90vw;
-  padding: 0;
-}
-
-.notification-list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  white-space: normal;
-  padding: 12px 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.unread-notification {
-  background-color: #eaf3ff;
-}
-
-.notification-date {
-  color: #777;
-  font-size: 11px;
-  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  z-index: 2;
 }

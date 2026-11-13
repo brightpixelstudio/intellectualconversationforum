@@ -43,3 +43,51 @@
   font-size: 1rem !important;
   padding: 2px 10px 2px 10px !important;
 }
+
+.logged-in-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.logged-in-menu>.d-flex {
+  margin-left: auto;
+}
+
+.logged-in-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.logged-in-menu .btn-group {
+  flex-shrink: 0;
+}
+
+.notification-bell {
+  color: white !important;
+  font-size: 22px;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+.notification-bell i {
+  display: inline-block;
+  font-size: 22px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  min-width: 17px;
+  height: 17px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
