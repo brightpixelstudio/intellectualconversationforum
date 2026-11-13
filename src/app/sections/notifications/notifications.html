@@ -1,0 +1,63 @@
+<div class="dropdown">
+  <button
+    class="btn btn-link position-relative notification-bell"
+    type="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    title="Notifications"
+    (click)="loadNotifications()"
+  >
+    <i class="bi bi-bell-fill"></i>
+
+    @if (unreadCount > 0) {
+      <span class="notification-badge">
+        {{ unreadCount > 99 ? '99+' : unreadCount }}
+      </span>
+    }
+  </button>
+
+  <div class="dropdown-menu dropdown-menu-end notification-menu">
+    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+      **Notifications**
+
+      @if (unreadCount > 0) {
+        <button type="button" class="btn btn-sm btn-link" (click)="markAllAsRead()">
+          Mark all as read
+        </button>
+      }
+    </div>
+
+    <hr class="my-1" />
+
+    @if (loading) {
+      <div class="p-3 text-center">Loading notifications...</div>
+    } @else if (errorMessage) {
+      <div class="p-3 text-danger">
+        {{ errorMessage }}
+      </div>
+    } @else if (notifications.length === 0) {
+      <div class="p-3 text-center text-muted">No notifications yet.</div>
+    } @else {
+      <div class="notification-list">
+        @for (notification of notifications; track notification.notificationId) {
+          <button
+            type="button"
+            class="dropdown-item notification-item"
+            [class.unread-notification]="!notification.isRead"
+            (click)="selectNotification(notification)"
+          >
+            <div class="fw-semibold">
+              {{ notification.actorUsername }}
+            </div>
+
+            <div class="small">commented on a post you participated in.</div>
+
+            <div class="notification-date">
+              {{ notification.dateCreated | date: 'short' }}
+            </div>
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

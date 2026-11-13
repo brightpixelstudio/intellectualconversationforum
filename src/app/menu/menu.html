@@ -39,35 +39,43 @@
         }
       }
     </ul>
-    <div class="btn-group">
-      <button
-        type="button"
-        class="btn profile-button dropdown-toggle"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Profile
-      </button>
+    <div class="d-flex align-items-center gap-3">
+      <notifications></notifications>
 
-      <ul class="dropdown-menu">
-        <li>
-          <button type="button" class="dropdown-item" (click)="viewprofile()">View Profile</button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" (click)="editprofile()">
-            Update Profile
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" (click)="usersettings()">My Settings</button>
-        </li>
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn profile-button dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Profile
+        </button>
 
-        <li><hr class="dropdown-divider" /></li>
+        <ul class="dropdown-menu">
+          <li>
+            <button type="button" class="dropdown-item" (click)="viewprofile()">
+              View Profile
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item" (click)="editprofile()">
+              Update Profile
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item" (click)="usersettings()">
+              My Settings
+            </button>
+          </li>
 
-        <li>
-          <button type="button" class="dropdown-item" (click)="logout()">Logout</button>
-        </li>
-      </ul>
+          <li><hr class="dropdown-divider" /></li>
+
+          <li>
+            <button type="button" class="dropdown-item" (click)="logout()">Logout</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 }

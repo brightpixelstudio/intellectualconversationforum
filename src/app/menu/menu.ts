@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../app/services/auth';
 import { ApiServiceUserSettings } from '../services/usersettingsservice';
+import { NotificationsComponent } from '../sections/notifications/notifications';
 
 interface MenuItem {
   label: string;
@@ -12,7 +13,7 @@ interface MenuItem {
 @Component({
   selector: 'menu',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink],
+  imports: [CommonModule, RouterModule, RouterLink, NotificationsComponent],
   templateUrl: './menu.html',
   styleUrls: ['./menu.css'],
 })

@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiServiceAdmin } from '../../../../../services/adminservice';
 import { GetNonActiveMembers } from '../../../../../models/admin/getallnonactivemembers';
+import { AccountStatus } from '../../../../../enums/accountstatus';
 
 @Component({
   selector: 'nonactivemembers',
@@ -44,7 +45,17 @@ export class NonActiveMembers implements OnInit {
   }
 
   makeActive(userid: number) {
-    console.log(userid);
+    this.errorMsg = '';
+    this.showError = false;
+
+    this.apiService
+      .submitAccountStatus(userid, AccountStatus.Active, 'User was made Active again.')
+      .subscribe({
+        next: (data) => {
+          this.loadNonActiveMembers();
+        },
+        error: (error) => {},
+      });
   }
 
   // helpers
