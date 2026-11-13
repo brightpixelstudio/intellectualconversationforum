@@ -56,8 +56,6 @@ export class Catagories implements OnInit {
       return;
     }
 
-    console.log('Here');
-
     this.apiService.submitAddCatagory(this.catagoryText).subscribe({
       next: (data) => {
         this.showSuccess = true;
