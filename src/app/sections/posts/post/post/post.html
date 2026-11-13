@@ -143,22 +143,31 @@
               <div class="row">
                 <div class="col-12">
                   <div class="row">
-                    @if (theComment.userguid === userguidloggedin) {
+                    @if (
+                      theComment.userguid === userguidloggedin ||
+                      usertypeidloggedin == UserType.Admin
+                    ) {
                       <div class="col-3">
-                        <a
-                          [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
-                          class="btn btn-primary editcommentbtn mt-2 me-1"
-                        >
-                          Edit Comment
-                        </a>
-
-                        <button
-                          type="button"
-                          class="btn btn-danger deletecommentbtn mt-2"
-                          (click)="onDeleteCommentClick(theComment.commentguid)"
-                        >
-                          Delete This Comment
-                        </button>
+                        @if (theComment.userguid === userguidloggedin) {
+                          <a
+                            [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
+                            class="btn btn-primary editcommentbtn mt-2 me-1"
+                          >
+                            Edit Comment
+                          </a>
+                        }
+                        @if (
+                          theComment.userguid === userguidloggedin ||
+                          usertypeidloggedin == UserType.Admin
+                        ) {
+                          <button
+                            type="button"
+                            class="btn btn-danger deletecommentbtn mt-2"
+                            (click)="onDeleteCommentClick(theComment.commentguid)"
+                          >
+                            Delete This Comment
+                          </button>
+                        }
                       </div>
                     }
 
@@ -229,7 +238,10 @@
         </button>
       }
 
-      @if (!post.commentsclosed && post.userguid == userguidloggedin) {
+      @if (
+        (!post.commentsclosed && post.userguid == userguidloggedin) ||
+        usertypeidloggedin == UserType.Admin
+      ) {
         <button
           class="btn btn-danger deletebtn mt-3 ms-1"
           id="button{{ post.postid }}"

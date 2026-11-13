@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-6 mb-5">
+  <div class="col-6 mb-3">
     <input
       id="catagory"
       type="text"
       style="width: 70%"
-      class=""
       placeholder="Catagory name"
       [(ngModel)]="catagoryText"
+      maxlength="30"
     />
 
     <button
       type="button"
       class="btn btn-primary editcommentbtn mt-1 ms-3"
       [disabled]="catagoryText.trim().length < 3"
-      // (click)="addCatagory()"
+      (click)="addCatagory()"
     >
       Add Catagory
     </button>

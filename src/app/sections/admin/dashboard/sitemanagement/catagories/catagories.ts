@@ -40,4 +40,45 @@ export class Catagories implements OnInit {
       },
     });
   }
+
+  addCatagory() {
+    this.showSuccess = false;
+    this.showError = false;
+
+    if (!this.catagoryText.trim() || this.catagoryText.trim().length < 3) {
+      return;
+    }
+
+    if (this.checkDuplicateCategory()) {
+      this.showError = true;
+      this.errorMsg = 'This catagory is already in the list.';
+      this.cdr.detectChanges();
+      return;
+    }
+
+    console.log('Here');
+
+    this.apiService.submitAddCatagory(this.catagoryText).subscribe({
+      next: (data) => {
+        this.showSuccess = true;
+        this.loadcatagories();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.showSuccess = false;
+        this.showError = true;
+        this.cdr.detectChanges();
+        this.errorMsg = err;
+      },
+    });
+  }
+
+  // helpers
+  checkDuplicateCategory(): boolean {
+    const category = this.catagoryText.trim().toLowerCase();
+
+    return this.getCatagories.some(
+      (item: GetCatagoryList) => item.catagory.trim().toLowerCase() === category,
+    );
+  }
 }
