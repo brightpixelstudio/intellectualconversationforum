@@ -3,16 +3,20 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { GlobalService } from '../../../../../../services/globalservice';
 import { NotificationModel } from '../../../../../../models/notifications/notificationmodel';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'membernotifications',
-  imports: [JsonPipe],
+  imports: [JsonPipe, FontAwesomeModule],
   templateUrl: './membernotifications.html',
   styleUrl: './membernotifications.css',
 })
 export class MemberNotifications {
   @Input() notifications: NotificationModel[] = [];
   @Input() canUpdate = false;
+
+  faCheck = faCheck;
 
   constructor(
     private apiServiceGlobal: GlobalService,

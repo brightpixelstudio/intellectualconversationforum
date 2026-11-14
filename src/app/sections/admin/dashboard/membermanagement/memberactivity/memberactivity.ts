@@ -30,7 +30,7 @@ export class MemberActivity implements OnChanges {
     if (changes['memberProfile']) {
       const loggedInUserGuid = this.authService.getUserGuid();
 
-      const profileGuid = this.memberProfile?.getUserProfile?.[0]?.userguid;
+      const profileGuid = this.memberProfile?.getPostsMember?.[0]?.userguid;
 
       this.canUpdate = !!loggedInUserGuid && !!profileGuid && profileGuid === loggedInUserGuid;
     }
