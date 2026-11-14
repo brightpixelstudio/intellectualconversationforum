@@ -11,5 +11,5 @@ export interface NotificationModel {
   isRead: boolean;
   dateCreated: Date;
   dateRead: Date | null;
-  profileimageurl: string | null;
+  profileImageUrl: string | null;
 }
