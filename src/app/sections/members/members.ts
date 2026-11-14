@@ -10,7 +10,12 @@ import { GetMostPostsMembers } from '../../models/getmostpostsmembers';
 import { GetLatestLoginsMembers } from '../../models/getlatestloginsmembers';
 import { MemberReportType } from '../../enums/memberreportype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTrash, faPencil, faMagnifyingGlassChart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faPencil,
+  faMagnifyingGlassChart,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'members',
@@ -28,6 +33,7 @@ export class Members implements OnInit {
   userguid: string = '';
   faTrash = faTrash;
   faPencil = faPencil;
+  faUser = faUser;
   faMagnifyingGlassChart = faMagnifyingGlassChart;
 
   constructor(

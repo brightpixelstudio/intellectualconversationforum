@@ -12,7 +12,7 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <p>Edit, Delete and View statistics of Members</p>
+                <p>Statistics of Members</p>
               </div>
               <div class="col-6 membertype">
                 <select
@@ -23,6 +23,7 @@
                 >
                   <option value="all">All Members</option>
                   <option value="newest">Newest</option>
+                  fontawesome
                   <option value="mostposts">Most Posts</option>
                   <option value="lastlogin">Last Logins</option>
                 </select>
@@ -81,15 +82,18 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
-                        @if (theMember.userguid == userguid) {
-                          <a
-                            class="btn actionbtn editBtn"
-                            title="Edit this member"
-                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
-                          >
-                            <fa-icon [icon]="faPencil" />
-                          </a>
-                        }
+                        <a
+                          class="btn actionbtn profileBtn"
+                          title="View this member's profile"
+                          [attr.href]="
+                            '/viewprofile?userguid=' +
+                            theMember.userguid +
+                            '&userid=' +
+                            theMember.userid
+                          "
+                        >
+                          <fa-icon [icon]="faUser" />
+                        </a>
                         <a
                           class="btn actionbtn statisticBtn"
                           title="View this member's statistics"
@@ -102,6 +106,15 @@
                         >
                           <fa-icon [icon]="faMagnifyingGlassChart" />
                         </a>
+                        @if (theMember.userguid == userguid) {
+                          <a
+                            class="btn actionbtn editBtn"
+                            title="Edit this member"
+                            [attr.href]="'/editprofile?userguid=' + theMember.userguid"
+                          >
+                            <fa-icon [icon]="faPencil" />
+                          </a>
+                        }
                         @if (theMember.userguid == userguid) {
                           <button
                             type="button"
