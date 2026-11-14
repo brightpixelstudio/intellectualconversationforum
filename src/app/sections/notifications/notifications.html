@@ -16,12 +16,12 @@
       </span>
     }
   </button>
-  <div class="dropdown-menu dropdown-menu-end notification-menu">
+  <div class="dropdown-menu notification-dropdown">
     <div class="d-flex justify-content-between align-items-center px-3 py-2">
       Notifications
 
       @if (unreadCount > 0) {
-        <button type="button" class="btn btn-sm btn-link" (click)="markAllAsRead()">
+        <button type="button" class="btn btn-success editcommentbtn" (click)="markAllAsRead()">
           Mark all as read
         </button>
       }
@@ -42,18 +42,24 @@
         @for (notification of notifications; track notification.notificationId) {
           <button
             type="button"
-            class="dropdown-item notification-item"
+            class="dropdown-item notification-item d-flex align-items-start"
             [class.unread-notification]="!notification.isRead"
             (click)="selectNotification(notification)"
           >
-            <div class="fw-semibold">
-              {{ notification.actorUsername }}
+            <img
+              [src]="notification.profileimageurl || '/images/default-profile.png'"
+              class="notification-profile-image"
+              alt="Profile"
+            />
+            <div class="flex-grow-1">
+              <p class="mb-0 mt-1 notification-text">
+                <strong>{{ notification.actorName }}</strong>
+                <i> commented on the post, "{{ notification.postShortText }}"</i>
+              </p>
             </div>
 
-            <div class="small">commented on a post you participated in.</div>
-
-            <div class="notification-date">
-              {{ notification.dateCreated | date: 'short' }}
+            <div class="ms-2 mt-1 flex-shrink-0 text-nowrap">
+              <p style="font-size: 12px">{{ getTimeAgo(notification.dateCreated) }}</p>
             </div>
           </button>
         }

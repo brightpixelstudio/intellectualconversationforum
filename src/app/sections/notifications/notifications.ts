@@ -1,15 +1,16 @@
 import { Component, ChangeDetectorRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { ApiServiceNotifications } from '../../services/notificationservice';
 import { NotificationModel } from '../../models/notifications/notificationmodel';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GlobalService } from '../../services/globalservice';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'notifications',
   standalone: true,
-  imports: [DatePipe, FontAwesomeModule],
+  imports: [DatePipe, JsonPipe, FontAwesomeModule],
   templateUrl: './notifications.html',
   styleUrl: './notifications.css',
 })
@@ -24,7 +25,10 @@ export class NotificationsComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  constructor(private notificationService: ApiServiceNotifications) {}
+  constructor(
+    private notificationService: ApiServiceNotifications,
+    private apiServiceGlobal: GlobalService,
+  ) {}
 
   ngOnInit(): void {
     this.loadNotifications();
@@ -92,5 +96,9 @@ export class NotificationsComponent implements OnInit {
         this.unreadCount = 0;
       },
     });
+  }
+
+  getTimeAgo(date: string | Date): string {
+    return this.apiServiceGlobal.getTimeAgo(date);
   }
 }

@@ -1,3 +1,67 @@
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  white-space: normal !important;
+  text-align: left;
+  padding: 8px 10px 8px 10px !important;
+}
+
+.notification-item:hover, .unread-notification:hover {
+  background-color: #d7e8ff !important;
+}
+
+.notification-item .flex-grow-1 {
+  min-width: 0;
+}
+
+.unread-notification {
+  background-color: #eaf3ff;
+}
+
+.notification-text {
+  white-space: normal;
+  overflow-wrap: break-word;
+  margin-bottom: 0;
+  font-size: 13px
+}
+
+.notification-item small {
+  white-space: nowrap !important;
+  display: inline-block;
+  width: max-content;
+  font-size: 13px
+}
+
+.notification-profile-image {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.notification-dropdown {
+  width: 450px !important;
+  min-width: 450px !important;
+  max-width: calc(100vw - 30px);
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  gap: 10px;
+}
+
+.notification-header button {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .notification-bell {
   color: white !important;
   font-size: 22px;
