@@ -4,6 +4,7 @@ export interface NotificationModel {
   actorUserId: number;
   actorUsername: string;
   actorName: string;
+  actorguid: string;
   postShortText: string;
   postId: number;
   postGuid: string;
