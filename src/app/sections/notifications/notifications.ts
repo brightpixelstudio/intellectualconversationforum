@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GlobalService } from '../../services/globalservice';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'notifications',
@@ -28,6 +29,7 @@ export class NotificationsComponent implements OnInit {
   constructor(
     private notificationService: ApiServiceNotifications,
     private apiServiceGlobal: GlobalService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -68,19 +70,35 @@ export class NotificationsComponent implements OnInit {
   }
 
   selectNotification(notification: NotificationModel): void {
+    const navigateToPost = () => {
+      this.router.navigate(['/post'], {
+        queryParams: {
+          postguid: notification.postGuid,
+          postcommentid: notification.postCommentId,
+        },
+      });
+    };
+
     if (!notification.isRead) {
       this.notificationService.markNotificationRead(notification.notificationId).subscribe({
         next: () => {
           notification.isRead = true;
           notification.dateRead = new Date();
+
           this.loadUnreadCount();
+
+          navigateToPost();
+        },
+        error: () => {
+          navigateToPost();
         },
       });
+    } else {
+      navigateToPost();
     }
 
     this.notificationSelected.emit(notification);
   }
-
   markAllAsRead(): void {
     if (this.unreadCount === 0) {
       return;

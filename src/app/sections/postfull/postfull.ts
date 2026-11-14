@@ -29,6 +29,7 @@ export class PostFull implements OnInit {
 
   showRatings = false;
   thePost: GetPost | null = null;
+  postCommentId: string | null = null;
   theComments: GetPostComments[] = [];
   thePostRatings: GetRatings[] = [];
 
@@ -48,6 +49,9 @@ export class PostFull implements OnInit {
     this.postguid = postguid;
     this.userguid = this.authService.getUserGuid() ?? '';
 
+    // Are we scrolling to a comment?
+    this.postCommentId = this.route.snapshot.queryParamMap.get('postcommentid');
+
     // load the post / comments
     forkJoin({
       users: this.apiServiceUser.getUserList(),
@@ -62,6 +66,8 @@ export class PostFull implements OnInit {
         this.thePostRatings = response.ratings;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         this.cdr.detectChanges();
+
+        this.scrollToComment();
       },
       error: (err) => console.error('One of the requests failed!', err),
     });
@@ -151,5 +157,18 @@ export class PostFull implements OnInit {
 
   toggleRatings(): void {
     this.showRatings = !this.showRatings;
+  }
+
+  scrollToComment(): void {
+    if (!this.postCommentId) return;
+
+    setTimeout(() => {
+      const element = document.getElementById(`comment-${this.postCommentId}`);
+
+      element?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }, 100);
   }
 }
