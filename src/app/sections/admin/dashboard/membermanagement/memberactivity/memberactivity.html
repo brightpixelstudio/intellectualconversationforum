@@ -6,11 +6,11 @@
       <li class="nav-item" role="presentation">
         <a
           class="nav-link active"
-          id="member-tab-0"
+          id="member-tab-30"
           data-bs-toggle="tab"
-          href="#member-tabpanel-0"
+          href="#member-tabpanel-30"
           role="tab"
-          aria-controls="member-tabpanel-0"
+          aria-controls="member-tabpanel-30"
           aria-selected="true"
           >Recent Posts</a
         >
@@ -18,11 +18,11 @@
       <li class="nav-item" role="presentation">
         <a
           class="nav-link"
-          id="member-tab-1"
+          id="member-tab-31"
           data-bs-toggle="tab"
-          href="#member-tabpanel-1"
+          href="#member-tabpanel-31"
           role="tab"
-          aria-controls="member-tabpanel-1"
+          aria-controls="member-tabpanel-31"
           aria-selected="false"
           >Recent Comments</a
         >
@@ -30,11 +30,11 @@
       <li class="nav-item" role="presentation">
         <a
           class="nav-link"
-          id="member-tab-2"
+          id="member-tab-32"
           data-bs-toggle="tab"
-          href="#member-tabpanel-2"
+          href="#member-tabpanel-32"
           role="tab"
-          aria-controls="member-tabpanel-2"
+          aria-controls="member-tabpanel-32"
           aria-selected="false"
           >Posts They Rated</a
         >
@@ -42,11 +42,11 @@
       <li class="nav-item" role="presentation">
         <a
           class="nav-link"
-          id="member-tab-3"
+          id="member-tab-33"
           data-bs-toggle="tab"
-          href="#member-tabpanel-3"
+          href="#member-tabpanel-33"
           role="tab"
-          aria-controls="member-tabpanel-3"
+          aria-controls="member-tabpanel-33"
           aria-selected="false"
           >Comments They Rated</a
         >
@@ -54,35 +54,50 @@
       <li class="nav-item" role="presentation">
         <a
           class="nav-link"
-          id="member-tab-4"
+          id="member-tab-34"
           data-bs-toggle="tab"
-          href="#member-tabpanel-4"
+          href="#member-tabpanel-34"
           role="tab"
-          aria-controls="member-tabpanel-4"
+          aria-controls="member-tabpanel-34"
           aria-selected="false"
           >Account Status History</a
         >
       </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          id="member-tab-35"
+          data-bs-toggle="tab"
+          href="#member-tabpanel-35"
+          role="tab"
+          aria-controls="member-tabpanel-35"
+          aria-selected="false"
+          >Notifications</a
+        >
+      </li>
     </ul>
     <div class="tab-content pt-3" id="tab-content">
-      <div class="tab-pane active" id="member-tabpanel-0" role="tabpanel" aria-labelledby="tab-0">
+      <div class="tab-pane active" id="member-tabpanel-30" role="tabpanel" aria-labelledby="tab-30">
         <memberrecentposts [posts]="memberProfile.getPostsMember"> </memberrecentposts>
       </div>
-      <div class="tab-pane" id="member-tabpanel-1" role="tabpanel" aria-labelledby="tab-1">
+      <div class="tab-pane" id="member-tabpanel-31" role="tabpanel" aria-labelledby="tab-31">
         <memberrecentcomments [comments]="memberProfile.getCommentsMember"></memberrecentcomments>
       </div>
-      <div class="tab-pane" id="member-tabpanel-2" role="tabpanel" aria-labelledby="tab-2">
+      <div class="tab-pane" id="member-tabpanel-32" role="tabpanel" aria-labelledby="tab-32">
         <memberpostratings [postRatings]="memberProfile.getPostRatingsMember"></memberpostratings>
       </div>
-      <div class="tab-pane" id="member-tabpanel-3" role="tabpanel" aria-labelledby="tab-3">
+      <div class="tab-pane" id="member-tabpanel-33" role="tabpanel" aria-labelledby="tab-33">
         <membercommentratings
           [commentRatings]="memberProfile.getCommentRatingsMember"
         ></membercommentratings>
       </div>
-      <div class="tab-pane" id="member-tabpanel-4" role="tabpanel" aria-labelledby="tab-4">
+      <div class="tab-pane" id="member-tabpanel-34" role="tabpanel" aria-labelledby="tab-34">
         <memberaccountstatushistory
           [accountStatusHistory]="memberProfile.getAccountStatusHistoryMember"
         ></memberaccountstatushistory>
+      </div>
+      <div class="tab-pane" id="member-tabpanel-35" role="tabpanel" aria-labelledby="tab-35">
+        Notifications
       </div>
     </div>
   </div>
