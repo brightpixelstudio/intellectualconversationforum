@@ -1,4 +1,13 @@
-import { Component, ChangeDetectorRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  Input,
+  inject,
+} from '@angular/core';
+import { AuthService } from '../../services/auth';
 import { ApiServiceNotifications } from '../../services/notificationservice';
 import { NotificationModel } from '../../models/notifications/notificationmodel';
 import { DatePipe, JsonPipe } from '@angular/common';
@@ -16,12 +25,15 @@ import { Router } from '@angular/router';
   styleUrl: './notifications.css',
 })
 export class NotificationsComponent implements OnInit {
+  @Input() limit: number = 20;
   @Output() notificationSelected = new EventEmitter<NotificationModel>();
 
   private cdr = inject(ChangeDetectorRef);
   notifications: NotificationModel[] = [];
   unreadCount = 0;
   faBell = faBell;
+  userguid = '';
+  userid = 0;
 
   loading = false;
   errorMessage = '';
@@ -29,10 +41,13 @@ export class NotificationsComponent implements OnInit {
   constructor(
     private notificationService: ApiServiceNotifications,
     private apiServiceGlobal: GlobalService,
+    public authService: AuthService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.userguid = this.authService.getUserGuid() ?? '';
+    this.userid = this.authService.getUserId() ?? 0;
     this.loadNotifications();
   }
 
@@ -41,7 +56,7 @@ export class NotificationsComponent implements OnInit {
     this.errorMessage = '';
 
     this.notificationService
-      .getNotifications()
+      .getNotifications(this.userid, this.limit, 0)
       .pipe(
         finalize(() => {
           this.loading = false;

@@ -9,6 +9,7 @@ import { GetProfileMember } from '../models/member/getprofilemember';
 import { GetUserList } from '../models/member/getuserlist';
 import { environment } from '../../environments/environment';
 import { GetAccountStatuses } from '../models/member/getaccountstatuses';
+import { NotificationModel } from '../models/notifications/notificationmodel';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
@@ -16,6 +17,7 @@ import { GetAccountStatuses } from '../models/member/getaccountstatuses';
 export class ApiServiceUser {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/user'; // Uses the API URL from environment
+  private apiUrlNotifications = environment.apiUrl + '/notification'; // Uses the API URL from environment
 
   getAllProfileMembers(): Observable<GetAllProfileMembers[]> {
     return this.http.get<GetAllProfileMembers[]>(this.apiUrl + '/GetAllProfileMembers');
@@ -41,7 +43,12 @@ export class ApiServiceUser {
     return this.http.get<GetAccountStatuses[]>(this.apiUrl + '/getAccountStatuses');
   }
 
-  getUserProfileStatistics(userguid: string | undefined): Observable<any> {
+  getUserProfileStatistics(
+    userguid: string | undefined,
+    userid: number,
+    limit: number = 20,
+    offset: number = 0,
+  ): Observable<any> {
     // definitions of models is not needed in this architecture
     const getUserProfile$ = this.http.get<GetProfileMember>(
       this.apiUrl + `/getProfileMember?userguid=${userguid}`,
@@ -59,6 +66,10 @@ export class ApiServiceUser {
     const getAccountStatusHistoryMember$ = this.http.get(
       this.apiUrl + `/getAccountStatusHistoryMember?userguid=${userguid}`,
     );
+    const getNotifications$ = this.http.get(this.apiUrlNotifications + `/getNotifications`, {
+      params: { userid, limit, offset },
+    });
+
     return forkJoin({
       getUserProfile: getUserProfile$,
       getPostsMember: getPostsMember$,
@@ -66,6 +77,7 @@ export class ApiServiceUser {
       getPostRatingsMember: getPostRatingsMember$,
       getCommentRatingsMember: getCommentRatingsMember$,
       getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
+      getNotifications: getNotifications$,
     });
   }
 

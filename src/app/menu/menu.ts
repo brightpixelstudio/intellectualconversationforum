@@ -36,6 +36,7 @@ export class MenuComponent {
 
   viewprofile(): void {
     const userGuid = this.authService.getUserGuid();
+    const userId = this.authService.getUserId();
 
     if (!userGuid) {
       this.router.navigate(['/login']);
@@ -43,7 +44,7 @@ export class MenuComponent {
     }
 
     this.router.navigate(['/viewprofile'], {
-      queryParams: { userguid: userGuid },
+      queryParams: { userguid: userGuid, userid: userId },
     });
   }
 

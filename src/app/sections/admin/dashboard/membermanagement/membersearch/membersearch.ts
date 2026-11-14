@@ -14,11 +14,12 @@ export class MemberSearchComponent {
   private apiServiceAdmin = inject(ApiServiceAdmin);
   private cdr = inject(ChangeDetectorRef);
 
-  @Output() memberSelected = new EventEmitter<string>();
+  @Output() memberSelected = new EventEmitter<MemberSearch>();
 
   searchText = '';
   members: MemberSearch[] = [];
   selectedUserGuid = '';
+  selectedUserId = 0;
   loading = false;
   errorMessage = '';
 
@@ -54,7 +55,13 @@ export class MemberSearchComponent {
   }
 
   selectMember(userguid: string): void {
-    this.selectedUserGuid = userguid;
-    this.memberSelected.emit(userguid);
+    const member = this.members.find((m) => m.userguid === userguid);
+
+    if (!member) return;
+
+    this.selectedUserGuid = member.userguid;
+    this.selectedUserId = member.userid;
+
+    this.memberSelected.emit(member);
   }
 }

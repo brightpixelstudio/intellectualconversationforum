@@ -14,6 +14,7 @@ import { MemberProfile } from '../admin/dashboard/membermanagement/memberprofile
 })
 export class ViewProfile implements OnInit {
   userguid: string = '';
+  userid: number = 0;
   getUserProfile: any = '';
 
   // image
@@ -35,9 +36,14 @@ export class ViewProfile implements OnInit {
       return;
     }
     this.userguid = userguid;
+    const userid = this.route.snapshot.queryParamMap.get('userid');
+    if (!userid) {
+      return;
+    }
+    this.userid = +userid;
 
     // user forkjoin in service call
-    this.apiServiceUser.getUserProfileStatistics(this.userguid).subscribe({
+    this.apiServiceUser.getUserProfileStatistics(this.userguid, this.userid, 200).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserProfile = data;

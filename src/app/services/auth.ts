@@ -15,6 +15,7 @@ export class AuthService {
   private readonly userGuidStorageKey = 'userGuid';
   private userGuid: string | null = localStorage.getItem(this.userGuidStorageKey);
   private userTypeId: number | null = null;
+  private userId: number | null = null;
 
   //  private accessToken: string | null = localStorage.getItem(this.tokenStorageKey);
   private accessToken: string | null = localStorage.getItem('accessToken');
@@ -32,6 +33,8 @@ export class AuthService {
         localStorage.setItem(this.tokenStorageKey, response.token);
         this.userTypeId = response.usertypeid;
         localStorage.setItem('userTypeIdStorageKey', response.usertypeid.toString());
+        this.userId = response.userid;
+        localStorage.setItem('userIdStorageKey', response.userid.toString());
         if (this.userGuid) {
           localStorage.setItem(this.userGuidStorageKey, this.userGuid);
         }
@@ -57,6 +60,18 @@ export class AuthService {
     this.userTypeId = storedValue ? Number(storedValue) : null;
 
     return this.userTypeId;
+  }
+
+  getUserId(): number | null {
+    if (this.userId !== null) {
+      return this.userId;
+    }
+
+    const storedValue = localStorage.getItem('userIdStorageKey');
+
+    this.userId = storedValue ? Number(storedValue) : null;
+
+    return this.userId;
   }
 
   isLoggedIn(): boolean {
@@ -95,20 +110,24 @@ export class AuthService {
     this.accessToken = null;
     this.userGuid = null;
     this.userTypeId = null;
+    this.userId = null;
 
     localStorage.removeItem(this.tokenStorageKey);
     localStorage.removeItem(this.userGuidStorageKey);
     localStorage.removeItem('userTypeIdStorageKey');
+    localStorage.removeItem('userIdStorageKey');
   }
 
   logout(): void {
     this.accessToken = null;
     this.userGuid = null;
     this.userTypeId = null;
+    this.userId = null;
 
     localStorage.removeItem(this.tokenStorageKey);
     localStorage.removeItem(this.userGuidStorageKey);
     localStorage.removeItem('userTypeIdStorageKey');
+    localStorage.removeItem('userIdStorageKey');
 
     this.router.navigateByUrl('/', { replaceUrl: true });
   }

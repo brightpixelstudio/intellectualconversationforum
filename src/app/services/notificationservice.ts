@@ -11,9 +11,13 @@ export class ApiServiceNotifications {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/notification'; // Uses the API URL from environment
 
-  getNotifications(limit: number = 20, offset: number = 0): Observable<NotificationModel[]> {
+  getNotifications(
+    userid: number,
+    limit: number = 20,
+    offset: number = 0,
+  ): Observable<NotificationModel[]> {
     return this.http.get<NotificationModel[]>(`${this.apiUrl}/GetNotifications`, {
-      params: { limit, offset },
+      params: { userid, limit, offset },
     });
   }
 

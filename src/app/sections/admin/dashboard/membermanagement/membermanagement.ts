@@ -18,11 +18,11 @@ export class MemberManagement {
 
   constructor(private apiServiceUser: ApiServiceUser) {}
 
-  loadMemberProfile(userguid: string): void {
+  loadMemberProfile(userguid: string, userid: number): void {
     this.selectedUserGuid = userguid;
     this.getUserProfile = null;
 
-    this.apiServiceUser.getUserProfileStatistics(userguid).subscribe({
+    this.apiServiceUser.getUserProfileStatistics(userguid, userid, 200).subscribe({
       next: (data) => {
         this.getUserProfile = data;
         this.cdr.detectChanges();

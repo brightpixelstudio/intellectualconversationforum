@@ -97,7 +97,8 @@
         ></memberaccountstatushistory>
       </div>
       <div class="tab-pane" id="member-tabpanel-35" role="tabpanel" aria-labelledby="tab-35">
-        Notifications
+        <membernotifications [notifications]="memberProfile.getNotifications">
+        </membernotifications>
       </div>
     </div>
   </div>

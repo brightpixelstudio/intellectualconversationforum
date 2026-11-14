@@ -4,7 +4,7 @@ import { MemberRecentComments } from '../memberactivity/memberrecentcomments/mem
 import { MemberPostRatings } from '../memberactivity/memberpostratings/memberpostratings';
 import { MemberCommentRatings } from '../memberactivity/membercommentratings/membercommentratings';
 import { MemberAccountStatusHistory } from '../memberactivity/memberaccountstatushistory/memberaccountstatushistory';
-import { MemberProfile } from '../memberprofile/memberprofile';
+import { MemberNotifications } from '../memberactivity/membernotifications/membernotifications';
 
 @Component({
   selector: 'memberactivity',
@@ -14,6 +14,7 @@ import { MemberProfile } from '../memberprofile/memberprofile';
     MemberPostRatings,
     MemberCommentRatings,
     MemberAccountStatusHistory,
+    MemberNotifications,
   ],
   templateUrl: './memberactivity.html',
   styleUrl: './memberactivity.css',

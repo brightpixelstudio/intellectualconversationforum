@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class MemberStatistics implements OnInit {
   userguidloggedin: string = '';
   userguid: string = '';
+  userid: number = 0;
 
   getUserStatisticsInformation: any = '';
 
@@ -28,9 +29,12 @@ export class MemberStatistics implements OnInit {
     const userguid = this.route.snapshot.queryParamMap.get('userguid');
     if (!userguid) return;
     this.userguid = userguid;
+    const userid = this.route.snapshot.queryParamMap.get('userid');
+    if (!userid) return;
+    this.userid = +userid;
 
     // forkjoin in the service will call all the procedures at once and return the data in one object.
-    this.apiService.getUserProfileStatistics(this.userguid).subscribe({
+    this.apiService.getUserProfileStatistics(this.userguid, this.userid, 200).subscribe({
       next: (data) => {
         // Data maps exactly to the keys defined in forkJoin
         this.getUserStatisticsInformation = data;
