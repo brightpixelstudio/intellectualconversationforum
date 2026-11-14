@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { DatePipe, JsonPipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { GlobalService } from '../../../../../../services/globalservice';
+import { ApiServiceNotifications } from '../../../../../../services/notificationservice';
 import { NotificationModel } from '../../../../../../models/notifications/notificationmodel';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -20,6 +21,7 @@ export class MemberNotifications {
 
   constructor(
     private apiServiceGlobal: GlobalService,
+    private notificationService: ApiServiceNotifications,
     private router: Router,
   ) {}
 
@@ -37,15 +39,12 @@ export class MemberNotifications {
       });
     };
 
-    /*
-    // Are they the actual user?  NOT the admin
-    if (!notification.isRead) {
+    // Are they the actual user?
+    if (!notification.isRead && this.canUpdate) {
       this.notificationService.markNotificationRead(notification.notificationId).subscribe({
         next: () => {
           notification.isRead = true;
           notification.dateRead = new Date();
-
-          this.loadUnreadCount();
 
           navigateToPost();
         },
@@ -56,10 +55,5 @@ export class MemberNotifications {
     } else {
       navigateToPost();
     }
-    */
-
-    navigateToPost();
-
-    //    this.notificationSelected.emit(notification);
   }
 }
