@@ -38,8 +38,6 @@ export class MemberActivity implements OnChanges {
         !!loggedInUserGuid &&
         !!profileGuid &&
         profileGuid.trim().toLowerCase() === loggedInUserGuid.trim().toLowerCase();
-
-      console.log(this.canUpdate);
     }
   }
 }

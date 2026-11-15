@@ -51,30 +51,32 @@
           >Comments They Rated</a
         >
       </li>
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link"
-          id="member-tab-34"
-          data-bs-toggle="tab"
-          href="#member-tabpanel-34"
-          role="tab"
-          aria-controls="member-tabpanel-34"
-          aria-selected="false"
-          >Account Status History</a
-        >
-      </li>
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link"
-          id="member-tab-35"
-          data-bs-toggle="tab"
-          href="#member-tabpanel-35"
-          role="tab"
-          aria-controls="member-tabpanel-35"
-          aria-selected="false"
-          >Notifications</a
-        >
-      </li>
+      @if (this.canUpdate) {
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="member-tab-34"
+            data-bs-toggle="tab"
+            href="#member-tabpanel-34"
+            role="tab"
+            aria-controls="member-tabpanel-34"
+            aria-selected="false"
+            >Account Status History</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="member-tab-35"
+            data-bs-toggle="tab"
+            href="#member-tabpanel-35"
+            role="tab"
+            aria-controls="member-tabpanel-35"
+            aria-selected="false"
+            >Notifications</a
+          >
+        </li>
+      }
     </ul>
     <div class="tab-content pt-3" id="tab-content">
       <div class="tab-pane active" id="member-tabpanel-30" role="tabpanel" aria-labelledby="tab-30">
@@ -91,18 +93,20 @@
           [commentRatings]="memberProfile.getCommentRatingsMember"
         ></membercommentratings>
       </div>
-      <div class="tab-pane" id="member-tabpanel-34" role="tabpanel" aria-labelledby="tab-34">
-        <memberaccountstatushistory
-          [accountStatusHistory]="memberProfile.getAccountStatusHistoryMember"
-        ></memberaccountstatushistory>
-      </div>
-      <div class="tab-pane" id="member-tabpanel-35" role="tabpanel" aria-labelledby="tab-35">
-        <membernotifications
-          [notifications]="memberProfile.getNotifications"
-          [isAdmin]="isAdmin"
-          [canUpdate]="canUpdate"
-        ></membernotifications>
-      </div>
+      @if (this.canUpdate) {
+        <div class="tab-pane" id="member-tabpanel-34" role="tabpanel" aria-labelledby="tab-34">
+          <memberaccountstatushistory
+            [accountStatusHistory]="memberProfile.getAccountStatusHistoryMember"
+          ></memberaccountstatushistory>
+        </div>
+        <div class="tab-pane" id="member-tabpanel-35" role="tabpanel" aria-labelledby="tab-35">
+          <membernotifications
+            [notifications]="memberProfile.getNotifications"
+            [isAdmin]="isAdmin"
+            [canUpdate]="canUpdate"
+          ></membernotifications>
+        </div>
+      }
     </div>
   </div>
 </div>

@@ -2,16 +2,30 @@
   <div class="row">
     <div class="col-12">
       <div class="posttitle d-flex align-items-center gap-2">
-        <img
-          [src]="post.profileimageurl || '/images/default-profile.png'"
-          [alt]="post.name + ' profile image'"
-          class="post-profile-image"
-          width="40"
-          height="40"
-        />
+        <a
+          class="btn actionbtn profileBtn"
+          title="View this member's profile"
+          [attr.href]="'/viewprofile?userguid=' + post.userguid + '&userid=' + post.userid"
+        >
+          <img
+            [src]="post.profileimageurl || '/images/default-profile.png'"
+            [alt]="post.name + ' profile image'"
+            class="post-profile-image"
+            width="40"
+            height="40"
+          />
+        </a>
         <div>
           <p class="title">
-            <strong>{{ post.name }}</strong>
+            <a
+              class="btn actionbtn profileBtn"
+              style="color: rgb(16, 138, 245)"
+              title="View this member's profile"
+              [attr.href]="'/viewprofile?userguid=' + post.userguid + '&userid=' + post.userid"
+            >
+              {{ post.name }}
+            </a>
+
             @if (isAdmin) {
               <button
                 type="button"

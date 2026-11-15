@@ -178,6 +178,19 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
+                        <a
+                          class="btn actionbtn profileBtn"
+                          title="View this member's profile"
+                          [attr.href]="
+                            '/viewprofile?userguid=' +
+                            theMember.userguid +
+                            '&userid=' +
+                            theMember.userid
+                          "
+                        >
+                          <fa-icon [icon]="faUser" />
+                        </a>
+
                         @if (theMember.userguid == userguid) {
                           <a
                             class="btn actionbtn editBtn"
@@ -263,6 +276,18 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
+                        <a
+                          class="btn actionbtn profileBtn"
+                          title="View this member's profile"
+                          [attr.href]="
+                            '/viewprofile?userguid=' +
+                            theMember.userguid +
+                            '&userid=' +
+                            theMember.userid
+                          "
+                        >
+                          <fa-icon [icon]="faUser" />
+                        </a>
                         @if (theMember.userguid == userguid) {
                           <a
                             class="btn actionbtn editBtn"
@@ -347,6 +372,18 @@
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
                       <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
+                        <a
+                          class="btn actionbtn profileBtn"
+                          title="View this member's profile"
+                          [attr.href]="
+                            '/viewprofile?userguid=' +
+                            theMember.userguid +
+                            '&userid=' +
+                            theMember.userid
+                          "
+                        >
+                          <fa-icon [icon]="faUser" />
+                        </a>
                         @if (theMember.userguid == userguid) {
                           <a
                             class="btn actionbtn editBtn"

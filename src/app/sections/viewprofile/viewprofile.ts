@@ -41,9 +41,6 @@ export class ViewProfile implements OnInit {
 
     const loggedInUserGuid = this.authService.getUserGuid();
 
-    console.log('Logged In', loggedInUserGuid);
-    console.log('Viewing', this.userguid);
-
     this.canUpdate =
       !!loggedInUserGuid && !!userguid && userguid.toLowerCase() === loggedInUserGuid.toLowerCase();
 
