@@ -1,7 +1,12 @@
 <membersearch (memberSelected)="loadMemberProfile($event.userguid, $event.userid)"> </membersearch>
 
 @if (getUserProfile) {
-  <memberprofile [getUserProfile]="getUserProfile.getUserProfile" [isAdmin]="true"></memberprofile>
+  <memberprofile
+    [getUserProfile]="getUserProfile.getUserProfile"
+    [isAdmin]="true"
+    [canUpdate]="canUpdate"
+    >></memberprofile
+  >
   <memberupdate [member]="getUserProfile.getUserProfile"></memberupdate>
   <memberactivity [memberProfile]="getUserProfile"> </memberactivity>
 }

@@ -15,6 +15,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 })
 export class MemberNotifications {
   @Input() notifications: NotificationModel[] = [];
+  @Input() isAdmin = false;
   @Input() canUpdate = false;
 
   faCheck = faCheck;

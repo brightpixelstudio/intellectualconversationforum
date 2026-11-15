@@ -4,15 +4,18 @@
       <memberprofile
         [getUserProfile]="getUserProfile.getUserProfile"
         [isAdmin]="false"
+        [canUpdate]="canUpdate"
       ></memberprofile>
 
-      <div class="mt-2">
-        <button class="updatebtn btn btn-primary mt-2" (click)="editprofile()">
-          Update Profile
-        </button>
-      </div>
+      @if (canUpdate) {
+        <div class="mt-2">
+          <button class="updatebtn btn btn-primary mt-2" (click)="editprofile()">
+            Update Profile
+          </button>
+        </div>
+      }
 
-      <memberactivity [memberProfile]="getUserProfile" [canUpdate]="true"></memberactivity>
+      <memberactivity [memberProfile]="getUserProfile" [isAdmin]="false"></memberactivity>
     </div>
   </div>
 }

@@ -15,11 +15,8 @@ import { MemberProfile } from '../admin/dashboard/membermanagement/memberprofile
 export class ViewProfile implements OnInit {
   userguid: string = '';
   userid: number = 0;
+  canUpdate: boolean = false;
   getUserProfile: any = '';
-
-  // image
-  profileImage: File | null = null;
-  profileImagePreview: string | null = null;
 
   constructor(
     public authService: AuthService,
@@ -41,6 +38,14 @@ export class ViewProfile implements OnInit {
       return;
     }
     this.userid = +userid;
+
+    const loggedInUserGuid = this.authService.getUserGuid();
+
+    console.log('Logged In', loggedInUserGuid);
+    console.log('Viewing', this.userguid);
+
+    this.canUpdate =
+      !!loggedInUserGuid && !!userguid && userguid.toLowerCase() === loggedInUserGuid.toLowerCase();
 
     // user forkjoin in service call
     this.apiServiceUser.getUserProfileStatistics(this.userguid, this.userid, 200).subscribe({

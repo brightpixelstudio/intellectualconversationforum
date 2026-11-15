@@ -1,14 +1,5 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ChangeDetectorRef,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
-import { ApiServiceUser } from './../../../../../services/userservice';
-import { GetProfileMember } from '../../../../../models/member/getprofilemember';
 
 @Component({
   selector: 'memberprofile',
@@ -19,13 +10,9 @@ import { GetProfileMember } from '../../../../../models/member/getprofilemember'
 export class MemberProfile implements OnChanges {
   @Input({ required: true }) getUserProfile: any = null;
   @Input({ required: true }) isAdmin: boolean = false;
-  loading = false;
-  errorMessage = '';
+  @Input({ required: true }) canUpdate = false;
 
-  constructor(
-    private apiServiceUser: ApiServiceUser,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['getUserProfile'] && this.getUserProfile) {

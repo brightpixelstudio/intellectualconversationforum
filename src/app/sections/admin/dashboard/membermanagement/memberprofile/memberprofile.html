@@ -8,16 +8,11 @@
               <h3 class="pb-3 pt-3">Profile</h3>
             </div>
           </div>
-          <div class="row">
-            <div class="col-6">
-              <p>Profile and statistics</p>
-            </div>
-          </div>
         }
 
         <div class="row">
           <div class="col-10 pt-2">
-            @if (isAdmin) {
+            @if (canUpdate) {
               <h5 class="pb-3">Profile</h5>
             }
             <img
@@ -26,13 +21,15 @@
             />
             <div class="mt-3">
               <p class="title" style="font-size: 22px">
-                <strong>{{ getUserProfile?.name }}</strong
-                >, {{ getUserProfile?.email }}
+                <strong>{{ getUserProfile?.name }}</strong>
+                @if (canUpdate || isAdmin) {
+                  , {{ getUserProfile?.email }}
+                }
               </p>
             </div>
             <div>
               <strong>User Type:</strong> {{ getUserProfile?.type }}<br />
-              @if (isAdmin) {
+              @if (canUpdate || isAdmin) {
                 <strong>Account Status:</strong> {{ getUserProfile?.accountstatus }}<br />
               }
               <strong>Zipcode:</strong> {{ getUserProfile?.zipcode }}<br />

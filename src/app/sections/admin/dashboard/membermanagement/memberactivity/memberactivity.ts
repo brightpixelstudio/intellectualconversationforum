@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MemberRecentPosts } from '../memberactivity/memberrecentposts/memberrecentposts';
 import { MemberRecentComments } from '../memberactivity/memberrecentcomments/memberrecentcomments';
 import { MemberPostRatings } from '../memberactivity/memberpostratings/memberpostratings';
@@ -22,7 +22,9 @@ import { AuthService } from '../../../../../services/auth';
 })
 export class MemberActivity implements OnChanges {
   @Input({ required: true }) memberProfile!: any;
-  @Input() canUpdate = false;
+  @Input() isAdmin = false;
+
+  canUpdate = false;
 
   constructor(private authService: AuthService) {}
 
@@ -32,7 +34,12 @@ export class MemberActivity implements OnChanges {
 
       const profileGuid = this.memberProfile?.getPostsMember?.[0]?.userguid;
 
-      this.canUpdate = !!loggedInUserGuid && !!profileGuid && profileGuid === loggedInUserGuid;
+      this.canUpdate =
+        !!loggedInUserGuid &&
+        !!profileGuid &&
+        profileGuid.trim().toLowerCase() === loggedInUserGuid.trim().toLowerCase();
+
+      console.log(this.canUpdate);
     }
   }
 }
