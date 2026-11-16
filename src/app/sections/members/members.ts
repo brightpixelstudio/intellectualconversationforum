@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServiceStatistics } from '../../services/statisticservice';
-import { GetAllProfileMembers } from '../../models/getallprofilemembers';
+import { ApiServiceAdmin } from '../../services/adminservice';
+// import { GetAllProfileMembers } from '../../models/getallprofilemembers';
+import { MemberSearch } from '../../models/admin/membersearch';
 import { GetNewestMembers } from '../../models/getnewestmembers';
 import { GetMostPostsMembers } from '../../models/getmostpostsmembers';
 import { GetLatestLoginsMembers } from '../../models/getlatestloginsmembers';
@@ -19,12 +21,12 @@ import {
 
 @Component({
   selector: 'members',
-  imports: [DatePipe, FontAwesomeModule],
+  imports: [DatePipe, FontAwesomeModule, FormsModule],
   templateUrl: './members.html',
   styleUrl: './members.css',
 })
 export class Members implements OnInit {
-  memberListGetAllProfile: GetAllProfileMembers[] = [];
+  memberListGetAllProfile: MemberSearch[] = [];
   memberListGetNewestMembers: GetNewestMembers[] = [];
   memberListMostPostsMembers: GetMostPostsMembers[] = [];
   memberListLatestLoginsMembers: GetLatestLoginsMembers[] = [];
@@ -35,10 +37,14 @@ export class Members implements OnInit {
   faPencil = faPencil;
   faUser = faUser;
   faMagnifyingGlassChart = faMagnifyingGlassChart;
+  loading = false;
+  searchText = '';
+  errorMessage = '';
 
   constructor(
     private apiService: ApiServiceUser,
     private apiServiceStatistics: ApiServiceStatistics,
+    private apiServiceAdmin: ApiServiceAdmin,
     public authService: AuthService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -48,15 +54,44 @@ export class Members implements OnInit {
     this.userguid = this.authService.getUserGuid() ?? '';
   }
 
+  searchMembers(): void {
+    const search = this.searchText.trim();
+
+    if (search.length < 3) return;
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.apiServiceAdmin.searchMembers(search).subscribe({
+      next: (data) => {
+        this.memberListGetAllProfile = data;
+        this.loading = false;
+        this.cdr.detectChanges();
+
+        if (data.length === 0) {
+          this.errorMessage = 'No members found.';
+        }
+      },
+      error: (err) => {
+        console.error('Member search failed:', err);
+        this.errorMessage = 'Unable to search members.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
   onMemberTypeChange(value: string) {
     // Load the correct data
     switch (value) {
       case 'all':
         this.reportType = MemberReportType.All;
+        /*
         this.apiService.getAllProfileMembers().subscribe((data: GetAllProfileMembers[]) => {
           this.memberListGetAllProfile = data;
           this.cdr.detectChanges();
         });
+        */
         break;
 
       case 'newest':

@@ -22,14 +22,43 @@
                   (change)="onMemberTypeChange(membertype.value)"
                 >
                   <option value="all">All Members</option>
-                  <option value="newest">Newest</option>
-                  fontawesome
-                  <option value="mostposts">Most Posts</option>
-                  <option value="lastlogin">Last Logins</option>
+                  <option value="newest">Top 40 Newest</option>
+                  <option value="mostposts">Top 40 Most Posts</option>
+                  <option value="lastlogin">Top 40 Last Logins</option>
                 </select>
               </div>
             </div>
             @if (reportType === MemberReportType.All) {
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div>Search Members</div>
+                  <input
+                    id="memberSearch"
+                    type="text"
+                    style="width: 70%"
+                    class="editcommentbtn"
+                    placeholder="Name, username, or email"
+                    [(ngModel)]="searchText"
+                    (keyup.enter)="searchMembers()"
+                  />
+
+                  <button
+                    type="button"
+                    class="btn btn-primary editcommentbtn mt-1 ms-3"
+                    [disabled]="searchText.trim().length < 3 || loading"
+                    (click)="searchMembers()"
+                  >
+                    @if (loading) {
+                      Searching...
+                    } @else {
+                      Search Users
+                    }
+                  </button>
+                  <br />
+                  <small class="text-muted"><i>You must type at least 3 characters</i></small>
+                </div>
+              </div>
+
               <table class="table table-striped table-hover">
                 <thead class="custom-thead">
                   <tr>
@@ -42,7 +71,6 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -73,14 +101,13 @@
                       </td>
                       <td>{{ theMember.username }}</td>
                       <td>{{ theMember.zipcode }}</td>
-                      <td>{{ theMember.count }}</td>
+                      <td>{{ theMember.postcount }}</td>
                       <td>
                         {{ theMember.profile }}
                       </td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         <a
                           class="btn actionbtn profileBtn"
@@ -145,7 +172,6 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -176,7 +202,6 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         <a
                           class="btn actionbtn profileBtn"
@@ -242,7 +267,6 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -274,7 +298,6 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         <a
                           class="btn actionbtn profileBtn"
@@ -339,7 +362,6 @@
                     <th scope="col">Last Posted</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Joined</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -370,7 +392,6 @@
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.datelastlogin | date: 'shortDate' }}</td>
                       <td>{{ theMember.dateadded | date: 'shortDate' }}</td>
-                      <td>{{ theMember.accountstatus }}</td>
                       <td class="text-nowrap">
                         <a
                           class="btn actionbtn profileBtn"
