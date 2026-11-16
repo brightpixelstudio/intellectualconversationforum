@@ -95,7 +95,11 @@
                           title="Get Posts"
                           (click)="loadMyFeedPosts()"
                         >
-                          Refresh My Feed
+                          @if (this.loadingPosts) {
+                            Refreshing My Feed...
+                          } @else {
+                            Refresh My Feed
+                          }
                         </a>
                         <a
                           class="btn btn-primary newpostbtn ms-2"
@@ -160,7 +164,11 @@
                       title="Get Posts"
                       (click)="loadPosts()"
                     >
-                      Get Posts
+                      @if (this.loadingPosts) {
+                        Loading Posts...
+                      } @else {
+                        Load Posts
+                      }
                     </a>
                   </div>
                   <a

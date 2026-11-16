@@ -20,6 +20,7 @@ import { UserType } from './../../enums/usertype';
 export class Posts implements OnInit {
   activeTab = 0;
   noPosts: boolean = false;
+  loadingPosts: boolean = false;
   errormsg: string = '';
   userguid: string | null = null;
   userguidloggedin: string | null = null;
@@ -117,6 +118,7 @@ export class Posts implements OnInit {
     }
 
     // Get posts
+    this.loadingPosts = true;
     this.apiServicePost.getPostsMyFeed(this.userguidloggedin).subscribe({
       next: (data: GetPostsByCategoryUserRating[]) => {
         this.postsList = data;
@@ -127,9 +129,11 @@ export class Posts implements OnInit {
         });
 
         this.noPosts = this.postsList.length === 0;
+        this.loadingPosts = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
+        this.loadingPosts = false;
         this.noPosts = true;
         this.errormsg = 'There are no posts based on your selections.';
         this.cdr.detectChanges();
@@ -139,6 +143,7 @@ export class Posts implements OnInit {
 
   loadPosts() {
     // get posts
+    this.loadingPosts = true;
     this.apiServicePost
       .getPosts(
         this.catagoryid,
@@ -155,9 +160,11 @@ export class Posts implements OnInit {
           this.postsList.forEach((post) => {
             post.successrating = false;
           });
+          this.loadingPosts = false;
           this.cdr.detectChanges();
         },
         error: (err) => {
+          this.loadingPosts = false;
           this.noPosts = true;
           this.errormsg = 'There are no posts based on your selections.';
           this.cdr.detectChanges();

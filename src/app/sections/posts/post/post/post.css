@@ -14,7 +14,7 @@ span.posttitleinfo {
 }
 
 hr {
-  margin-bottom: 30px;
+  margin-bottom: 10px; margin-top: 20px;
 }
 
 p.title {
@@ -47,12 +47,11 @@ select.userSelect {
 }
 
 .post-container {
-  padding: 12px;
+  padding: 0px 20px 0px 20px;
   border-radius: 8px;
-  margin-bottom: 15px;
 }
 
-.post-container.pinned-post {
+.pinned-post {
   background-color: #d9eafd;
 }
 
