@@ -5,9 +5,11 @@ import { ApiServiceUserSettings } from '../../services/usersettingsservice';
 import { ApiServiceUtility } from '../../services/utilityservice';
 import { ApiServicePost } from '../../services/postservice';
 import { AuthService } from '../../services/auth';
+import { ApiServiceAnnouncment } from '../../services/announcmentservice';
 import { GetPostsByCategoryUserRating } from '../../models/posts/getpostsbycategoryuserrating';
 import { getusersettingscatagories } from '../../models/membersettings/getusersettingscatagories';
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
+import { getannouncements } from '../../models/announcement/getannouncments';
 import { PostComponent } from './post/post/post';
 import { UserType } from './../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -32,6 +34,7 @@ export class Posts implements OnInit {
   searchString: string = '';
   userList!: any[];
   catagoryList!: any[];
+  announcementList!: getannouncements[];
   postsList: GetPostsByCategoryUserRating[] = [];
   userSettingsCatagories: getusersettingscatagories[] = [];
   userSettingsUser: getusersettingsuser[] = [];
@@ -45,6 +48,8 @@ export class Posts implements OnInit {
     private apiServiceUserSettings: ApiServiceUserSettings,
     private apiServiceUtilities: ApiServiceUtility,
     private apiServicePost: ApiServicePost,
+    private apiServiceAnnouncment: ApiServiceAnnouncment,
+
     public authService: AuthService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -60,10 +65,13 @@ export class Posts implements OnInit {
       userSettingsMyFeed: this.apiServiceUserSettings.getUserSettingsMyFeedCached(
         this.userguidloggedin,
       ),
+      announcements: this.apiServiceAnnouncment.getAnnouncements(),
     }).subscribe({
       next: (data) => {
         this.userList = data.users;
         this.catagoryList = data.catagories;
+        this.announcementList = data.announcements;
+        console.log(this.announcementList);
 
         this.getUserSettings = data.userSettings.getUserSettings;
         this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;
