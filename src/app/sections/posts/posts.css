@@ -16,7 +16,18 @@ span.posttitleinfo{
 }
 
 .commentsbtn {
-  background-color: rgb(3, 85, 207);
+  background-color: rgb(255, 243, 176);
+}
+
+.announcement{
+  margin: 10px 0px 10px 0px;
+  background-color: #fde1a0;
+  border-radius: 10px;
+}
+
+.announcement-icon{
+    font-size: 50px;
+    color:#926b00
 }
 
 hr {

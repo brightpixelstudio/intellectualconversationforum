@@ -10,10 +10,12 @@ import { getusersettingscatagories } from '../../models/membersettings/getuserse
 import { getusersettingsuser } from '../../models/membersettings/getusersettingsuser';
 import { PostComponent } from './post/post/post';
 import { UserType } from './../../enums/usertype';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'posts',
-  imports: [PostComponent],
+  imports: [PostComponent, FontAwesomeModule],
   templateUrl: './posts.html',
   styleUrl: './posts.css',
 })
@@ -36,6 +38,7 @@ export class Posts implements OnInit {
   userSettingsCatagoriesMyFeed: getusersettingscatagories[] = [];
   userSettingsUserMyFeed: getusersettingsuser[] = [];
   getUserSettings: any[] = [];
+  faBullhorn = faBullhorn;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
