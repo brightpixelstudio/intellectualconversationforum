@@ -21,6 +21,7 @@ export class Announcements {
   showSuccess = false;
   showError = false;
   errorMsg = '';
+  successMsg = '';
   faPencil = faPencil;
   faHourglassEnd = faHourglassEnd;
   btText = 'Add Announcement';
@@ -58,6 +59,7 @@ export class Announcements {
 
     this.apiServiceAnnouncment.expireAnnouncement(announcementid).subscribe({
       next: (data) => {
+        this.successMsg = 'This Announcement was expired';
         this.showSuccess = true;
         this.showError = false;
         this.loadannouncements();
@@ -102,6 +104,9 @@ export class Announcements {
 
     apiCall.subscribe({
       next: (data) => {
+        this.successMsg = this.editMode
+          ? 'This Announcement was updated'
+          : 'This Announcement was added';
         this.showSuccess = true;
         this.showError = false;
         this.loadannouncements();
