@@ -53,14 +53,14 @@
   <tbody>
     @for (theAnnouncement of announcementList; track theAnnouncement.announcementid) {
       <tr>
-        <td>
+        <td class="text-nowrap">
           {{ theAnnouncement.title }}
         </td>
         <td>
           {{ theAnnouncement.announcement }}
         </td>
-        <td>{{ theAnnouncement.dateadded | date: 'mediumDate' }}</td>
-        <td>{{ theAnnouncement.dateexpire | date: 'mediumDate' }}</td>
+        <td class="text-nowrap">{{ theAnnouncement.dateadded | date: 'mediumDate' }}</td>
+        <td class="text-nowrap">{{ theAnnouncement.dateexpire | date: 'mediumDate' }}</td>
         <td class="text-nowrap">
           <button type="button" class="btn customBtn" title="Edit announcement">
             <fa-icon size="xs" title="Edit announcement" [icon]="faPencil" />
