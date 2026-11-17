@@ -28,7 +28,6 @@ export class Catagories implements OnInit {
   }
 
   private loadcatagories(): void {
-    // get ALL Blog information
     this.apiService.getCatagoryList().subscribe({
       next: (data) => {
         this.getCatagories = data;
