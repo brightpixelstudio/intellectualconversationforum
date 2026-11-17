@@ -15,13 +15,15 @@ import { faPencil, faHourglassEnd } from '@fortawesome/free-solid-svg-icons';
 export class Announcements {
   title = '';
   announcement = '';
-  dateexpired = '';
+  dateexpire = '';
   announcementList!: getannouncements[];
   showSuccess = false;
   showError = false;
   errorMsg = '';
   faPencil = faPencil;
   faHourglassEnd = faHourglassEnd;
+  btText = 'Add Announcement';
+  editMode: boolean = false;
 
   constructor(
     private apiServiceAnnouncment: ApiServiceAnnouncment,
@@ -30,7 +32,7 @@ export class Announcements {
 
   ngOnInit(): void {
     // set default date
-    this.dateexpired = new Date().toISOString().split('T')[0];
+    this.dateexpire = new Date().toISOString().split('T')[0];
 
     // load announcement
     this.loadannouncements();
@@ -47,5 +49,62 @@ export class Announcements {
         console.error('One or more requests failed:', err);
       },
     });
+  }
+
+  addUpdateCatagory() {
+    this.showSuccess = false;
+    this.showError = false;
+
+    if (
+      !this.title.trim() ||
+      this.title.trim().length < 20 ||
+      !this.announcement.trim() ||
+      this.announcement.trim().length < 20
+    ) {
+      return;
+    }
+
+    this.apiServiceAnnouncment
+      .submitAddAnnouncement(0, this.title, this.announcement, new Date(this.dateexpire))
+      .subscribe({
+        next: (data) => {
+          this.showSuccess = true;
+          this.loadannouncements();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.showSuccess = false;
+          this.showError = true;
+          this.cdr.detectChanges();
+          this.errorMsg = err;
+        },
+      });
+  }
+
+  // helpers
+  updateAnnouncement(announcementid: number) {
+    // get the record
+    const announcement = this.announcementList.find((a) => a.announcementid === announcementid);
+    if (!announcement) return;
+
+    // fill in the fields
+    this.title = announcement.title;
+    this.announcement = announcement.announcement;
+    this.dateexpire = new Date(announcement.dateexpire).toISOString().split('T')[0];
+
+    // change button text
+    this.editMode = true;
+    this.btText = 'Update Announcement';
+  }
+
+  cancelEdit() {
+    // clear the fields
+    this.title = '';
+    this.announcement = '';
+    this.dateexpire = new Date().toISOString().split('T')[0];
+    console.log(this.dateexpire);
+
+    this.editMode = false;
+    this.btText = 'Add Announcement';
   }
 }

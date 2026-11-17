@@ -4,7 +4,7 @@
       [(ngModel)]="title"
       id="title"
       type="text"
-      style="width: 25%"
+      style="width: 20%"
       maxLength="200"
       placeholder="Announcement Title"
     />
@@ -13,19 +13,25 @@
       [(ngModel)]="announcement"
       type="text"
       class="ms-3"
-      style="width: 40%"
+      style="width: 35%"
       maxLength="2000"
       placeholder="Announcement"
     />
-    <input id="dateexpired" [(ngModel)]="dateexpired" type="date" class="ms-3" style="width: 15%" />
+    <input id="dateexpired" [(ngModel)]="dateexpire" type="date" class="ms-3" style="width: 15%" />
 
     <button
       type="button"
       class="btn btn-primary editcommentbtn mt-1 ms-3"
       [disabled]="title.trim().length < 10 || announcement.trim().length < 10"
+      (click)="addUpdateCatagory()"
     >
-      Add Announcement
+      {{ btText }}
     </button>
+    @if (editMode) {
+      <button type="button" class="btn btn-primary editcommentbtn mt-1 ms-3" (click)="cancelEdit()">
+        Cancel Update
+      </button>
+    }
     <br />
     <small class="text-muted"><i>You must type at least 10 characters in each field.</i></small>
 
@@ -62,7 +68,12 @@
         <td class="text-nowrap">{{ theAnnouncement.dateadded | date: 'mediumDate' }}</td>
         <td class="text-nowrap">{{ theAnnouncement.dateexpire | date: 'mediumDate' }}</td>
         <td class="text-nowrap">
-          <button type="button" class="btn customBtn" title="Edit announcement">
+          <button
+            type="button"
+            class="btn customBtn"
+            title="Edit announcement"
+            (click)="updateAnnouncement(theAnnouncement.announcementid)"
+          >
             <fa-icon size="xs" title="Edit announcement" [icon]="faPencil" />
           </button>
           <button type="button" class="btn deleteBtn" title="Expire announcement">

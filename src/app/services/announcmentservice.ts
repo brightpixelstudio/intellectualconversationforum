@@ -15,4 +15,18 @@ export class ApiServiceAnnouncment {
   getAnnouncements(): Observable<getannouncements[]> {
     return this.http.get<getannouncements[]>(this.apiUrl + '/getAnnouncements');
   }
+
+  submitAddAnnouncement(
+    announcementid: number = 0,
+    title: string,
+    accouncement: string,
+    dateexpire: Date,
+  ): Observable<any> {
+    return this.http.post(`${this.apiUrl}/dateexpire`, {
+      announcementid,
+      title,
+      accouncement,
+      dateexpire,
+    });
+  }
 }
