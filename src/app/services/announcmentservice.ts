@@ -16,6 +16,12 @@ export class ApiServiceAnnouncment {
     return this.http.get<getannouncements[]>(this.apiUrl + '/getAnnouncements');
   }
 
+  expireAnnouncement(announcementid: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/expireAnnouncement;`, {
+      announcementid,
+    });
+  }
+
   submitAddAnnouncement(
     announcementid: number = 0,
     title: string,

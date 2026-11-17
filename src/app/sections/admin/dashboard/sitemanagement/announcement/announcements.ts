@@ -52,6 +52,26 @@ export class Announcements {
     });
   }
 
+  private expireAnnouncement(announcementid: number): void {
+    this.showSuccess = false;
+    this.showError = false;
+
+    this.apiServiceAnnouncment.expireAnnouncement(announcementid).subscribe({
+      next: (data) => {
+        this.showSuccess = true;
+        this.showError = false;
+        this.loadannouncements();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.showSuccess = false;
+        this.showError = true;
+        this.cdr.detectChanges();
+        this.errorMsg = err;
+      },
+    });
+  }
+
   addUpdateAnnouncement() {
     this.showSuccess = false;
     this.showError = false;
