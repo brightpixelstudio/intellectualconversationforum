@@ -22,7 +22,21 @@ export class ApiServiceAnnouncment {
     accouncement: string,
     dateexpire: Date,
   ): Observable<any> {
-    return this.http.post(`${this.apiUrl}/dateexpire`, {
+    return this.http.post(`${this.apiUrl}/insertAnnouncement`, {
+      announcementid,
+      title,
+      accouncement,
+      dateexpire,
+    });
+  }
+
+  submitUpdateAnnouncement(
+    announcementid: number,
+    title: string,
+    accouncement: string,
+    dateexpire: Date,
+  ): Observable<any> {
+    return this.http.post(`${this.apiUrl}/unsertAnnouncement`, {
       announcementid,
       title,
       accouncement,

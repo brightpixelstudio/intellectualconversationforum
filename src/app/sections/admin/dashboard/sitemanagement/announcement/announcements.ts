@@ -13,6 +13,7 @@ import { faPencil, faHourglassEnd } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './announcements.css',
 })
 export class Announcements {
+  announcementid = 0;
   title = '';
   announcement = '';
   dateexpire = '';
@@ -51,7 +52,7 @@ export class Announcements {
     });
   }
 
-  addUpdateCatagory() {
+  addUpdateAnnouncement() {
     this.showSuccess = false;
     this.showError = false;
 
@@ -64,21 +65,35 @@ export class Announcements {
       return;
     }
 
-    this.apiServiceAnnouncment
-      .submitAddAnnouncement(0, this.title, this.announcement, new Date(this.dateexpire))
-      .subscribe({
-        next: (data) => {
-          this.showSuccess = true;
-          this.loadannouncements();
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          this.showSuccess = false;
-          this.showError = true;
-          this.cdr.detectChanges();
-          this.errorMsg = err;
-        },
-      });
+    // are we adding or updating (create correct API call)
+    const apiCall = this.editMode
+      ? this.apiServiceAnnouncment.submitUpdateAnnouncement(
+          this.announcementid,
+          this.title,
+          this.announcement,
+          new Date(this.dateexpire),
+        )
+      : this.apiServiceAnnouncment.submitAddAnnouncement(
+          this.announcementid,
+          this.title,
+          this.announcement,
+          new Date(this.dateexpire),
+        );
+
+    apiCall.subscribe({
+      next: (data) => {
+        this.showSuccess = true;
+        this.showError = false;
+        this.loadannouncements();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.showSuccess = false;
+        this.showError = true;
+        this.cdr.detectChanges();
+        this.errorMsg = err;
+      },
+    });
   }
 
   // helpers
@@ -88,6 +103,7 @@ export class Announcements {
     if (!announcement) return;
 
     // fill in the fields
+    this.announcementid = announcement.announcementid;
     this.title = announcement.title;
     this.announcement = announcement.announcement;
     this.dateexpire = new Date(announcement.dateexpire).toISOString().split('T')[0];
@@ -99,6 +115,7 @@ export class Announcements {
 
   cancelEdit() {
     // clear the fields
+    this.announcementid = 0;
     this.title = '';
     this.announcement = '';
     this.dateexpire = new Date().toISOString().split('T')[0];
