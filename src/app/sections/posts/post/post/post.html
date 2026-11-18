@@ -52,9 +52,18 @@
                 aria-label="View individual ratings"
                 (click)="loadPostRatings()"
               >
-                <fa-icon class="text-primary" [icon]="faUsers"></fa-icon>
+                <fa-icon class="text-primary ms-2" [icon]="faUsers"></fa-icon>
               </button>
             }
+            <button
+              type="button"
+              class="title-button"
+              title="Report post"
+              aria-label="Report post"
+              (click)="showReportPostComment(post.postid, 0)"
+            >
+              <fa-icon class="text-primary ms-2" [icon]="faFlag"></fa-icon>
+            </button>
             <span class="badge bg-secondary ms-2"> {{ post.type }} </span>
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
@@ -135,6 +144,15 @@
                       <fa-icon [icon]="faUsers"></fa-icon>
                     </button>
                   }
+                  <button
+                    type="button"
+                    class="title-button"
+                    title="Report comment"
+                    aria-label="Report comment"
+                    (click)="showReportPostComment(0, theComment.postcommentid)"
+                  >
+                    <fa-icon class="text-primary ms-2" [icon]="faFlag"></fa-icon>
+                  </button>
                   <span class="badge bg-secondary ms-2"> {{ theComment.type }} </span>
                   <span class="posttitleinfo">
                     {{ theComment.dateadded | date: 'medium' }},
@@ -340,6 +358,38 @@
           }
         </div>
 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary commentsbtn" (click)="showRatings = false">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showReport) {
+  <div class="modal-backdrop show"></div>
+
+  <div class="modal show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">{{ reportTitle }}</h5>
+            <div class="text-muted small">
+              Please supply a reason you believe this post should be reported. The outcome will show
+              up in your profile / reports section and also in your notifications.
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="showRatings = false"
+          ></button>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary commentsbtn" (click)="showRatings = false">
             Close

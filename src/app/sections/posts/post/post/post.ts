@@ -1,9 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
-import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -39,10 +38,13 @@ export class PostComponent {
   UserType = UserType;
   faThumbtack = faThumbtack;
   faUsers = faUsers;
+  faFlag = faFlag;
 
   // Ratings dialog
   ratings: GetRatings[] = [];
   showRatings = false;
+  showReport = false;
+  reportTitle = '';
   loadingRatings = false;
   ratingsTitle = '';
   ratingsAverage = 0;
@@ -66,6 +68,11 @@ export class PostComponent {
 
   get isAdmin(): boolean {
     return this.usertypeidloggedin === UserType.Admin;
+  }
+
+  showReportPostComment(postid: number, commentid: number) {
+    this.showReport = true;
+    this.reportTitle = postid == 0 ? 'Report a Comment ' : 'Report a Post';
   }
 
   loadPostRatings(): void {
