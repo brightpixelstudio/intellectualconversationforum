@@ -25,13 +25,13 @@ export class ApiServiceAnnouncment {
   submitAddAnnouncement(
     announcementid: number = 0,
     title: string,
-    accouncement: string,
+    announcement: string,
     dateexpire: Date,
   ): Observable<any> {
     return this.http.post(`${this.apiUrl}/insertAnnouncement`, {
       announcementid,
       title,
-      accouncement,
+      announcement,
       dateexpire,
     });
   }
@@ -39,13 +39,13 @@ export class ApiServiceAnnouncment {
   submitUpdateAnnouncement(
     announcementid: number,
     title: string,
-    accouncement: string,
-    dateexpire: Date,
+    announcement: string,
+    dateexpire: Date | null,
   ): Observable<any> {
-    return this.http.post(`${this.apiUrl}/unsertAnnouncement`, {
+    return this.http.put(`${this.apiUrl}/updateAnnouncement`, {
       announcementid,
       title,
-      accouncement,
+      announcement,
       dateexpire,
     });
   }

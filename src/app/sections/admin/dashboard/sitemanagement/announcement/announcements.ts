@@ -34,7 +34,9 @@ export class Announcements {
 
   ngOnInit(): void {
     // set default date
-    this.dateexpire = new Date().toISOString().split('T')[0];
+    const date = new Date();
+    date.setDate(date.getDate() + 2);
+    this.dateexpire = date.toISOString().split('T')[0];
 
     // load announcement
     this.loadannouncements();
@@ -53,7 +55,11 @@ export class Announcements {
     });
   }
 
-  private expireAnnouncement(announcementid: number): void {
+  expireAnnouncement(announcementid: number): void {
+    if (!confirm('Are you sure you want to expire this Announcement?')) {
+      return;
+    }
+
     this.showSuccess = false;
     this.showError = false;
 
@@ -80,9 +86,9 @@ export class Announcements {
 
     if (
       !this.title.trim() ||
-      this.title.trim().length < 20 ||
+      this.title.trim().length < 10 ||
       !this.announcement.trim() ||
-      this.announcement.trim().length < 20
+      this.announcement.trim().length < 10
     ) {
       return;
     }
@@ -104,19 +110,26 @@ export class Announcements {
 
     apiCall.subscribe({
       next: (data) => {
-        this.successMsg = this.editMode
-          ? 'This Announcement was updated'
-          : 'This Announcement was added';
+        if (this.editMode) {
+          this.successMsg = 'This Announcement was updated';
+        } else {
+          this.successMsg = 'This Announcement was added';
+          this.cancelEdit();
+        }
         this.showSuccess = true;
         this.showError = false;
         this.loadannouncements();
         this.cdr.detectChanges();
       },
       error: (err) => {
+        if (this.editMode) {
+          this.errorMsg = 'There was an error updating the Announcement record';
+        } else {
+          this.errorMsg = 'There was an error inserting the Announcement record';
+        }
         this.showSuccess = false;
         this.showError = true;
         this.cdr.detectChanges();
-        this.errorMsg = err;
       },
     });
   }
@@ -139,12 +152,17 @@ export class Announcements {
   }
 
   cancelEdit() {
+    this.showSuccess = false;
+    this.showError = false;
+
     // clear the fields
     this.announcementid = 0;
     this.title = '';
     this.announcement = '';
-    this.dateexpire = new Date().toISOString().split('T')[0];
-    console.log(this.dateexpire);
+
+    const date = new Date();
+    date.setDate(date.getDate() + 2);
+    this.dateexpire = date.toISOString().split('T')[0];
 
     this.editMode = false;
     this.btText = 'Add Announcement';

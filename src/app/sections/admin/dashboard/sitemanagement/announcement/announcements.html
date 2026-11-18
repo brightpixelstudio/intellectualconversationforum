@@ -73,7 +73,12 @@
           >
             <fa-icon size="xs" title="Edit announcement" [icon]="faPencil" />
           </button>
-          <button type="button" class="btn deleteBtn" title="Expire announcement">
+          <button
+            type="button"
+            class="btn deleteBtn"
+            title="Expire announcement"
+            (click)="expireAnnouncement(theAnnouncement.announcementid)"
+          >
             <fa-icon size="xs" title="Expire announcement" [icon]="faHourglassEnd"></fa-icon>
           </button>
         </td>

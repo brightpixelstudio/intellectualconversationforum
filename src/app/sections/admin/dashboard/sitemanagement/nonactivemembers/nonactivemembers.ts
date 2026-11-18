@@ -45,6 +45,10 @@ export class NonActiveMembers implements OnInit {
   }
 
   makeActive(userid: number) {
+    if (!confirm('Are you sure you want to make this user Active?')) {
+      return;
+    }
+
     this.errorMsg = '';
     this.showError = false;
 
