@@ -72,6 +72,11 @@ export class Announcements {
         this.cdr.detectChanges();
       },
       error: (err) => {
+        this.errorMsg = 'There was an error expiring this Announcement';
+        this.showSuccess = false;
+        this.showError = true;
+        this.cdr.detectChanges();
+
         this.showSuccess = false;
         this.showError = true;
         this.cdr.detectChanges();

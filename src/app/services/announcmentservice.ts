@@ -17,9 +17,7 @@ export class ApiServiceAnnouncment {
   }
 
   expireAnnouncement(announcementid: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/expireAnnouncement;`, {
-      announcementid,
-    });
+    return this.http.delete(`${this.apiUrl}/ExpireAnnouncement/${announcementid}`);
   }
 
   submitAddAnnouncement(
