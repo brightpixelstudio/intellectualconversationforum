@@ -45,6 +45,9 @@ export class PostComponent {
   showRatings = false;
   showReport = false;
   reportTitle = '';
+  reportReason: string = '';
+  reportPostId = 0;
+  reportCommentId = 0;
   loadingRatings = false;
   ratingsTitle = '';
   ratingsAverage = 0;
@@ -70,9 +73,16 @@ export class PostComponent {
     return this.usertypeidloggedin === UserType.Admin;
   }
 
-  showReportPostComment(postid: number, commentid: number) {
+  openReport(postid: number, commentid: number) {
     this.showReport = true;
+    this.reportPostId = postid;
+    this.reportCommentId = commentid;
     this.reportTitle = postid == 0 ? 'Report a Comment ' : 'Report a Post';
+  }
+  submitReport(): void {
+    console.log(this.reportReason);
+
+    // Your submission logic
   }
 
   loadPostRatings(): void {

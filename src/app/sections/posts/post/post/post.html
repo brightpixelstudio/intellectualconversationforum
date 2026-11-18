@@ -60,7 +60,7 @@
               class="title-button"
               title="Report post"
               aria-label="Report post"
-              (click)="showReportPostComment(post.postid, 0)"
+              (click)="openReport(post.postid, 0)"
             >
               <fa-icon class="text-primary ms-2" [icon]="faFlag"></fa-icon>
             </button>
@@ -149,7 +149,7 @@
                     class="title-button"
                     title="Report comment"
                     aria-label="Report comment"
-                    (click)="showReportPostComment(0, theComment.postcommentid)"
+                    (click)="openReport(0, theComment.postcommentid)"
                   >
                     <fa-icon class="text-primary ms-2" [icon]="faFlag"></fa-icon>
                   </button>
@@ -370,7 +370,6 @@
 
 @if (showReport) {
   <div class="modal-backdrop show"></div>
-
   <div class="modal show d-block" tabindex="-1" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
@@ -378,20 +377,36 @@
           <div>
             <h5 class="modal-title">{{ reportTitle }}</h5>
             <div class="text-muted small">
-              Please supply a reason you believe this post should be reported. The outcome will show
-              up in your profile / reports section and also in your notifications.
+              Please supply a reason this post should be reported. The result will be displayed in
+              both your profile / reports section and your notifications.
+            </div>
+            <div class="mb-2">
+              <textarea
+                placeholder="Please enter a reason..."
+                style="width: 100%"
+                maxlength="1000"
+                id="reason"
+                #reason
+                (input)="reportReason = reason.value"
+              ></textarea>
+              <br />
+              <small class="text-muted"><i>You must type at least 10 characters</i></small>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="btn btn-primary commentsbtn mt-1"
+                aria-label="Submit"
+                (click)="submitReport()"
+                [disabled]="reason.value.trim().length < 10"
+              >
+                Submit
+              </button>
             </div>
           </div>
-
-          <button
-            type="button"
-            class="btn-close"
-            aria-label="Close"
-            (click)="showRatings = false"
-          ></button>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary commentsbtn" (click)="showRatings = false">
+          <button type="button" class="btn btn-secondary commentsbtn" (click)="showReport = false">
             Close
           </button>
         </div>
