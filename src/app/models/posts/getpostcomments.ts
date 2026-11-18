@@ -14,6 +14,8 @@ export interface GetPostComments {
   userrating: number | null;
   successrating: boolean;
   comment: string;
+  usertypeid: number;
+  type: string;
   commentprofileimagekey: string | null;
   commentprofileimageurl: string | null;
 }
