@@ -29,7 +29,7 @@
             @if (isAdmin) {
               <button
                 type="button"
-                class="pin-button"
+                class="title-button me-2"
                 (click)="togglePinPost()"
                 [title]="post.ispinned ? 'Unpin post' : 'Pin post'"
                 [attr.aria-label]="post.ispinned ? 'Unpin post' : 'Pin post'"
@@ -42,24 +42,23 @@
                 ></fa-icon>
               </button>
             } @else if (post.ispinned) {
-              <fa-icon class="text-primary ms-2" [icon]="faThumbtack"></fa-icon>
+              <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
+            }
+            @if (post.ratingcount > 0) {
+              <button
+                type="button"
+                class="title-button"
+                title="View individual ratings"
+                aria-label="View individual ratings"
+                (click)="loadPostRatings()"
+              >
+                <fa-icon class="text-primary" [icon]="faUsers"></fa-icon>
+              </button>
             }
             <span class="badge bg-secondary ms-2"> {{ post.type }} </span>
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
               {{ getTimePassed(post.dateadded) }}, {{ post.rating }} rating
-
-              @if (post.ratingcount > 0) {
-                <button
-                  type="button"
-                  class="pin-button"
-                  title="View individual ratings"
-                  aria-label="View individual ratings"
-                  (click)="loadPostRatings()"
-                >
-                  <fa-icon [icon]="faUsers"></fa-icon>
-                </button>
-              }
             </span>
           </p>
         </div>
@@ -124,22 +123,23 @@
                     height="40"
                   />
 
-                  <strong>{{ theComment.name }}, </strong>
+                  <strong>{{ theComment.name }} </strong>
+                  @if (theComment.ratingcount > 0) {
+                    <button
+                      type="button"
+                      class="title-button text-primary"
+                      title="View individual ratings"
+                      aria-label="View individual ratings"
+                      (click)="loadCommentRatings(theComment.commentguid)"
+                    >
+                      <fa-icon [icon]="faUsers"></fa-icon>
+                    </button>
+                  }
+                  <!--                   <span class="badge bg-secondary ms-2"> {{ theComment.type }} </span>-->
                   <span class="posttitleinfo">
                     {{ theComment.dateadded | date: 'medium' }},
                     {{ globalService.getTimePassed(theComment.dateadded) }},
                     {{ theComment.rating }} rating
-                    @if (theComment.ratingcount > 0) {
-                      <button
-                        type="button"
-                        class="pin-button"
-                        title="View individual ratings"
-                        aria-label="View individual ratings"
-                        (click)="loadCommentRatings(theComment.commentguid)"
-                      >
-                        <fa-icon [icon]="faUsers"></fa-icon>
-                      </button>
-                    }
                   </span>
                 </p>
 

@@ -27,36 +27,33 @@ export class ViewProfile implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // get the query string value
-    const userguid = this.route.snapshot.queryParamMap.get('userguid');
-    if (!userguid) {
-      return;
-    }
-    this.userguid = userguid;
-    const userid = this.route.snapshot.queryParamMap.get('userid');
-    if (!userid) {
-      return;
-    }
-    this.userid = +userid;
+    this.route.queryParamMap.subscribe((params) => {
+      const userguid = params.get('userguid');
+      const userid = params.get('userid');
 
-    const loggedInUserGuid = this.authService.getUserGuid();
+      if (!userguid || !userid) {
+        return;
+      }
 
-    this.canUpdate =
-      !!loggedInUserGuid && !!userguid && userguid.toLowerCase() === loggedInUserGuid.toLowerCase();
+      this.userguid = userguid;
+      this.userid = +userid;
 
-    // user forkjoin in service call
-    this.apiServiceUser.getUserProfileStatistics(this.userguid, this.userid, 200).subscribe({
-      next: (data) => {
-        // Data maps exactly to the keys defined in forkJoin
-        this.getUserProfile = data;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('One or more requests failed:', err);
-      },
+      const loggedInUserGuid = this.authService.getUserGuid();
+
+      this.canUpdate =
+        !!loggedInUserGuid && userguid.toLowerCase() === loggedInUserGuid.toLowerCase();
+
+      this.apiServiceUser.getUserProfileStatistics(this.userguid, this.userid, 200).subscribe({
+        next: (data) => {
+          this.getUserProfile = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('One or more requests failed:', err);
+        },
+      });
     });
   }
-
   editprofile(): void {
     const userGuid = this.authService.getUserGuid();
 
