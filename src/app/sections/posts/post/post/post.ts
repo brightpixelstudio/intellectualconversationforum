@@ -79,10 +79,23 @@ export class PostComponent {
     this.reportCommentId = commentid;
     this.reportTitle = postid == 0 ? 'Report a Comment ' : 'Report a Post';
   }
-  submitReport(): void {
-    console.log(this.reportReason);
 
-    // Your submission logic
+  submitReport(): void {
+    this.apiServicePost
+      .submitReport(
+        this.userguidloggedin ?? '',
+        this.reportPostId,
+        this.reportCommentId,
+        this.reportReason,
+      )
+      .subscribe({
+        next: () => {
+          this.showReport = false;
+        },
+        error: (error) => {
+          console.error('Error submitting report:', error);
+        },
+      });
   }
 
   loadPostRatings(): void {

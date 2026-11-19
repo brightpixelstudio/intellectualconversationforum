@@ -164,6 +164,17 @@ export class ApiServicePost {
     return this.http.post(this.apiUrl + `/updateComment?commentguid=${commentguid}`, formData);
   }
 
+  submitReport(userguid: string, postid: number, commentid: number, reason: string) {
+    const body = {
+      userguid: userguid,
+      postid: postid,
+      commentid: commentid,
+      reason: reason,
+    };
+
+    return this.http.post<any>(`${this.apiUrl}/submitReport`, body);
+  }
+
   pinPost(postguid: string) {
     return this.http.post(this.apiUrl + `/PinPost?postguid=${postguid}`, {});
   }
