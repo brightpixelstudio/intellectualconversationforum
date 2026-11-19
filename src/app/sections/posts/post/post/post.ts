@@ -7,12 +7,14 @@ import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
 import { GlobalService } from './../../../../services/globalservice';
+import { ApiServiceReported } from './../../../../services/reportedservice';
 
 import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpostsbycategoryuserrating';
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
 import { GetRatings } from '../../../../models/posts/getratings';
+import { GetReported } from '../../../../models/reported/getreported';
 
 @Component({
   selector: 'post',
@@ -57,6 +59,7 @@ export class PostComponent {
     private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
     public globalService: GlobalService,
+    public apiServiceReported: ApiServiceReported,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -81,21 +84,29 @@ export class PostComponent {
   }
 
   submitReport(): void {
-    this.apiServicePost
-      .submitReport(
-        this.userguidloggedin ?? '',
-        this.reportPostId,
-        this.reportCommentId,
-        this.reportReason,
-      )
-      .subscribe({
-        next: () => {
-          this.showReport = false;
-        },
-        error: (error) => {
-          console.error('Error submitting report:', error);
-        },
-      });
+    // create a form reported object with values
+    const report: GetReported = {
+      reportedid: 0,
+      reportedstatusid: 1,
+      reporteduserguid: this.userguidloggedin,
+      postid: this.reportPostId,
+      postcommentid: this.reportCommentId,
+      reportedcontent: '',
+      reason: this.reportReason,
+      response: null,
+      dateadded: null,
+      dateresponded: null,
+      respondeduserid: null,
+    };
+
+    this.apiServiceReported.submitReported(report).subscribe({
+      next: () => {
+        this.showReport = false;
+      },
+      error: (error) => {
+        console.error('Error submitting report:', error);
+      },
+    });
   }
 
   loadPostRatings(): void {
@@ -147,6 +158,7 @@ export class PostComponent {
       },
     });
   }
+  
   togglePinPost(): void {
     if (this.post.ispinned) {
       this.apiServicePost.unpinPost(this.post.postguid).subscribe({
@@ -242,7 +254,6 @@ export class PostComponent {
           this.post.ratingcount = response.ratingCount;
           this.post.userrating = rating;
           this.post.successrating = true;
-          console.log(this.post.rating);
 
           this.cdr.detectChanges();
         },
