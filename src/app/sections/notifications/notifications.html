@@ -54,7 +54,11 @@
             <div class="flex-grow-1">
               <p class="mb-0 mt-1 notification-text">
                 <strong>{{ notification.actorName }}</strong>
-                <i> commented on the post, "{{ notification.postShortText }}"</i>
+                @if (notification.reportedId) {
+                  <i> reported the post, "{{ notification.postShortText }}"</i>
+                } @else {
+                  <i> commented on the post, "{{ notification.postShortText }}"</i>
+                }
               </p>
             </div>
 

@@ -9,8 +9,10 @@ export interface NotificationModel {
   postId: number;
   postGuid: string;
   postCommentId: number;
+  reportedId: number | null;
   isRead: boolean;
   dateCreated: Date;
   dateRead: Date | null;
+  ProfileImageKey: string | null;
   profileImageUrl: string | null;
 }

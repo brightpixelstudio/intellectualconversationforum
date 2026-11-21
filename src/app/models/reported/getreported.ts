@@ -1,5 +1,5 @@
 export interface GetReported {
-  reportedid: number;
+  reportedid: number | 0;
   reportedstatusid: number;
   reporteduserguid: string | null;
   postid: number | null;

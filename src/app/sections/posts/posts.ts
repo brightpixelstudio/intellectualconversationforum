@@ -71,7 +71,6 @@ export class Posts implements OnInit {
         this.userList = data.users;
         this.catagoryList = data.catagories;
         this.announcementList = data.announcements;
-        console.log(this.announcementList);
 
         this.getUserSettings = data.userSettings.getUserSettings;
         this.userSettingsCatagories = data.userSettings.getUserSettingsCatagories;

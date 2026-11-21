@@ -3,6 +3,7 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { FormsModule } from '@angular/forms';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -18,7 +19,7 @@ import { GetReported } from '../../../../models/reported/getreported';
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, RatingComponent, PostImagesComponent, FontAwesomeModule],
+  imports: [DatePipe, RatingComponent, PostImagesComponent, FontAwesomeModule, FormsModule],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -46,6 +47,9 @@ export class PostComponent {
   ratings: GetRatings[] = [];
   showRatings = false;
   showReport = false;
+  showReportedSuccess = false;
+  showReportedError = false;
+  errorMsg = '';
   reportTitle = '';
   reportReason: string = '';
   reportPostId = 0;
@@ -77,6 +81,8 @@ export class PostComponent {
   }
 
   openReport(postid: number, commentid: number) {
+    this.showReportedSuccess = false;
+    this.showReportedError = false;
     this.showReport = true;
     this.reportPostId = postid;
     this.reportCommentId = commentid;
@@ -101,10 +107,12 @@ export class PostComponent {
 
     this.apiServiceReported.submitReported(report).subscribe({
       next: () => {
-        this.showReport = false;
+        this.reportReason = '';
+        this.showReportedSuccess = true;
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error submitting report:', error);
+        this.errorMsg = 'Failed to submit reported post';
       },
     });
   }
@@ -158,7 +166,7 @@ export class PostComponent {
       },
     });
   }
-  
+
   togglePinPost(): void {
     if (this.post.ispinned) {
       this.apiServicePost.unpinPost(this.post.postguid).subscribe({

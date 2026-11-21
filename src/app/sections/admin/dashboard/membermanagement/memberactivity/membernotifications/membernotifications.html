@@ -42,7 +42,11 @@
         </td>
         <td>
           <p class="mb-0 mt-1 notification-text">
-            <i>Commented on the post, "{{ theRecord.postShortText }}"</i>
+            @if (theRecord.reportedId) {
+              <i> Reported the post, "{{ theRecord.postShortText }}"</i>
+            } @else {
+              <i> Commented on the post, "{{ theRecord.postShortText }}"</i>
+            }
           </p>
         </td>
         <td>

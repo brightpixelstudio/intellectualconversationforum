@@ -382,12 +382,11 @@
             </div>
             <div class="mb-2">
               <textarea
-                placeholder="Please enter a reason..."
+                placeholder="Please provide a reason..."
                 style="width: 100%"
                 maxlength="1000"
                 id="reason"
-                #reason
-                (input)="reportReason = reason.value"
+                [(ngModel)]="reportReason"
               ></textarea>
               <br />
               <small class="text-muted"><i>You must type at least 10 characters</i></small>
@@ -398,10 +397,17 @@
                 class="btn btn-primary commentsbtn mt-1"
                 aria-label="Submit"
                 (click)="submitReport()"
-                [disabled]="reason.value.trim().length < 10"
+                [disabled]="reportReason.trim().length < 10"
               >
                 Submit
               </button>
+              <br />
+              @if (showReportedSuccess == true) {
+                <div class="successmsg">This post was reported.</div>
+              }
+              @if (showReportedError == true) {
+                <div class="errormsg">{{ errorMsg }}.</div>
+              }
             </div>
           </div>
         </div>
