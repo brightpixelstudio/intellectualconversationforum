@@ -70,7 +70,7 @@ export class ApiServiceUser {
     const getNotifications$ = this.http.get(this.apiUrlNotifications + `/getNotificationsMember`, {
       params: { userid, limit, offset },
     });
-    const getReported$ = this.http.get(this.apiUrlReported + `/GetReportedMember`, {
+    const getReportedMember$ = this.http.get(this.apiUrlReported + `/GetReportedMember`, {
       params: { userid, limit, offset },
     });
 
@@ -82,7 +82,7 @@ export class ApiServiceUser {
       getCommentRatingsMember: getCommentRatingsMember$,
       getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
       getNotifications: getNotifications$,
-      getReported: getReported$,
+      getReportedMember: getReportedMember$,
     });
   }
 
