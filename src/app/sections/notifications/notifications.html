@@ -55,7 +55,11 @@
               <p class="mb-0 mt-1 notification-text">
                 <strong>{{ notification.actorName }}</strong>
                 @if (notification.reportedId) {
-                  <i> reported the post, "{{ notification.postShortText }}"</i>
+                  @if (notification.postCommentId) {
+                    <i> reported the comment, "{{ notification.postShortText }}"</i>
+                  } @else {
+                    <i> reported the post, "{{ notification.postShortText }}"</i>
+                  }
                 } @else {
                   <i> commented on the post, "{{ notification.postShortText }}"</i>
                 }

@@ -36,8 +36,13 @@
           role="tab"
           aria-controls="member-tabpanel-32"
           aria-selected="false"
-          >Posts They Rated</a
         >
+          @if (this.canUpdate) {
+            Posts I Rated
+          } @else {
+            Posts They Rated
+          }
+        </a>
       </li>
       <li class="nav-item" role="presentation">
         <a
@@ -48,8 +53,13 @@
           role="tab"
           aria-controls="member-tabpanel-33"
           aria-selected="false"
-          >Comments They Rated</a
         >
+          @if (this.canUpdate) {
+            Comments I Rated
+          } @else {
+            Comments They Rated
+          }
+        </a>
       </li>
       @if (this.canUpdate) {
         <li class="nav-item" role="presentation">
