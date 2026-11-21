@@ -86,6 +86,18 @@
             >Notifications</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="member-tab-36"
+            data-bs-toggle="tab"
+            href="#member-tabpanel-36"
+            role="tab"
+            aria-controls="member-tabpanel-36"
+            aria-selected="false"
+            >Reported</a
+          >
+        </li>
       }
     </ul>
     <div class="tab-content pt-3" id="tab-content">
@@ -115,6 +127,9 @@
             [isAdmin]="isAdmin"
             [canUpdate]="canUpdate"
           ></membernotifications>
+        </div>
+        <div class="tab-pane" id="member-tabpanel-35" role="tabpanel" aria-labelledby="tab-35">
+          <memberreported [reported]="memberProfile.getReported"></memberreported>
         </div>
       }
     </div>

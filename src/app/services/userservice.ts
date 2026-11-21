@@ -18,6 +18,7 @@ export class ApiServiceUser {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/user'; // Uses the API URL from environment
   private apiUrlNotifications = environment.apiUrl + '/notification'; // Uses the API URL from environment
+  private apiUrlReported = environment.apiUrl + '/reported'; // Uses the API URL from environment
 
   getAllProfileMembers(): Observable<GetAllProfileMembers[]> {
     return this.http.get<GetAllProfileMembers[]>(this.apiUrl + '/GetAllProfileMembers');
@@ -66,7 +67,10 @@ export class ApiServiceUser {
     const getAccountStatusHistoryMember$ = this.http.get(
       this.apiUrl + `/getAccountStatusHistoryMember?userguid=${userguid}`,
     );
-    const getNotifications$ = this.http.get(this.apiUrlNotifications + `/getNotifications`, {
+    const getNotifications$ = this.http.get(this.apiUrlNotifications + `/getNotificationsMember`, {
+      params: { userid, limit, offset },
+    });
+    const getReported$ = this.http.get(this.apiUrlReported + `/GetReportedMember`, {
       params: { userid, limit, offset },
     });
 
@@ -78,6 +82,7 @@ export class ApiServiceUser {
       getCommentRatingsMember: getCommentRatingsMember$,
       getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
       getNotifications: getNotifications$,
+      getReported: getReported$,
     });
   }
 

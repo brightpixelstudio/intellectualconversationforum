@@ -5,6 +5,7 @@ import { MemberPostRatings } from '../memberactivity/memberpostratings/memberpos
 import { MemberCommentRatings } from '../memberactivity/membercommentratings/membercommentratings';
 import { MemberAccountStatusHistory } from '../memberactivity/memberaccountstatushistory/memberaccountstatushistory';
 import { MemberNotifications } from '../memberactivity/membernotifications/membernotifications';
+import { MemberReported } from '../memberactivity/memberreported/memberreported';
 import { AuthService } from '../../../../../services/auth';
 
 @Component({
@@ -16,6 +17,7 @@ import { AuthService } from '../../../../../services/auth';
     MemberCommentRatings,
     MemberAccountStatusHistory,
     MemberNotifications,
+    MemberReported,
   ],
   templateUrl: './memberactivity.html',
   styleUrl: './memberactivity.css',
