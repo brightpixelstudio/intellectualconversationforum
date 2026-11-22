@@ -69,7 +69,6 @@ export class NonActiveMembers implements OnInit {
   }
 
   invalidDateRange(): boolean {
-    this.errorMsg = 'Invalid date range';
     this.showError = this.apiGlobalService.invalidDateRange(this.startDate, this.endDate);
     return this.showError;
   }

@@ -68,4 +68,10 @@ export class AdminReported {
   formatDate(date: Date): string {
     return this.apiGlobalService.formatDate(date);
   }
+
+  invalidDateRange(): boolean {
+    this.errorMsg = 'Invalid date range';
+    this.showError = this.apiGlobalService.invalidDateRange(this.startDate, this.endDate);
+    return this.showError;
+  }
 }
