@@ -83,6 +83,7 @@ export class AdminReported {
     this.showError = false;
     this.showUpdate = true;
     this.reportedId = reportedId;
+    this.cdr.detectChanges();
   }
 
   updateReported() {
