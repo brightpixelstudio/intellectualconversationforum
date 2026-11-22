@@ -37,7 +37,7 @@ export class AdminReported {
     this.startDate = this.formatDate(firstDay);
   }
 
-  private loadreported(): void {
+  loadreported(): void {
     this.apiServiceReported
       .getReported(this.reportedStatusID, this.startDate, this.endDate)
       .subscribe({
