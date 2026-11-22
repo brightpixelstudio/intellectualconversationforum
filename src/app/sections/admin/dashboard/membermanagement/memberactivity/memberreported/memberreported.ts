@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class MemberReported {
   @Input({ required: true }) reported!: GetReported[];
+  @Input({ required: true }) isAdmin = false;
 
   constructor(private router: Router) {}
 

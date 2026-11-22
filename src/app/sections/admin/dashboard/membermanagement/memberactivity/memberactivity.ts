@@ -24,7 +24,7 @@ import { AuthService } from '../../../../../services/auth';
 })
 export class MemberActivity implements OnChanges {
   @Input({ required: true }) memberProfile!: any;
-  @Input() isAdmin = false;
+  @Input({ required: true }) isAdmin = false;
 
   canUpdate = false;
 
@@ -35,7 +35,6 @@ export class MemberActivity implements OnChanges {
       const loggedInUserGuid = this.authService.getUserGuid();
 
       const profileGuid = this.memberProfile?.getUserProfile.guid;
-      console.log(this.isAdmin);
 
       this.canUpdate =
         (!!loggedInUserGuid &&

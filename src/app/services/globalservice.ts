@@ -10,6 +10,34 @@ export class GlobalService {
   private maxPostImages = 3;
   private maxPostFileMaxLength = 1024 * 1024;
 
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  invalidDateRange(startDate: string, endDate: string): boolean {
+    if (!startDate || !endDate) {
+      return true;
+    }
+
+    const start = new Date(`${startDate}T00:00:00`);
+    const end = new Date(`${endDate}T00:00:00`);
+
+    if (start > end) {
+      return true;
+    }
+
+    const oneYearLater = new Date(start);
+    oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+    if (end > oneYearLater) {
+      return true;
+    }
+    return end > oneYearLater;
+  }
+
   getTimePassed(postDate: Date): string {
     const currentDate: Date = new Date();
     const newPostDate: Date = new Date(postDate);

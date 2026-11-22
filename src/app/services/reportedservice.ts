@@ -1,7 +1,7 @@
 // src/app/services/api.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { GetReported } from '../models/reported/getreported';
 import { environment } from '../../environments/environment';
 
@@ -12,8 +12,17 @@ export class ApiServiceReported {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/reported'; // Uses the API URL from environment
 
-  getReported(): Observable<GetReported[]> {
-    return this.http.get<GetReported[]>(this.apiUrl + '/getReported');
+  getReported(reportedStatusId: number, startDate: string, endDate: string): Observable<any> {
+    // definitions of models is not needed in this architecture
+    const getReportedStatuses$ = this.http.get(this.apiUrl + `/getReportedStatuses`);
+    const getReportedMember$ = this.http.get(this.apiUrl + `/getReportedMember`, {
+      params: { reportedStatusId, startDate, endDate },
+    });
+
+    return forkJoin({
+      getReportedStatuses: getReportedStatuses$,
+      getReportedMember: getReportedMember$,
+    });
   }
 
   submitReported(report: GetReported): Observable<any> {
