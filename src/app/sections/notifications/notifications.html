@@ -56,13 +56,13 @@
                 <strong>{{ notification.actorName }}</strong>
                 @if (notification.reportedId) {
                   @if (notification.postCommentId) {
-                    @if (notification.respondeduserid) {
+                    @if (notification.respondedUserId) {
                       <i> responded to the reported comment, "{{ notification.postShortText }}"</i>
                     } @else {
                       <i> reported the comment, "{{ notification.postShortText }}"</i>
                     }
                   } @else {
-                    @if (notification.respondeduserid) {
+                    @if (notification.respondedUserId) {
                       <i> responded to the reported post, "{{ notification.postShortText }}"</i>
                     } @else {
                       <i> reported the comment, "{{ notification.postShortText }}"</i>
