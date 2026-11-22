@@ -7,12 +7,13 @@ import { GlobalService } from '../../../../../services/globalservice';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { GetReportedAdmin } from '../../../../../models/reported/getreportedadmin';
+import { ReportedStatus } from '../../../../../enums/reportedstatus';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'adminreported',
-  imports: [FormsModule, DatePipe, FontAwesomeModule],
+  imports: [FormsModule, DatePipe, FontAwesomeModule, JsonPipe],
   templateUrl: './adminreported.html',
   styleUrl: './adminreported.css',
 })
@@ -22,12 +23,13 @@ export class AdminReported {
   showSuccess = false;
   showError = false;
   errorMsg = '';
-  reportedStatusId = 1;
+  reportedStatusId = ReportedStatus.Pending;
   response = '';
-  reportedStatusIdUpdate = 2;
+  reportedStatusIdUpdate = ReportedStatus.NoActionNecessary;
   reportedId = 0;
   faPencil = faPencil;
   showUpdate = false;
+  protected ReportedStatus = ReportedStatus;
 
   constructor(
     private router: Router,
@@ -57,7 +59,6 @@ export class AdminReported {
       .subscribe({
         next: (data) => {
           this.reportedList = data;
-          console.log(this.reportedList);
           this.cdr.detectChanges();
         },
         error: (err) => {

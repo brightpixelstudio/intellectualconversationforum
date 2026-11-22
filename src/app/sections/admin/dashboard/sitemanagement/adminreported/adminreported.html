@@ -113,14 +113,16 @@
           <td>{{ theStat.response }}</td>
           <td>{{ theStat.dateresponded | date: 'mediumDate' }}</td>
           <td>
-            <button
-              type="button"
-              class="btn customBtn"
-              title="Edit announcement"
-              (click)="updateReportedShow(theStat.reportedid)"
-            >
-              <fa-icon size="xs" title="Edit announcement" [icon]="faPencil" />
-            </button>
+            @if (theStat.reportedstatusid === ReportedStatus.Pending) {
+              <button
+                type="button"
+                class="btn customBtn"
+                title="Edit announcement"
+                (click)="updateReportedShow(theStat.reportedid)"
+              >
+                <fa-icon size="xs" title="Edit announcement" [icon]="faPencil" />
+              </button>
+            }
           </td>
         </tr>
       }
