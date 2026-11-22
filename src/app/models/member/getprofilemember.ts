@@ -1,5 +1,6 @@
 export interface GetProfileMember {
   userid: number;
+  guid: string;
   usertypeid: number;
   type: string;
   accountstatusid: number;

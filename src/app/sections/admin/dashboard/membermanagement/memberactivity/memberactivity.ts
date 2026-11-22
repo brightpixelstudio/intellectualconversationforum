@@ -34,12 +34,14 @@ export class MemberActivity implements OnChanges {
     if (changes['memberProfile']) {
       const loggedInUserGuid = this.authService.getUserGuid();
 
-      const profileGuid = this.memberProfile?.getPostsMember?.[0]?.userguid;
+      const profileGuid = this.memberProfile?.getUserProfile.guid;
+      console.log(this.isAdmin);
 
       this.canUpdate =
-        !!loggedInUserGuid &&
-        !!profileGuid &&
-        profileGuid.trim().toLowerCase() === loggedInUserGuid.trim().toLowerCase();
+        (!!loggedInUserGuid &&
+          !!profileGuid &&
+          profileGuid.trim().toLowerCase() === loggedInUserGuid.trim().toLowerCase()) ||
+        this.isAdmin;
     }
   }
 }
