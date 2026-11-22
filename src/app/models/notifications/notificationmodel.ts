@@ -13,6 +13,7 @@ export interface NotificationModel {
   isRead: boolean;
   dateCreated: Date;
   dateRead: Date | null;
+  respondeduserid: number | null;
   ProfileImageKey: string | null;
   profileImageUrl: string | null;
 }
