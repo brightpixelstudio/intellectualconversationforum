@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { GetReported } from './../../../../../models/reported/getreported';
 import { FormsModule } from '@angular/forms';
 import { ApiServiceReported } from '../../../../../services/reportedservice';
+import { AuthService } from '../../../../../services/auth';
 import { GlobalService } from '../../../../../services/globalservice';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -31,8 +32,8 @@ export class AdminReported {
   constructor(
     private router: Router,
     private apiServiceReported: ApiServiceReported,
+    private apiAuthService: AuthService,
     private apiGlobalService: GlobalService,
-
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -82,20 +83,36 @@ export class AdminReported {
   }
 
   updateReported() {
-    console.log(this.response);
-    console.log(this.reportedStatusIdUpdate);
-    this.reportedId;
-    /*
-    // get the record
-    const announcement = this.announcementList.find((a) => a.announcementid === announcementid);
-    if (!announcement) return;
+    this.showSuccess = false;
+    this.showError = false;
 
-    // fill in the fields
-    this.announcementid = announcement.announcementid;
-    this.title = announcement.title;
-    this.announcement = announcement.announcement;
-    this.dateexpire = new Date(announcement.dateexpire).toISOString().split('T')[0];
-    */
+    if (!this.response.trim() || this.response.trim().length < 10) {
+      return;
+    }
+
+    // create the call
+    const apiCall = this.apiServiceReported.submitReportedUpdate(
+      this.reportedId,
+      this.response,
+      this.reportedStatusIdUpdate,
+      this.apiAuthService.getUserGuid() ?? undefined,
+    );
+
+    // make the call
+    apiCall.subscribe({
+      next: (data) => {
+        this.showSuccess = true;
+        this.showError = false;
+        this.loadreported();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMsg = 'There was an error updating the reported post';
+        this.showSuccess = false;
+        this.showError = true;
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   formatDate(date: Date): string {

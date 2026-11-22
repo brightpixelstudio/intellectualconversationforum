@@ -29,20 +29,17 @@ export class ApiServiceReported {
     return this.http.post<any>(`${this.apiUrl}/InsertReported`, report);
   }
 
-  /*
-
-  submitUpdateReported(
-    announcementid: number,
-    title: string,
-    announcement: string,
-    dateexpire: Date | null,
+  submitReportedUpdate(
+    reportedid: number,
+    response: string,
+    reportedstatusid: number,
+    userguid?: string,
   ): Observable<any> {
     return this.http.put(`${this.apiUrl}/updateReported`, {
-      announcementid,
-      title,
-      announcement,
-      dateexpire,
+      reportedid,
+      response,
+      reportedstatusid,
+      userguid,
     });
   }
-    */
 }
