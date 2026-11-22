@@ -15,7 +15,7 @@ export class ApiServiceReported {
   getReported(reportedStatusId: number, startDate: string, endDate: string): Observable<any> {
     // definitions of models is not needed in this architecture
     const getReportedStatuses$ = this.http.get(this.apiUrl + `/getReportedStatuses`);
-    const getReportedMember$ = this.http.get(this.apiUrl + `/getReportedMember`, {
+    const getReportedMember$ = this.http.get(this.apiUrl + `/getReportedAdmin`, {
       params: { reportedStatusId, startDate, endDate },
     });
 
