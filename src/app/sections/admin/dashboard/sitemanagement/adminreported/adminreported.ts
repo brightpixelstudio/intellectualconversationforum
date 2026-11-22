@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { GetReported } from './../../../../../models/reported/getreported';
+import { FormsModule } from '@angular/forms';
 import { ApiServiceReported } from '../../../../../services/reportedservice';
 import { GlobalService } from '../../../../../services/globalservice';
 import { DatePipe, JsonPipe } from '@angular/common';
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'adminreported',
-  imports: [DatePipe],
+  imports: [FormsModule, DatePipe],
   templateUrl: './adminreported.html',
   styleUrl: './adminreported.css',
 })
@@ -34,9 +35,6 @@ export class AdminReported {
     this.endDate = this.formatDate(today);
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     this.startDate = this.formatDate(firstDay);
-
-    // load reported
-    this.loadreported();
   }
 
   private loadreported(): void {
