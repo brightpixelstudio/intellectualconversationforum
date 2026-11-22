@@ -22,7 +22,11 @@ export class AdminReported {
   showError = false;
   errorMsg = '';
   reportedStatusId = 1;
+  response = '';
+  reportedStatusIdUpdate = 2;
+  reportedId = 0;
   faPencil = faPencil;
+  showUpdate = false;
 
   constructor(
     private router: Router,
@@ -72,7 +76,15 @@ export class AdminReported {
   }
 
   // helpers
-  updateReported(reportedid: number) {
+  updateReportedShow(reportedId: number) {
+    this.showUpdate = true;
+    this.reportedId = reportedId;
+  }
+
+  updateReported() {
+    console.log(this.response);
+    console.log(this.reportedStatusIdUpdate);
+    this.reportedId;
     /*
     // get the record
     const announcement = this.announcementList.find((a) => a.announcementid === announcementid);
