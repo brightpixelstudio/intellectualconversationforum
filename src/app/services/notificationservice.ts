@@ -16,7 +16,7 @@ export class ApiServiceNotifications {
     limit: number = 20,
     offset: number = 0,
   ): Observable<NotificationModel[]> {
-    return this.http.get<NotificationModel[]>(`${this.apiUrl}/GetNotifications`, {
+    return this.http.get<NotificationModel[]>(`${this.apiUrl}/GetNotificationsMember`, {
       params: { userid, limit, offset },
     });
   }

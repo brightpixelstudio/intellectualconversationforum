@@ -67,12 +67,15 @@ export class ApiServiceUser {
     const getAccountStatusHistoryMember$ = this.http.get(
       this.apiUrl + `/getAccountStatusHistoryMember?userguid=${userguid}`,
     );
-    const getNotifications$ = this.http.get(this.apiUrlNotifications + `/getNotificationsMember`, {
-      params: { userid, limit, offset },
-    });
-    const getReportedMember$ = this.http.get(this.apiUrlReported + `/GetReportedMember`, {
-      params: { userid, limit, offset },
-    });
+    const getNotificationsMember$ = this.http.get(
+      this.apiUrlNotifications + `/getNotificationsMember`,
+      {
+        params: { userid, limit, offset },
+      },
+    );
+    const getReportedMember$ = this.http.get(
+      this.apiUrlReported + `/getReportedMember?userguid=${userguid}`,
+    );
 
     return forkJoin({
       getUserProfile: getUserProfile$,
@@ -81,7 +84,7 @@ export class ApiServiceUser {
       getPostRatingsMember: getPostRatingsMember$,
       getCommentRatingsMember: getCommentRatingsMember$,
       getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
-      getNotifications: getNotifications$,
+      getNotifications: getNotificationsMember$,
       getReportedMember: getReportedMember$,
     });
   }
