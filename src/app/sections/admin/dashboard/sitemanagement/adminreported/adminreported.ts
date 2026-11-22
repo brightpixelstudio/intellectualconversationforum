@@ -5,10 +5,13 @@ import { ApiServiceReported } from '../../../../../services/reportedservice';
 import { GlobalService } from '../../../../../services/globalservice';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { GetReportedAdmin } from '../../../../../models/reported/getreportedadmin';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'adminreported',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, FontAwesomeModule],
   templateUrl: './adminreported.html',
   styleUrl: './adminreported.css',
 })
@@ -18,7 +21,8 @@ export class AdminReported {
   showSuccess = false;
   showError = false;
   errorMsg = '';
-  reportedStatusID = 1;
+  reportedStatusId = 1;
+  faPencil = faPencil;
 
   constructor(
     private router: Router,
@@ -28,18 +32,23 @@ export class AdminReported {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  reportedList!: GetReported[];
+  reportedList: GetReportedAdmin = {
+    getReportedStatuses: [],
+    getReportedMember: [],
+  };
 
   ngOnInit(): void {
     const today = new Date();
     this.endDate = this.formatDate(today);
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    const firstDay = new Date(today.getFullYear(), today.getMonth() - 3, 1);
     this.startDate = this.formatDate(firstDay);
+
+    this.loadreported();
   }
 
   loadreported(): void {
     this.apiServiceReported
-      .getReported(this.reportedStatusID, this.startDate, this.endDate)
+      .getReported(this.reportedStatusId, this.startDate, this.endDate)
       .subscribe({
         next: (data) => {
           this.reportedList = data;
@@ -53,7 +62,7 @@ export class AdminReported {
       });
   }
 
-  selectNotification(reported: GetReported): void {
+  selectReported(reported: GetReported): void {
     this.router.navigate(['/post'], {
       queryParams: {
         postguid: reported.postguid,
@@ -63,6 +72,20 @@ export class AdminReported {
   }
 
   // helpers
+  updateReported(reportedid: number) {
+    /*
+    // get the record
+    const announcement = this.announcementList.find((a) => a.announcementid === announcementid);
+    if (!announcement) return;
+
+    // fill in the fields
+    this.announcementid = announcement.announcementid;
+    this.title = announcement.title;
+    this.announcement = announcement.announcement;
+    this.dateexpire = new Date(announcement.dateexpire).toISOString().split('T')[0];
+    */
+  }
+
   formatDate(date: Date): string {
     return this.apiGlobalService.formatDate(date);
   }
