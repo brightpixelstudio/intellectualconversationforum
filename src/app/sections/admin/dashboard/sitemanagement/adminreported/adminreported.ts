@@ -79,6 +79,8 @@ export class AdminReported {
 
   // helpers
   updateReportedShow(reportedId: number) {
+    this.showSuccess = false;
+    this.showError = false;
     this.showUpdate = true;
     this.reportedId = reportedId;
   }
@@ -102,8 +104,10 @@ export class AdminReported {
     // make the call
     apiCall.subscribe({
       next: (data) => {
+        this.showUpdate = false;
         this.showSuccess = true;
         this.showError = false;
+        this.response = '';
         this.loadreported();
         this.cdr.detectChanges();
       },

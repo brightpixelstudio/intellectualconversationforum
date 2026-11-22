@@ -62,14 +62,14 @@
       </button>
       <br />
       <small class="text-muted"><i>You must type at least 10 characters in each field.</i></small>
-      @if (showSuccess == true) {
-        <div class="successmsg">Your response has been updated.</div>
-      }
-      @if (showError == true) {
-        <div class="errormsg">{{ errorMsg }}.</div>
-      }
     </div>
   </div>
+}
+@if (showSuccess == true) {
+  <div class="successmsg">Your response has been updated.</div>
+}
+@if (showError == true) {
+  <div class="errormsg">{{ errorMsg }}.</div>
 }
 
 @if (!reportedList.getReportedMember.length) {
