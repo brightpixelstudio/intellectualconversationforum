@@ -94,8 +94,11 @@ export class PostComponent {
     const report: GetReported = {
       reportedid: 0,
       reportedstatusid: 1,
+      reportedusername: '',
       reporteduserguid: this.userguidloggedin,
+      statusname: '',
       postid: this.reportPostId,
+      postguid: '',
       postcommentid: this.reportCommentId,
       reportedcontent: '',
       reason: this.reportReason,
@@ -103,6 +106,8 @@ export class PostComponent {
       dateadded: null,
       dateresponded: null,
       respondeduserid: null,
+      respondedusername: '',
+      respondeduserguid: '',
     };
 
     this.apiServiceReported.submitReported(report).subscribe({

@@ -1,11 +1,11 @@
-import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { GetReported } from '../../../../../../models/reported/getreported';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'memberreported',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './memberreported.html',
   styleUrl: './memberreported.css',
 })

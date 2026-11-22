@@ -13,7 +13,7 @@
   <tbody>
     @for (theStat of reported; track theStat.reportedid) {
       <tr>
-        <td>{{ theStat.status }}</td>
+        <td>{{ theStat.statusname }}</td>
         <td>
           <a
             class="mt-3 me-1"
@@ -30,9 +30,9 @@
           </a>
         </td>
         <td><span innerHTML="{{ theStat.reportedcontent }}"></span></td>
-        <td>{{ theStat.reason }}"</td>
-        <td>{{ theStat.datereported | date: 'mediumDate' }}</td>
-        <td>{{ theStat.response }}"</td>
+        <td>{{ theStat.reason }}</td>
+        <td>{{ theStat.dateadded | date: 'mediumDate' }}</td>
+        <td>{{ theStat.response }}</td>
         <td>{{ theStat.dateresponded | date: 'mediumDate' }}</td>
       </tr>
     }
