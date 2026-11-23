@@ -3,6 +3,7 @@ import { PostImage } from './postimage';
 export interface GetPost {
   postid: number;
   post: string;
+  postguid: string;
   userid: number;
   userguid: string;
   name: string;
@@ -15,6 +16,7 @@ export interface GetPost {
   userrating: number | null;
   dateadded: Date;
   successrating: boolean;
+  ispinned: boolean;
   commentsclosed: number;
   profileimagekey: string | null;
   profileimageurl: string | null;

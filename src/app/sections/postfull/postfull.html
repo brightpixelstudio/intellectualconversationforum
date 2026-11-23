@@ -9,15 +9,51 @@
             <p>View the post below:</p>
             <hr />
             <p class="title">
-              <img
-                [src]="thePost?.profileimageurl || '/images/default-profile.png'"
-                [alt]="thePost?.name + ' profile image'"
-                class="post-profile-image me-2"
-                width="40"
-                height="40"
-              />
-              <strong>{{ thePost?.name }}</strong
-              >,<i>
+              <a
+                class="btn actionbtn profileBtn"
+                title="View this member's profile"
+                [attr.href]="
+                  '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
+                "
+              >
+                <img
+                  [src]="thePost?.profileimageurl || '/images/default-profile.png'"
+                  [alt]="thePost?.name + ' profile image'"
+                  class="post-profile-image me-2"
+                  width="40"
+                  height="40"
+                />
+              </a>
+              <a
+                class="btn actionbtn profileBtn"
+                style="color: rgb(16, 138, 245)"
+                title="View this member's profile"
+                [attr.href]="
+                  '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
+                "
+              >
+                <strong>{{ thePost?.name }}</strong></a
+              >
+              @if (isAdmin) {
+                <button
+                  type="button"
+                  class="title-button me-2"
+                  (click)="togglePinPost()"
+                  [title]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
+                  [attr.aria-label]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
+                >
+                  <fa-icon
+                    [icon]="faThumbtack"
+                    [class.text-primary]="thePost?.ispinned"
+                    [class.text-secondary]="!thePost?.ispinned"
+                    [rotate]="thePost?.ispinned ? undefined : 180"
+                  ></fa-icon>
+                </button>
+              } @else if (thePost?.ispinned) {
+                <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
+              }
+
+              <i>
                 {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
                 {{ thePost?.count }} comments, {{ timePassed }},
                 {{ thePost?.rating | number: '1.1-1' }} rating</i

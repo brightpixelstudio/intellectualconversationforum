@@ -21,8 +21,6 @@ export interface GetPostsByCategoryUserRating {
   usertypeid: number;
   type: string;
   ispinned: boolean;
-  datepinned: Date | null;
-  pinnedbyuserid: number | null;
   postimages: PostImage[];
   successrating: boolean;
 }

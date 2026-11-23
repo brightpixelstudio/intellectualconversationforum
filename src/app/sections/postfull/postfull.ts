@@ -1,9 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { UserType } from './../../../app/enums/usertype';
+
 import { AuthService } from '../../services/auth';
 import { ApiServiceUser } from '../../services/userservice';
 import { ApiServicePost } from '../../services/postservice';
 import { GlobalService } from '../../services/globalservice';
+
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GetPost } from '../../models/posts/getpost';
@@ -15,9 +18,12 @@ import { RatingComponent } from './../rating/rating';
 import { DecimalPipe } from '@angular/common';
 import { PostImagesComponent } from './../postimages/postimages/postimages';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'postfull',
-  imports: [DatePipe, RatingComponent, DecimalPipe, PostImagesComponent],
+  imports: [DatePipe, RatingComponent, DecimalPipe, PostImagesComponent, FontAwesomeModule],
   templateUrl: './postfull.html',
   styleUrl: './postfull.css',
 })
@@ -25,6 +31,7 @@ export class PostFull implements OnInit {
   timePassed?: string;
   postguid: string = '';
   userguid: string = '';
+  usertypeidloggedin: number = 0;
   userList!: any[];
 
   showRatings = false;
@@ -32,6 +39,10 @@ export class PostFull implements OnInit {
   postCommentId: string | null = null;
   theComments: GetPostComments[] = [];
   thePostRatings: GetRatings[] = [];
+
+  faThumbtack = faThumbtack;
+  faUsers = faUsers;
+  faFlag = faFlag;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -48,6 +59,7 @@ export class PostFull implements OnInit {
     if (!postguid) return;
     this.postguid = postguid;
     this.userguid = this.authService.getUserGuid() ?? '';
+    this.usertypeidloggedin = this.authService.getUserTypeId() ?? 0;
 
     // Are we scrolling to a comment?
     this.postCommentId = this.route.snapshot.queryParamMap.get('postcommentid');
@@ -139,7 +151,39 @@ export class PostFull implements OnInit {
     });
   }
 
+  togglePinPost(): void {
+    if (!this.thePost) return;
+
+    if (this.thePost.ispinned) {
+      this.apiServicePost.unpinPost(this.thePost.postguid).subscribe({
+        next: () => {
+          if (!this.thePost) return;
+          this.thePost.ispinned = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error unpinning post:', err);
+        },
+      });
+    } else {
+      this.apiServicePost.pinPost(this.thePost?.postguid).subscribe({
+        next: () => {
+          if (!this.thePost) return;
+          this.thePost.ispinned = true;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error pinning post:', err);
+        },
+      });
+    }
+  }
+
   // helpers
+  get isAdmin(): boolean {
+    return this.usertypeidloggedin === UserType.Admin;
+  }
+
   setCommentSuccessMessages(show: boolean) {
     this.theComments.forEach((comment) => {
       comment.successrating = show;

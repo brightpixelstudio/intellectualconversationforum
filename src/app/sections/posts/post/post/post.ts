@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { DatePipe, JsonPipe } from '@angular/common';
+import { DatePipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,14 @@ import { GetReported } from '../../../../models/reported/getreported';
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, RatingComponent, PostImagesComponent, FontAwesomeModule, FormsModule],
+  imports: [
+    DatePipe,
+    DecimalPipe,
+    RatingComponent,
+    PostImagesComponent,
+    FontAwesomeModule,
+    FormsModule,
+  ],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })
@@ -39,6 +46,7 @@ export class PostComponent {
   commentsLoaded = false;
   postExpanded = false;
   UserType = UserType;
+
   faThumbtack = faThumbtack;
   faUsers = faUsers;
   faFlag = faFlag;
@@ -177,8 +185,6 @@ export class PostComponent {
       this.apiServicePost.unpinPost(this.post.postguid).subscribe({
         next: () => {
           this.post.ispinned = false;
-          this.post.datepinned = null;
-          this.post.pinnedbyuserid = null;
           this.pinStatusChanged.emit();
         },
         error: (err) => {
@@ -189,7 +195,6 @@ export class PostComponent {
       this.apiServicePost.pinPost(this.post.postguid).subscribe({
         next: () => {
           this.post.ispinned = true;
-          this.post.datepinned = new Date();
           this.pinStatusChanged.emit();
         },
         error: (err) => {
