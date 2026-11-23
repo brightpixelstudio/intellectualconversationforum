@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../../services/auth';
 import { GetReported } from '../../models/reported/getreported';
 import { ApiServiceReported } from './../../services/reportedservice';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +12,8 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './reportpost.html',
   styleUrl: './reportpost.css',
 })
-export class ReportPost {
+export class ReportPost implements OnInit {
+  userguidloggedin: string = '';
   showReportedSuccess = false;
   showReportedError = false;
   reportReason: string = '';
@@ -23,7 +25,15 @@ export class ReportPost {
   showReport = false;
   faFlag = faFlag;
 
-  constructor(public apiServiceReported: ApiServiceReported) {}
+  constructor(
+    public apiServiceReported: ApiServiceReported,
+    public authService: AuthService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.userguidloggedin = this.authService.getUserGuid() ?? '';
+  }
 
   submitReport(): void {
     // create a form reported object with values
