@@ -13,8 +13,8 @@ import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpost
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
-import { GetReported } from '../../../../models/reported/getreported';
 import { RatingsView } from '../../../ratingsview/ratingsview';
+import { ReportPost } from '../../../reportpost/reportpost';
 
 @Component({
   selector: 'post',
@@ -25,6 +25,7 @@ import { RatingsView } from '../../../ratingsview/ratingsview';
     PostImagesComponent,
     FontAwesomeModule,
     RatingsView,
+    ReportPost,
   ],
   templateUrl: './post.html',
   styleUrl: './post.css',
@@ -53,7 +54,6 @@ export class PostComponent {
     private apiServiceUser: ApiServiceUser,
     private apiServicePost: ApiServicePost,
     public globalService: GlobalService,
-    public apiServiceReported: ApiServiceReported,
     private cdr: ChangeDetectorRef,
   ) {}
 

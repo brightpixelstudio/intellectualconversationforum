@@ -55,7 +55,7 @@
               @if (thePost!.ratingcount > 0) {
                 <ratingsview [post]="thePost!"></ratingsview>
               }
-              <!-- report flag componment -->
+              <reportpost [post]="thePost!"></reportpost>
               <i>
                 {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
                 {{ thePost?.count }} comments, {{ timePassed }},

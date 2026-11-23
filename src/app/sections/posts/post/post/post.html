@@ -104,20 +104,20 @@
         @if (loadingComments) {
           <p>Loading comments...</p>
         } @else {
-          @for (theComment of comments; track theComment.postcommentid) {
+          @for (comment of comments; track comment.postcommentid) {
             <div class="row mb-3">
               <div class="col-12">
                 <p class="comment">
                   <img
-                    [src]="theComment?.commentprofileimageurl || '/images/default-profile.png'"
-                    [alt]="theComment?.name + ' profile image'"
+                    [src]="comment?.commentprofileimageurl || '/images/default-profile.png'"
+                    [alt]="comment?.name + ' profile image'"
                     class="post-profile-image me-2"
                     width="40"
                     height="40"
                   />
 
-                  <strong>{{ theComment.name }} </strong>
-                  @if (theComment.ratingcount > 0) {
+                  <strong>{{ comment.name }} </strong>
+                  @if (comment.ratingcount > 0) {
                     <!--
                     <button
                       type="button"
@@ -130,27 +130,19 @@
                     </button>
                     -->
                   }
-                  <button
-                    type="button"
-                    class="title-button"
-                    title="Report comment"
-                    aria-label="Report comment"
-                    (click)="openReport(0, theComment.postcommentid)"
-                  >
-                    <fa-icon class="text-primary ms-2" [icon]="faFlag"></fa-icon>
-                  </button>
-                  <span class="badge bg-secondary ms-2"> {{ theComment.type }} </span>
+                  <reportpost [post]="post" [comment]="comment"></reportpost>
+                  <span class="badge bg-secondary ms-2"> {{ comment.type }} </span>
                   <span class="posttitleinfo">
-                    {{ theComment.dateadded | date: 'medium' }},
-                    {{ globalService.getTimePassed(theComment.dateadded) }},
-                    {{ theComment.rating }} rating
+                    {{ comment.dateadded | date: 'medium' }},
+                    {{ globalService.getTimePassed(comment.dateadded) }},
+                    {{ comment.rating }} rating
                   </span>
                 </p>
 
                 <div class="row">
                   <div class="col-12">
                     <p class="text-break">
-                      <span [innerHTML]="theComment.comment"></span>
+                      <span [innerHTML]="comment.comment"></span>
                     </p>
                   </div>
                 </div>
@@ -162,26 +154,25 @@
                 <div class="col-12">
                   <div class="row">
                     @if (
-                      theComment.userguid === userguidloggedin ||
-                      usertypeidloggedin == UserType.Admin
+                      comment.userguid === userguidloggedin || usertypeidloggedin == UserType.Admin
                     ) {
                       <div class="col-3">
-                        @if (theComment.userguid === userguidloggedin) {
+                        @if (comment.userguid === userguidloggedin) {
                           <a
-                            [attr.href]="'/editcomment?commentguid=' + theComment.commentguid"
+                            [attr.href]="'/editcomment?commentguid=' + comment.commentguid"
                             class="btn btn-primary editcommentbtn mt-2 me-1"
                           >
                             Edit Comment
                           </a>
                         }
                         @if (
-                          theComment.userguid === userguidloggedin ||
+                          comment.userguid === userguidloggedin ||
                           usertypeidloggedin == UserType.Admin
                         ) {
                           <button
                             type="button"
                             class="btn btn-danger deletecommentbtn mt-2"
-                            (click)="onDeleteCommentClick(theComment.commentguid)"
+                            (click)="onDeleteCommentClick(comment.commentguid)"
                           >
                             Delete This Comment
                           </button>
@@ -191,13 +182,13 @@
 
                     <div class="col-3">
                       <rating
-                        [rating]="theComment.rating"
-                        [ratingCount]="theComment.ratingcount"
-                        [userRating]="theComment.userrating"
-                        [success]="theComment.successrating"
-                        [canRate]="theComment.userguid !== userguidloggedin"
+                        [rating]="comment.rating"
+                        [ratingCount]="comment.ratingcount"
+                        [userRating]="comment.userrating"
+                        [success]="comment.successrating"
+                        [canRate]="comment.userguid !== userguidloggedin"
                         [buttonColor]="'warning'"
-                        (ratingSelected)="onCommentRatingSelected($event, theComment.commentguid)"
+                        (ratingSelected)="onCommentRatingSelected($event, comment.commentguid)"
                       >
                       </rating>
                     </div>

@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { GetReported } from '../../models/reported/getreported';
+import { GetPost } from '../../models/posts/getpost';
 import { ApiServiceReported } from './../../services/reportedservice';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
+import { GetPostComments } from '../../models/posts/getpostcomments';
 
 @Component({
   selector: 'reportpost',
@@ -13,6 +15,9 @@ import { faFlag } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './reportpost.css',
 })
 export class ReportPost implements OnInit {
+  @Input({ required: true }) post!: GetPost;
+  @Input() comment!: GetPostComments;
+
   userguidloggedin: string = '';
   showReportedSuccess = false;
   showReportedError = false;
@@ -33,6 +38,10 @@ export class ReportPost implements OnInit {
 
   ngOnInit(): void {
     this.userguidloggedin = this.authService.getUserGuid() ?? '';
+    this.reportPostId = this.post.postid;
+    if (this.comment) {
+      this.reportCommentId = this.comment.postcommentid;
+    }
   }
 
   submitReport(): void {
@@ -56,6 +65,9 @@ export class ReportPost implements OnInit {
       respondeduserguid: '',
     };
 
+    console.log(report);
+    return;
+
     this.apiServiceReported.submitReported(report).subscribe({
       next: () => {
         this.reportReason = '';
@@ -68,12 +80,10 @@ export class ReportPost implements OnInit {
     });
   }
 
-  openReport(postid: number, commentid: number) {
+  openReport() {
     this.showReportedSuccess = false;
     this.showReportedError = false;
     this.showReport = true;
-    this.reportPostId = postid;
-    this.reportCommentId = commentid;
-    this.reportTitle = postid == 0 ? 'Report a Comment ' : 'Report a Post';
+    this.reportTitle = this.reportCommentId == 0 ? 'Report a Post ' : 'Report a Comment';
   }
 }

@@ -21,6 +21,7 @@ import { PostImagesComponent } from './../postimages/postimages/postimages';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { RatingsView } from '../ratingsview/ratingsview';
+import { ReportPost } from '../reportpost/reportpost';
 
 @Component({
   selector: 'postfull',
@@ -31,6 +32,7 @@ import { RatingsView } from '../ratingsview/ratingsview';
     PostImagesComponent,
     FontAwesomeModule,
     RatingsView,
+    ReportPost,
   ],
   templateUrl: './postfull.html',
   styleUrl: './postfull.css',
