@@ -56,8 +56,9 @@
                 <ratingsview [post]="thePost!"></ratingsview>
               }
               <reportpost [post]="thePost!"></reportpost>
+              <span class="badge bg-secondary ms-2"> {{ thePost!.type }} </span>
               <i>
-                {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
+                {{ thePost?.catagory }}, {{ thePost!.dateadded | date: 'mediumDate' }},
                 {{ thePost?.count }} comments, {{ timePassed }},
                 {{ thePost?.rating | number: '1.1-1' }} rating</i
               >
@@ -101,7 +102,14 @@
                       width="40"
                       height="40"
                     />
-                    <strong>{{ theComment.name }}, </strong>
+                    <strong>{{ theComment.name }}</strong>
+                    @if (theComment.ratingcount > 0) {
+                      <!--
+                        <ratingsview [post]="thePost!"></ratingsview>
+                      -->
+                    }
+                    <reportpost [post]="thePost!" [comment]="theComment"></reportpost>
+                    <span class="badge bg-secondary ms-2 me-2"> {{ theComment.type }} </span>
                     <span class="posttitleinfo"
                       >{{ theComment.dateadded | date: 'medium' }},
                       {{ globalService.getTimePassed(theComment.dateadded) }},

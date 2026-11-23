@@ -119,15 +119,7 @@
                   <strong>{{ comment.name }} </strong>
                   @if (comment.ratingcount > 0) {
                     <!--
-                    <button
-                      type="button"
-                      class="title-button text-primary"
-                      title="View individual ratings"
-                      aria-label="View individual ratings"
-                      (click)="loadCommentRatings(theComment.commentguid)"
-                    >
-                      <fa-icon [icon]="faUsers"></fa-icon>
-                    </button>
+                      <ratingsview [post]="thePost!"></ratingsview>
                     -->
                   }
                   <reportpost [post]="post" [comment]="comment"></reportpost>
