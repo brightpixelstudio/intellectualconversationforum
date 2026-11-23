@@ -34,11 +34,9 @@ export class PostFull implements OnInit {
   usertypeidloggedin: number = 0;
   userList!: any[];
 
-  showRatings = false;
   thePost: GetPost | null = null;
   postCommentId: string | null = null;
   theComments: GetPostComments[] = [];
-  thePostRatings: GetRatings[] = [];
 
   faThumbtack = faThumbtack;
   faUsers = faUsers;
@@ -69,13 +67,11 @@ export class PostFull implements OnInit {
       users: this.apiServiceUser.getUserList(),
       post: this.apiServicePost.getPost(this.postguid, this.userguid),
       comments: this.apiServicePost.getComments(this.postguid, this.userguid),
-      ratings: this.apiServicePost.getpostratings(this.postguid),
     }).subscribe({
       next: (response) => {
         this.userList = response.users;
         this.thePost = response.post[0];
         this.theComments = response.comments;
-        this.thePostRatings = response.ratings;
         this.timePassed = this.globalService.getTimePassed(this.thePost.dateadded);
         this.cdr.detectChanges();
 
@@ -193,10 +189,6 @@ export class PostFull implements OnInit {
       comment.rating = rating;
       comment.successrating = show;
     }
-  }
-
-  toggleRatings(): void {
-    this.showRatings = !this.showRatings;
   }
 
   scrollToComment(): void {

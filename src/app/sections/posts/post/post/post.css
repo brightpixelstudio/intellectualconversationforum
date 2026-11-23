@@ -51,25 +51,3 @@ select.userSelect {
   border-radius: 8px;
 }
 
-.pinned-post {
-  background-color: #d9eafd;
-}
-
-.title-button {
-  background: transparent !important;
-  border: none !important;
-  padding: 0  !important;
-  margin: 0 !important;
-  cursor: pointer;
-  font-size: 18px !important;
-  box-shadow: none !important;
-}
-
-.title-button:hover,
-.title-button:focus,
-.title-button:active,
-.title-button:focus-visible {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}

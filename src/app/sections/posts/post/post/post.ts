@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angu
 import { DatePipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
 
 import { ApiServiceUser } from './../../../../services/userservice';
@@ -48,12 +48,10 @@ export class PostComponent {
   UserType = UserType;
 
   faThumbtack = faThumbtack;
-  faUsers = faUsers;
   faFlag = faFlag;
 
   // Ratings dialog
   ratings: GetRatings[] = [];
-  showRatings = false;
   showReport = false;
   showReportedSuccess = false;
   showReportedError = false;
@@ -62,10 +60,6 @@ export class PostComponent {
   reportReason: string = '';
   reportPostId = 0;
   reportCommentId = 0;
-  loadingRatings = false;
-  ratingsTitle = '';
-  ratingsAverage = 0;
-  ratingsCount = 0;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -126,56 +120,6 @@ export class PostComponent {
       },
       error: (error) => {
         this.errorMsg = 'Failed to submit reported post';
-      },
-    });
-  }
-
-  loadPostRatings(): void {
-    this.ratingsTitle = 'Post Ratings';
-    this.ratingsAverage = this.post.rating;
-    this.ratingsCount = this.post.ratingcount;
-
-    this.showRatings = true;
-    this.loadingRatings = true;
-    this.ratings = [];
-
-    this.apiServicePost.getpostratings(this.post.postguid).subscribe({
-      next: (ratings) => {
-        this.ratings = ratings;
-        this.loadingRatings = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.loadingRatings = false;
-        this.cdr.detectChanges();
-        console.error('Error loading post ratings:', err);
-      },
-    });
-  }
-
-  loadCommentRatings(commentguid: string): void {
-    const comment = this.comments.find((item) => item.commentguid === commentguid);
-
-    if (!comment) return;
-
-    this.ratingsTitle = 'Comment Ratings';
-    this.ratingsAverage = comment.rating;
-    this.ratingsCount = comment.ratingcount;
-
-    this.showRatings = true;
-    this.loadingRatings = true;
-    this.ratings = [];
-
-    this.apiServicePost.getcommentratings(commentguid).subscribe({
-      next: (ratings) => {
-        this.ratings = ratings;
-        this.loadingRatings = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.loadingRatings = false;
-        this.cdr.detectChanges();
-        console.error('Error loading comment ratings:', err);
       },
     });
   }

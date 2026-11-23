@@ -1,0 +1,68 @@
+<button
+  type="button"
+  class="title-button"
+  title="View individual ratings"
+  aria-label="View individual ratings"
+  (click)="loadPostRatings()"
+>
+  <fa-icon class="text-primary ms-2" [icon]="faUsers"></fa-icon>
+</button>
+
+@if (showRatings) {
+  <div class="modal-backdrop show"></div>
+
+  <div class="modal show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">{{ ratingsTitle }}</h5>
+            <div class="text-muted small">
+              Average: {{ ratingsAverage }} / 10
+              <span class="ms-2">({{ ratingsCount }} ratings)</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="showRatings = false"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          @if (loadingRatings) {
+            <div class="text-center">
+              <span class="spinner-border"></span>
+              <p>Loading ratings...</p>
+            </div>
+          } @else if (ratings.length === 0) {
+            <p>No ratings available.</p>
+          } @else {
+            @for (rating of ratings; track rating.userid) {
+              <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                <div>
+                  <strong>{{ rating.name }}</strong>
+                  <span class="text-muted small ms-2">
+                    {{ rating.dateupdated || rating.dateadded | date: 'mediumDate' }}
+                  </span>
+                </div>
+
+                <span class="badge bg-secondary">
+                  {{ rating.rating }}
+                </span>
+              </div>
+            }
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary commentsbtn" (click)="showRatings = false">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
