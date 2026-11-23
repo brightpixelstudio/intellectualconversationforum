@@ -16,7 +16,7 @@
         <div class="modal-header">
           <div>
             <h5 class="modal-title">{{ reportTitle }}</h5>
-            <div class="text-muted small">
+            <div class="text-muted small" style="line-height: 18px">
               Please supply a reason this post should be reported. The result will be displayed in
               both your profile / reports section and your notifications.
             </div>
@@ -28,13 +28,14 @@
                 id="reason"
                 [(ngModel)]="reportReason"
               ></textarea>
-              <br />
-              <small class="text-muted"><i>You must type at least 10 characters</i></small>
+            </div>
+            <div class="text-muted small">
+              <i>You must type at least 105 characters</i>
             </div>
             <div>
               <button
                 type="button"
-                class="btn btn-primary commentsbtn mt-1"
+                class="btn btn-primary commentsbtn mt-3"
                 aria-label="Submit"
                 (click)="submitReport()"
                 [disabled]="reportReason.trim().length < 10"
@@ -43,10 +44,10 @@
               </button>
               <br />
               @if (showReportedSuccess == true) {
-                <div class="successmsg">This post was reported.</div>
+                <div class="successmsg" style="width: 400px">This post was reported.</div>
               }
               @if (showReportedError == true) {
-                <div class="errormsg">{{ errorMsg }}.</div>
+                <div class="errormsg" style="width: 400px">{{ errorMsg }}.</div>
               }
             </div>
           </div>

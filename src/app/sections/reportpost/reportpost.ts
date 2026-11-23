@@ -45,6 +45,11 @@ export class ReportPost implements OnInit {
   }
 
   submitReport(): void {
+    this.showReportedError = false;
+    this.showReportedSuccess = false;
+
+    this.reportPostId = this.reportCommentId != 0 ? 0 : this.reportPostId;
+
     // create a form reported object with values
     const report: GetReported = {
       reportedid: 0,
@@ -66,7 +71,6 @@ export class ReportPost implements OnInit {
     };
 
     console.log(report);
-    return;
 
     this.apiServiceReported.submitReported(report).subscribe({
       next: () => {
@@ -74,8 +78,10 @@ export class ReportPost implements OnInit {
         this.showReportedSuccess = true;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        this.errorMsg = 'Failed to submit reported post';
+      error: (err) => {
+        this.errorMsg = err.error?.error || 'An error occurred submitting your report.';
+        this.showReportedError = true;
+        this.cdr.detectChanges();
       },
     });
   }
