@@ -118,9 +118,7 @@
 
                   <strong>{{ comment.name }} </strong>
                   @if (comment.ratingcount > 0) {
-                    <!--
-                      <ratingsview [post]="thePost!"></ratingsview>
-                    -->
+                    <ratingsview [post]="post" [comment]="comment"></ratingsview>
                   }
                   <reportpost [post]="post" [comment]="comment"></reportpost>
                   <span class="badge bg-secondary ms-2"> {{ comment.type }} </span>
