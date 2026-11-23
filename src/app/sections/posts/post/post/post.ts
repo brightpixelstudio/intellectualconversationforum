@@ -2,8 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angu
 import { DatePipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
-import { FormsModule } from '@angular/forms';
+import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -14,7 +13,6 @@ import { GetPostsByCategoryUserRating } from './../../../../models/posts/getpost
 import { GetPostComments } from './../../../../models/posts/getpostcomments';
 import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
-import { GetRatings } from '../../../../models/posts/getratings';
 import { GetReported } from '../../../../models/reported/getreported';
 import { RatingsView } from '../../../ratingsview/ratingsview';
 
@@ -26,7 +24,6 @@ import { RatingsView } from '../../../ratingsview/ratingsview';
     RatingComponent,
     PostImagesComponent,
     FontAwesomeModule,
-    FormsModule,
     RatingsView,
   ],
   templateUrl: './post.html',
@@ -50,18 +47,7 @@ export class PostComponent {
   UserType = UserType;
 
   faThumbtack = faThumbtack;
-  faFlag = faFlag;
-
-  // Ratings dialog
-  ratings: GetRatings[] = [];
-  showReport = false;
-  showReportedSuccess = false;
-  showReportedError = false;
   errorMsg = '';
-  reportTitle = '';
-  reportReason: string = '';
-  reportPostId = 0;
-  reportCommentId = 0;
 
   constructor(
     private apiServiceUser: ApiServiceUser,
@@ -82,48 +68,6 @@ export class PostComponent {
 
   get isAdmin(): boolean {
     return this.usertypeidloggedin === UserType.Admin;
-  }
-
-  openReport(postid: number, commentid: number) {
-    this.showReportedSuccess = false;
-    this.showReportedError = false;
-    this.showReport = true;
-    this.reportPostId = postid;
-    this.reportCommentId = commentid;
-    this.reportTitle = postid == 0 ? 'Report a Comment ' : 'Report a Post';
-  }
-
-  submitReport(): void {
-    // create a form reported object with values
-    const report: GetReported = {
-      reportedid: 0,
-      reportedstatusid: 1,
-      reportedusername: '',
-      reporteduserguid: this.userguidloggedin,
-      statusname: '',
-      postid: this.reportPostId,
-      postguid: '',
-      postcommentid: this.reportCommentId,
-      reportedcontent: '',
-      reason: this.reportReason,
-      response: null,
-      dateadded: null,
-      dateresponded: null,
-      respondeduserid: null,
-      respondedusername: '',
-      respondeduserguid: '',
-    };
-
-    this.apiServiceReported.submitReported(report).subscribe({
-      next: () => {
-        this.reportReason = '';
-        this.showReportedSuccess = true;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        this.errorMsg = 'Failed to submit reported post';
-      },
-    });
   }
 
   togglePinPost(): void {
