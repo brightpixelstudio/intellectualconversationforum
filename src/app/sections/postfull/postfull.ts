@@ -152,13 +152,10 @@ export class PostFull implements OnInit {
   }
 
   togglePinPost(): void {
-    if (!this.thePost) return;
-
-    if (this.thePost.ispinned) {
-      this.apiServicePost.unpinPost(this.thePost.postguid).subscribe({
+    if (this.thePost!.ispinned) {
+      this.apiServicePost.unpinPost(this.thePost!.postguid).subscribe({
         next: () => {
-          if (!this.thePost) return;
-          this.thePost.ispinned = false;
+          this.thePost!.ispinned = false;
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -166,10 +163,9 @@ export class PostFull implements OnInit {
         },
       });
     } else {
-      this.apiServicePost.pinPost(this.thePost?.postguid).subscribe({
+      this.apiServicePost.pinPost(this.thePost!.postguid).subscribe({
         next: () => {
-          if (!this.thePost) return;
-          this.thePost.ispinned = true;
+          this.thePost!.ispinned = true;
           this.cdr.detectChanges();
         },
         error: (err) => {
