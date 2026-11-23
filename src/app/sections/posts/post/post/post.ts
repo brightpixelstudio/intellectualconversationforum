@@ -16,6 +16,7 @@ import { RatingComponent } from './../../../rating/rating';
 import { PostImagesComponent } from './../../../postimages/postimages/postimages';
 import { GetRatings } from '../../../../models/posts/getratings';
 import { GetReported } from '../../../../models/reported/getreported';
+import { RatingsView } from '../../../ratingsview/ratingsview';
 
 @Component({
   selector: 'post',
@@ -26,6 +27,7 @@ import { GetReported } from '../../../../models/reported/getreported';
     PostImagesComponent,
     FontAwesomeModule,
     FormsModule,
+    RatingsView,
   ],
   templateUrl: './post.html',
   styleUrl: './post.css',

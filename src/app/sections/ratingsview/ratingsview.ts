@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ApiServicePost } from './../../../app/services/postservice';
 import { GetRatings } from '../../../app/models/posts/getratings';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -7,7 +8,7 @@ import { GetPost } from '../../models/posts/getpost';
 
 @Component({
   selector: 'ratingsview',
-  imports: [FontAwesomeModule],
+  imports: [DatePipe, FontAwesomeModule],
   templateUrl: './ratingsview.html',
   styleUrl: './ratingsview.css',
 })

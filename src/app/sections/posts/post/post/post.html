@@ -45,17 +45,7 @@
               <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
             }
             @if (post.ratingcount > 0) {
-              <!-- 
-              <button
-                type="button"
-                class="title-button"
-                title="View individual ratings"
-                aria-label="View individual ratings"
-                (click)="loadPostRatings()"
-              >
-                <fa-icon class="text-primary ms-2" [icon]="faUsers"></fa-icon>
-              </button>
-              -->
+              <ratingsview [post]="post"></ratingsview>
             }
             <button
               type="button"

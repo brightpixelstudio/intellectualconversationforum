@@ -52,7 +52,9 @@
               } @else if (thePost?.ispinned) {
                 <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
               }
-
+              @if (thePost!.ratingcount > 0) {
+                <ratingsview [post]="thePost!"></ratingsview>
+              }
               <i>
                 {{ thePost?.catagory }}, {{ thePost?.dateadded | date: 'mediumDate' }},
                 {{ thePost?.count }} comments, {{ timePassed }},

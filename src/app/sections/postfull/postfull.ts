@@ -20,10 +20,18 @@ import { PostImagesComponent } from './../postimages/postimages/postimages';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { RatingsView } from '../ratingsview/ratingsview';
 
 @Component({
   selector: 'postfull',
-  imports: [DatePipe, RatingComponent, DecimalPipe, PostImagesComponent, FontAwesomeModule],
+  imports: [
+    DatePipe,
+    RatingComponent,
+    DecimalPipe,
+    PostImagesComponent,
+    FontAwesomeModule,
+    RatingsView,
+  ],
   templateUrl: './postfull.html',
   styleUrl: './postfull.css',
 })
