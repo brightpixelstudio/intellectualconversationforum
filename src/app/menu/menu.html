@@ -39,9 +39,27 @@
         }
       }
     </ul>
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center">
       <notifications></notifications>
 
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn profile-button dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          RAD ideas
+        </button>
+
+        <ul class="dropdown-menu">
+          <li>
+            <button type="button" class="dropdown-item" (click)="viewideas()">
+              View / Submit an Idea
+            </button>
+          </li>
+        </ul>
+      </div>
       <div class="btn-group">
         <button
           type="button"

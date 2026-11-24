@@ -34,6 +34,19 @@ export class MenuComponent {
     private router: Router,
   ) {}
 
+  viewideas(): void {
+    const userGuid = this.authService.getUserGuid();
+
+    if (!userGuid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.router.navigate(['/viewideas'], {
+      queryParams: { userguid: userGuid },
+    });
+  }
+
   viewprofile(): void {
     const userGuid = this.authService.getUserGuid();
     const userId = this.authService.getUserId();
