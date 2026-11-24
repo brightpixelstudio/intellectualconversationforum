@@ -30,6 +30,8 @@ export class MemberManagement {
     this.apiServiceUser.getUserProfileStatistics(userguid, userid, 200).subscribe({
       next: (data) => {
         this.getUserProfile = data;
+        console.log('here');
+        console.log(this.getUserProfile);
 
         const loggedInUserGuid = this.authService.getUserGuid();
         const profileGuid = data?.getPostsMember?.[0]?.userguid;

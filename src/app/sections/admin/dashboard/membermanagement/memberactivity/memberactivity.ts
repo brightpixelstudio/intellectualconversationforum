@@ -6,11 +6,13 @@ import { MemberCommentRatings } from '../memberactivity/membercommentratings/mem
 import { MemberAccountStatusHistory } from '../memberactivity/memberaccountstatushistory/memberaccountstatushistory';
 import { MemberNotifications } from '../memberactivity/membernotifications/membernotifications';
 import { MemberReported } from '../memberactivity/memberreported/memberreported';
+import { MemberStatistics } from '../memberactivity/memberstatistics/memberstatistics';
 import { AuthService } from '../../../../../services/auth';
 
 @Component({
   selector: 'memberactivity',
   imports: [
+    MemberStatistics,
     MemberRecentPosts,
     MemberRecentComments,
     MemberPostRatings,

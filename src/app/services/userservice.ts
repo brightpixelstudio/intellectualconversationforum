@@ -19,6 +19,7 @@ export class ApiServiceUser {
   private apiUrl = environment.apiUrl + '/user'; // Uses the API URL from environment
   private apiUrlNotifications = environment.apiUrl + '/notification'; // Uses the API URL from environment
   private apiUrlReported = environment.apiUrl + '/reported'; // Uses the API URL from environment
+  private apiUrlStatistic = environment.apiUrl + '/statistic'; // Uses the API URL from environment
 
   getAllProfileMembers(): Observable<GetAllProfileMembers[]> {
     return this.http.get<GetAllProfileMembers[]>(this.apiUrl + '/GetAllProfileMembers');
@@ -76,6 +77,9 @@ export class ApiServiceUser {
     const getReportedMember$ = this.http.get(
       this.apiUrlReported + `/getReportedMember?userguid=${userguid}`,
     );
+    const getStatisticsMember$ = this.http.get(
+      this.apiUrlStatistic + `/getStatisticsMember?userguid=${userguid}`,
+    );
 
     return forkJoin({
       getUserProfile: getUserProfile$,
@@ -86,6 +90,7 @@ export class ApiServiceUser {
       getAccountStatusHistoryMember: getAccountStatusHistoryMember$,
       getNotifications: getNotificationsMember$,
       getReportedMember: getReportedMember$,
+      getStatisticsMember: getStatisticsMember$,
     });
   }
 

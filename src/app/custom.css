@@ -274,6 +274,11 @@ select::placeholder {
 }
 
 /* bootstrap specific */
+.card-header {
+  background-color: #646464;
+  color: white;
+}
+
 .carousel-indicators {
   bottom: -60px;
 }
