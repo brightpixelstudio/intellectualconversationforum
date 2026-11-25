@@ -38,7 +38,7 @@ p.return{
   font-style: italic;
 }
 
-.post-profile-image, .post-profile-image-large {
+.post-profile-image, .post-profile-image-large, .post-profile-image-small {
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -49,6 +49,11 @@ p.return{
 .post-profile-image-large {
   width: 140px;
   height: 140px;
+}
+
+.post-profile-image-small {
+  width: 40px;
+  height: 40px;
 }
 
 /* posts */

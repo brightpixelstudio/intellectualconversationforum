@@ -6,16 +6,18 @@ import { AuthService } from '../../services/auth';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserType } from '../../enums/usertype';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'ideas',
-  imports: [FormsModule, DatePipe, JsonPipe],
+  imports: [FormsModule, FontAwesomeModule, DatePipe, JsonPipe],
   templateUrl: './ideas.html',
   styleUrl: './ideas.css',
 })
 export class Ideas {
   isAdmin = false;
-  loggedInUserGuid: string | null = null;
+  loggedInUserGuid: string = '';
   getIdeas: any = {
     getIdeaStatuses: [],
     getIdeaTypes: [],
@@ -34,6 +36,7 @@ export class Ideas {
   showNew = false;
   errorMsg = '';
   successMsg = '';
+  faPencil = faPencil;
 
   constructor(
     private router: Router,
@@ -46,7 +49,7 @@ export class Ideas {
   ngOnInit(): void {
     // Check administrator status
     this.isAdmin = this.apiAuthService.getUserTypeId() === UserType.Admin;
-    this.loggedInUserGuid = this.apiAuthService.getUserGuid();
+    this.loggedInUserGuid = this.apiAuthService.getUserGuid() ?? '';
 
     // Set default dates
     const today = new Date();
@@ -65,6 +68,7 @@ export class Ideas {
       .subscribe({
         next: (data) => {
           this.getIdeas = data;
+          console.log(this.getIdeas);
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -76,18 +80,20 @@ export class Ideas {
   insertIdea() {
     this.showSuccess = false;
     this.showError = false;
-    this.apiServiceIdeas.insertIdea(this.ideatypeid, this.title, this.description).subscribe({
-      next: (result) => {
-        // reload
-        this.showSuccess = true;
-        this.successMsg = 'Your idea has been successfully submitted.';
-        this.loadIdeas();
-      },
-      error: (error) => {
-        this.showError = true;
-        this.errorMsg = 'Error submitting idea: ' + error;
-      },
-    });
+    this.apiServiceIdeas
+      .insertIdea(this.loggedInUserGuid, this.ideatypenewid, this.title, this.description)
+      .subscribe({
+        next: (result) => {
+          // reload
+          this.showSuccess = true;
+          this.successMsg = 'Your idea has been successfully submitted.';
+          this.loadIdeas();
+        },
+        error: (error) => {
+          this.showError = true;
+          this.errorMsg = 'Error submitting idea';
+        },
+      });
   }
 
   // helpers

@@ -19,7 +19,6 @@ export class ApiServiceIdeas {
   ): Observable<any> {
     const getIdeaStatuses$ = this.http.get(this.apiUrl + `/getIdeaStatuses`);
     const getIdeaTypes$ = this.http.get(this.apiUrl + `/getIdeaTypes`);
-
     const getIdeas$ = this.http.post(this.apiUrl + `/getIdeas`, {
       startDate,
       endDate,
@@ -34,8 +33,14 @@ export class ApiServiceIdeas {
     });
   }
 
-  insertIdea(ideaTypeId: number, title: string, description: string): Observable<any> {
+  insertIdea(
+    userGuid: string,
+    ideaTypeId: number,
+    title: string,
+    description: string,
+  ): Observable<any> {
     return this.http.post(this.apiUrl + `/insertIdea`, {
+      userGuid,
       ideaTypeId,
       title,
       description,
