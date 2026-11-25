@@ -42,7 +42,7 @@ export class MenuComponent {
       return;
     }
 
-    this.router.navigate(['/viewideas'], {
+    this.router.navigate(['/ideas'], {
       queryParams: { userguid: userGuid },
     });
   }

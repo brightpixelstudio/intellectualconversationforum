@@ -16,6 +16,7 @@ import { LoginPage } from './pages/login/login';
 import { MemberSettingsPage } from './pages/membersettings/membersettingspage';
 import { AdminPage } from './pages/admin/adminpage';
 import { adminGuard } from './auth-guard-admin';
+import { IdeaPage } from './pages/ideapage/ideapage';
 
 export const routes: Routes = [
   // Public routes
@@ -109,5 +110,11 @@ export const routes: Routes = [
     component: AdminPage,
     title: 'Administration',
     canActivate: [authGuard, adminGuard],
+  },
+  {
+    path: 'ideas',
+    component: IdeaPage,
+    title: 'View Ideas',
+    canActivate: [authGuard],
   },
 ];
