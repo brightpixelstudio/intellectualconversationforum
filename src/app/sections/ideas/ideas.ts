@@ -3,10 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { ApiServiceIdeas } from '../../services/ideaservice';
 import { GlobalService } from '../../services/globalservice';
 import { AuthService } from '../../services/auth';
-import { IdeaType } from '../../enums/ideatype';
-import { IdeaStatus } from '../../enums/ideastatus';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { UserType } from '../../enums/usertype';
 
 @Component({
   selector: 'ideas',
@@ -15,13 +14,26 @@ import { Router } from '@angular/router';
   styleUrl: './ideas.css',
 })
 export class Ideas {
+  isAdmin = false;
+  loggedInUserGuid: string | null = null;
+  getIdeas: any = {
+    getIdeaStatuses: [],
+    getIdeaTypes: [],
+    getIdeas: [],
+  };
   startDate = '';
   endDate = '';
-  ideatypeid: number | undefined;
-  ideastatusid: number | undefined;
+  ideatypeid = 0; // allsmall
+  ideastatusid = 0; // all
+  title = '';
+  description = '';
+  ideatypenewid = 1;
+  canUpdate = false;
   showSuccess = false;
   showError = false;
+  showNew = false;
   errorMsg = '';
+  successMsg = '';
 
   constructor(
     private router: Router,
@@ -32,19 +44,53 @@ export class Ideas {
   ) {}
 
   ngOnInit(): void {
-    // set default dates
+    // Check administrator status
+    this.isAdmin = this.apiAuthService.getUserTypeId() === UserType.Admin;
+    this.loggedInUserGuid = this.apiAuthService.getUserGuid();
+
+    // Set default dates
     const today = new Date();
     this.endDate = this.formatDate(today);
+
     const firstDay = new Date(today.getFullYear(), today.getMonth() - 3, 1);
     this.startDate = this.formatDate(firstDay);
 
-    // create defaults
-    this.ideatypeid = 0; // all
-    this.ideastatusid = 0; // all
-
-    // this.loadideas();
+    // Load the ideas
+    this.loadIdeas();
   }
 
+  loadIdeas(): void {
+    this.apiServiceIdeas
+      .getIdeas(this.ideastatusid, this.ideatypeid, this.startDate, this.endDate)
+      .subscribe({
+        next: (data) => {
+          this.getIdeas = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Unable to load ideas:', err);
+        },
+      });
+  }
+
+  insertIdea() {
+    this.showSuccess = false;
+    this.showError = false;
+    this.apiServiceIdeas.insertIdea(this.ideatypeid, this.title, this.description).subscribe({
+      next: (result) => {
+        // reload
+        this.showSuccess = true;
+        this.successMsg = 'Your idea has been successfully submitted.';
+        this.loadIdeas();
+      },
+      error: (error) => {
+        this.showError = true;
+        this.errorMsg = 'Error submitting idea: ' + error;
+      },
+    });
+  }
+
+  // helpers
   formatDate(date: Date): string {
     return this.apiGlobalService.formatDate(date);
   }

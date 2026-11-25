@@ -7,19 +7,98 @@
           <div class="col-10">
             <h3 class="pb-3">View and Submit Ideas / Bugs / Improvements</h3>
             <p>View and Submit a new request below</p>
-            <input id="startdate" type="date" style="width: 20%" [(ngModel)]="startDate" />
+            <input id="startdate" type="date" style="width: 15%" [(ngModel)]="startDate" />
             to
-            <input id="enddate" type="date" style="width: 20%" [(ngModel)]="endDate" />
-            <select id="IdeaType" class="ms-2"></select>
-            <select id="IdeaStatus" class="ms-2"></select>
+            <input id="enddate" type="date" style="width: 15%" [(ngModel)]="endDate" />
+
+            <select class="ms-2" name="IdeaType" id="IdeaType" [(ngModel)]="ideatypeid">
+              <option [ngValue]="0">All Types</option>
+              @for (type of getIdeas.getIdeaTypes; track type.ideaTypeId) {
+                <option [ngValue]="type.ideaTypeId">
+                  {{ type.ideaType }}
+                </option>
+              }
+            </select>
+
+            <select class="ms-2" name="IdeaStatus" id="IdeaStatus" [(ngModel)]="ideastatusid">
+              <option [ngValue]="0">All Statuses</option>
+              @for (status of getIdeas.getIdeaStatuses; track status.ideaStatusId) {
+                <option [ngValue]="status.ideaStatusId">
+                  {{ status.ideaStatus }}
+                </option>
+              }
+            </select>
             <button type="button" class="btn btn-primary editcommentbtn mt-1 ms-3">
               View Submitted Requests
             </button>
-            <button type="button" class="btn btn-success editcommentbtn mt-1 ms-3">
+            <button
+              type="button"
+              class="btn btn-success editcommentbtn mt-1 ms-3"
+              (click)="showNew = true"
+            >
               New Request
             </button>
           </div>
         </div>
+        @if (showNew) {
+          <div class="row pt-4">
+            <div class="col-1"></div>
+            <div class="col-10">
+              <p style="margin: 0px">Submit an Idea, Bug or Improvement</p>
+              <input
+                placeholder="Enter a title"
+                id="title"
+                type="text"
+                maxlength="300"
+                style="width: 25%"
+                class="me-2"
+                [(ngModel)]="title"
+              />
+              <input
+                placeholder="Enter a description"
+                id="description"
+                type="text"
+                maxlength="3000"
+                style="width: 32%"
+                [(ngModel)]="description"
+              />
+              <select class="ms-2" name="IdeaTypeNew" id="IdeaTypeNew" [(ngModel)]="ideatypenewid">
+                @for (type of getIdeas.getIdeaTypes; track type.ideaTypeId) {
+                  <option [ngValue]="type.ideaTypeId">
+                    {{ type.ideaType }}
+                  </option>
+                }
+              </select>
+              <button
+                type="button"
+                class="btn btn-success editcommentbtn mt-1 ms-3"
+                [disabled]="title.trim().length < 10 || description.trim().length < 10"
+                (click)="insertIdea()"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-dark editcommentbtn mt-1 ms-1"
+                (click)="showNew = false"
+              >
+                Cancel
+              </button>
+              <br />
+              <small class="text-muted"
+                ><i
+                  >You must type at least 10 characters for both the title and description</i
+                ></small
+              >
+            </div>
+          </div>
+        }
+        @if (showSuccess == true) {
+          <div class="successmsg">{{ successMsg }}</div>
+        }
+        @if (showError == true) {
+          <div class="errormsg">{{ errorMsg }}.</div>
+        }
       </div>
     </div>
   </div>

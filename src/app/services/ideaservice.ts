@@ -17,17 +17,28 @@ export class ApiServiceIdeas {
     startDate: string,
     endDate: string,
   ): Observable<any> {
-    // definitions of models is not needed in this architecture
     const getIdeaStatuses$ = this.http.get(this.apiUrl + `/getIdeaStatuses`);
     const getIdeaTypes$ = this.http.get(this.apiUrl + `/getIdeaTypes`);
-    const getIdeas$ = this.http.get(this.apiUrl + `/getIdeas`, {
-      params: { ideaStatusId, ideaTypeId, startDate, endDate },
+
+    const getIdeas$ = this.http.post(this.apiUrl + `/getIdeas`, {
+      startDate,
+      endDate,
+      ideaTypeId,
+      ideaStatusId,
     });
 
     return forkJoin({
       getIdeaStatuses: getIdeaStatuses$,
       getIdeaTypes: getIdeaTypes$,
       getIdeas: getIdeas$,
+    });
+  }
+
+  insertIdea(ideaTypeId: number, title: string, description: string): Observable<any> {
+    return this.http.post(this.apiUrl + `/insertIdea`, {
+      ideaTypeId,
+      title,
+      description,
     });
   }
 
