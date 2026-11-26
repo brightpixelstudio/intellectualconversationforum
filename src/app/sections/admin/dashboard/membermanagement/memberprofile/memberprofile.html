@@ -32,7 +32,8 @@
               @if (canUpdate || isAdmin) {
                 <strong>Account Status:</strong> {{ getUserProfile?.accountstatus }}<br />
               }
-              <strong>Zipcode:</strong> {{ getUserProfile?.zipcode }}<br />
+              <strong>Location:</strong> {{ getUserProfile?.state }}., {{ getUserProfile?.city }},
+              {{ getUserProfile?.zipcode }}<br />
               <strong>Posts:</strong> {{ getUserProfile?.count }}<br />
               <strong>Joined:</strong>
               {{ getUserProfile?.dateadded | date: 'mediumDate' }},
