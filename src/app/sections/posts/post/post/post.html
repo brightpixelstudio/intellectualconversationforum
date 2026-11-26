@@ -135,7 +135,7 @@
                   <!-- Member name and location -->
                   <span class="d-inline-flex flex-column align-items-start me-2">
                     <strong>{{ comment.name }}</strong>
-
+                    {{ comment.city }} {{ comment.state }}
                     @if (comment.city || comment.state) {
                       <p class="text-muted location-text">
                         <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
