@@ -8,32 +8,47 @@
             <h3 class="pb-3">Post</h3>
             <p>View the post below:</p>
             <hr />
+
             <p class="title">
-              <a
-                class="btn actionbtn profileBtn"
-                title="View this member's profile"
-                [attr.href]="
-                  '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
-                "
-              >
-                <img
-                  [src]="thePost?.profileimageurl || '/images/default-profile.png'"
-                  [alt]="thePost?.name + ' profile image'"
-                  class="post-profile-image me-2"
-                  width="40"
-                  height="40"
-                />
-              </a>
-              <a
-                class="btn actionbtn profileBtn"
-                style="color: rgb(16, 138, 245)"
-                title="View this member's profile"
-                [attr.href]="
-                  '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
-                "
-              >
-                <strong>{{ thePost?.name }}</strong></a
-              >
+              <!-- Member profile image, name, and location -->
+              <span class="d-inline-flex align-items-center me-2">
+                <a
+                  class="btn actionbtn profileBtn"
+                  title="View this member's profile"
+                  [attr.href]="
+                    '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
+                  "
+                >
+                  <img
+                    [src]="thePost?.profileimageurl || '/images/default-profile.png'"
+                    [alt]="thePost?.name + ' profile image'"
+                    class="post-profile-image me-2"
+                    width="40"
+                    height="40"
+                  />
+                </a>
+
+                <span class="d-inline-flex flex-column align-items-start">
+                  <a
+                    class="btn actionbtn profileBtn"
+                    style="color: rgb(16, 138, 245)"
+                    title="View this member's profile"
+                    [attr.href]="
+                      '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
+                    "
+                  >
+                    <strong>{{ thePost?.name }}</strong>
+                  </a>
+
+                  @if (thePost?.city || thePost?.state) {
+                    <span class="text-muted location-text">
+                      <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                      {{ thePost?.city }}, {{ thePost?.state }}, {{ thePost?.zipcode }}
+                    </span>
+                  }
+                </span>
+              </span>
+
               @if (isAdmin) {
                 <button
                   type="button"
@@ -52,19 +67,23 @@
               } @else if (thePost?.ispinned) {
                 <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
               }
+
               @if (thePost!.ratingcount > 0) {
                 <ratingsview [post]="thePost!"></ratingsview>
               }
+
               <reportpost [post]="thePost!"></reportpost>
-              <span class="badge bg-secondary ms-2"> {{ thePost!.type }} </span>
+
+              <span class="badge bg-secondary ms-2">
+                {{ thePost!.type }}
+              </span>
+
               <i>
                 {{ thePost?.catagory }}, {{ thePost!.dateadded | date: 'mediumDate' }},
-                <!--
-                {{ thePost?.count }} comments, {{ timePassed }},
-                 -->
-                {{ thePost?.rating | number: '1.1-1' }} rating</i
-              >
+                {{ thePost?.rating | number: '1.1-1' }} rating
+              </i>
             </p>
+
             <hr />
             <div class="row">
               <div class="col-4 mt-2">

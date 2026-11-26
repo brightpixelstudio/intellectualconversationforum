@@ -2,3 +2,9 @@ p.title {
   font-size: 16px;
   color: rgb(36, 123, 252);
 }
+
+.location-text {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  margin: 0 0 0 0.75rem;
+}

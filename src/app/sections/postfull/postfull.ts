@@ -19,7 +19,7 @@ import { DecimalPipe } from '@angular/common';
 import { PostImagesComponent } from './../postimages/postimages/postimages';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUsers, faFlag, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faFlag, faThumbtack, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { RatingsView } from '../ratingsview/ratingsview';
 import { ReportPost } from '../reportpost/reportpost';
 
@@ -51,6 +51,7 @@ export class PostFull implements OnInit {
   faThumbtack = faThumbtack;
   faUsers = faUsers;
   faFlag = faFlag;
+  faMapMarkerAlt = faMapMarkerAlt;
 
   constructor(
     private apiServiceUser: ApiServiceUser,

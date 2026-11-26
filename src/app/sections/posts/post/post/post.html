@@ -31,7 +31,7 @@
               @if (post.city || post.state) {
                 <p class="text-muted location-text">
                   <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
-                  {{ post.city }}, {{ post.state }}
+                  {{ post.city }}, {{ post.state }}, {{ post.zipcode }}
                 </p>
               }
             </span>
@@ -133,12 +133,12 @@
                   />
 
                   <!-- Member name and location -->
-                  <span class="d-inline-flex flex-column align-items-start me-2">
+                  <span class="d-inline-flex flex-column align-items-start">
                     <strong>{{ comment.name }}</strong>
                     @if (comment.city || comment.state) {
-                      <p class="text-muted location-text">
+                      <p class="text-muted location-text mt-3">
                         <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
-                        {{ comment.city }}, {{ comment.state }}
+                        {{ comment.city }}, {{ comment.state }}, {{ comment.zipcode }}
                       </p>
                     }
                   </span>
