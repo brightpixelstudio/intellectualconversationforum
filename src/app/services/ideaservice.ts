@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { GetIdea } from '../models/ideas/getidea';
+import { FormIdeaUpdate } from '../models/ideas/formideaupdate';
 
 @Injectable({
   providedIn: 'root', // Makes the service a global singleton
@@ -47,19 +48,7 @@ export class ApiServiceIdeas {
     });
   }
 
-  /*
-  getUnreadNotificationCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/GetUnreadNotificationCount`);
+  updateIdea(model: FormIdeaUpdate): Observable<any> {
+    return this.http.put<any>(this.apiUrl + `/updateIdea`, model);
   }
-
-  markNotificationRead(notificationid: number): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/MarkNotificationRead`, null, {
-      params: { notificationid },
-    });
-  }
-
-  markAllNotificationsRead(): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/MarkAllNotificationsRead`, null);
-  }
-    */
 }

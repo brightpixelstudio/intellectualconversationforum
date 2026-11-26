@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { UserType } from '../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { IdeaStatus } from '../../enums/ideastatus';
+import { FormIdeaUpdate } from '../../models/ideas/formideaupdate';
 
 @Component({
   selector: 'ideas',
@@ -29,11 +31,16 @@ export class Ideas {
   ideastatusid = 0; // all
   title = '';
   description = '';
+  response = '';
+  selectedIdeaGuid = '';
   ideatypenewid = 1;
+  IdeaStatus = IdeaStatus;
+  ideastatusnewid = IdeaStatus.UnderReview;
   canUpdate = false;
   showSuccess = false;
   showError = false;
   showNew = false;
+  showUpdate = false;
   errorMsg = '';
   successMsg = '';
   faPencil = faPencil;
@@ -63,12 +70,15 @@ export class Ideas {
   }
 
   loadIdeas(): void {
+    const today = new Date();
+    today.setDate(today.getDate() + 2);
+    this.endDate = this.formatDate(today);
+
     this.apiServiceIdeas
       .getIdeas(this.ideastatusid, this.ideatypeid, this.startDate, this.endDate)
       .subscribe({
         next: (data) => {
           this.getIdeas = data;
-          console.log(this.getIdeas);
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -85,15 +95,47 @@ export class Ideas {
       .subscribe({
         next: (result) => {
           // reload
+          this.title = '';
+          this.description = '';
           this.showSuccess = true;
           this.successMsg = 'Your idea has been successfully submitted.';
           this.loadIdeas();
         },
         error: (error) => {
+          this.showSuccess = true;
           this.showError = true;
           this.errorMsg = 'Error submitting idea';
         },
       });
+  }
+
+  updateIdea(): void {
+    this.showSuccess = false;
+    this.showError = false;
+
+    const model: FormIdeaUpdate = {
+      responseUserGuid: this.loggedInUserGuid,
+      ideaGuid: this.selectedIdeaGuid,
+      ideaStatusId: this.ideastatusnewid,
+      response: this.response,
+    };
+
+    console.log(model);
+
+    this.apiServiceIdeas.updateIdea(model).subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.response = '';
+          this.showSuccess = true;
+          this.successMsg = 'The idea has been successfully updated.';
+          this.loadIdeas();
+        }
+      },
+      error: (err) => {
+        this.showError = true;
+        this.errorMsg = 'Error updating idea';
+      },
+    });
   }
 
   // helpers
