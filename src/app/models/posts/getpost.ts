@@ -17,9 +17,10 @@ export interface GetPost {
   dateadded: Date;
   successrating: boolean;
   ispinned: boolean;
+  type: string;
   city: string;
   state: string;
-  type: string;
+  zipcode: number;
   commentsclosed: number;
   profileimagekey: string | null;
   profileimageurl: string | null;

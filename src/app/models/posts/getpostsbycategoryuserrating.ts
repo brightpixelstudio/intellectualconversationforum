@@ -21,6 +21,7 @@ export interface GetPostsByCategoryUserRating {
   usertypeid: number;
   city: string;
   state: string;
+  zipcode: number;
   type: string;
   ispinned: boolean;
   postimages: PostImage[];

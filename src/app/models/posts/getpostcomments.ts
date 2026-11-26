@@ -17,6 +17,7 @@ export interface GetPostComments {
   usertypeid: number;
   city: string;
   state: string;
+  zipcode: number;
   type: string;
   commentprofileimagekey: string | null;
   commentprofileimageurl: string | null;
