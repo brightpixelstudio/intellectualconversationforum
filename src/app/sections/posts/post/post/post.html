@@ -17,14 +17,24 @@
         </a>
         <div>
           <p class="title">
-            <a
-              class="btn actionbtn profileBtn"
-              style="color: rgb(16, 138, 245)"
-              title="View this member's profile"
-              [attr.href]="'/viewprofile?userguid=' + post.userguid + '&userid=' + post.userid"
-            >
-              {{ post.name }}
-            </a>
+            <!-- Member name and location -->
+            <span class="d-inline-flex flex-column align-items-start me-2">
+              <a
+                class="btn actionbtn profileBtn"
+                style="color: rgb(16, 138, 245)"
+                title="View this member's profile"
+                [attr.href]="'/viewprofile?userguid=' + post.userguid + '&userid=' + post.userid"
+              >
+                {{ post.name }}
+              </a>
+
+              @if (post.city || post.state) {
+                <small class="text-muted location-text">
+                  <i class="fa-solid fa-location-dot me-1"></i>
+                  {{ post.city }}{{ post.city && post.state ? ', ' : '' }}{{ post.state }}
+                </small>
+              }
+            </span>
 
             @if (isAdmin) {
               <button
@@ -44,18 +54,20 @@
             } @else if (post.ispinned) {
               <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
             }
+
             @if (post.ratingcount > 0) {
               <ratingsview [post]="post"></ratingsview>
             }
+
             <reportpost [post]="post"></reportpost>
-            <span class="badge bg-secondary ms-2"> {{ post.type }} </span>
+
+            <span class="badge bg-secondary ms-2">
+              {{ post.type }}
+            </span>
+
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
               {{ post.rating | number: '1.1-1' }} rating
-              <!-- 
-              {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
-              {{ getTimePassed(post.dateadded) }}, {{ post.rating | number: '1.1-1' }} rating
-               -->
             </span>
           </p>
         </div>
@@ -120,19 +132,31 @@
                     height="40"
                   />
 
-                  <strong>{{ comment.name }} </strong>
+                  <!-- Member name and location -->
+                  <span class="d-inline-flex flex-column align-items-start me-2">
+                    <strong>{{ comment.name }}</strong>
+
+                    @if (comment.city || comment.state) {
+                      <small class="text-muted location-text">
+                        <i class="fa-solid fa-location-dot me-1"></i>
+                        {{ comment.city }}{{ comment.city && comment.state ? ', ' : ''
+                        }}{{ comment.state }}
+                      </small>
+                    }
+                  </span>
+
                   @if (comment.ratingcount > 0) {
                     <ratingsview [post]="post" [comment]="comment"></ratingsview>
                   }
+
                   <reportpost [post]="post" [comment]="comment"></reportpost>
-                  <span class="badge bg-secondary ms-2"> {{ comment.type }} </span>
+
+                  <span class="badge bg-secondary ms-2">
+                    {{ comment.type }}
+                  </span>
+
                   <span class="posttitleinfo">
                     {{ comment.dateadded | date: 'mediumDate' }}, {{ comment.rating }} rating
-                    <!-- 
-                    {{ comment.dateadded | date: 'medium' }},
-                    {{ globalService.getTimePassed(comment.dateadded) }},
-                    {{ comment.rating }} rating
-                     -->
                   </span>
                 </p>
 

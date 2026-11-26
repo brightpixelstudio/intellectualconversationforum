@@ -19,6 +19,8 @@ export interface GetPostsByCategoryUserRating {
   userrating: number | null;
   commentsclosed: number;
   usertypeid: number;
+  city: string;
+  state: string;
   type: string;
   ispinned: boolean;
   postimages: PostImage[];

@@ -59,7 +59,9 @@
               <span class="badge bg-secondary ms-2"> {{ thePost!.type }} </span>
               <i>
                 {{ thePost?.catagory }}, {{ thePost!.dateadded | date: 'mediumDate' }},
+                <!--
                 {{ thePost?.count }} comments, {{ timePassed }},
+                 -->
                 {{ thePost?.rating | number: '1.1-1' }} rating</i
               >
             </p>
@@ -109,8 +111,10 @@
                     <reportpost [post]="thePost!" [comment]="theComment"></reportpost>
                     <span class="badge bg-secondary ms-2 me-2"> {{ theComment.type }} </span>
                     <span class="posttitleinfo"
-                      >{{ theComment.dateadded | date: 'medium' }},
+                      >{{ theComment.dateadded | date: 'mediumDate' }},
+                      <!-- 
                       {{ globalService.getTimePassed(theComment.dateadded) }},
+                       -->
                       {{ theComment.rating }} rating
                     </span>
                   </p>
