@@ -38,7 +38,7 @@
             <button
               type="button"
               class="btn btn-success editcommentbtn mt-1 ms-3"
-              (click)="showNew = true; showUpdate = false"
+              (click)="showNew = true; showUpdate = false; showSuccess = false; showError = false"
             >
               New Request
             </button>
@@ -219,8 +219,12 @@
                       <td>{{ theRecord.ideaStatus }}</td>
                       <td>{{ theRecord.dateUpdated | date: 'mediumDate' }}</td>
                       <td>{{ theRecord.response }}</td>
-                      @if (isAdmin) {
-                        <td class="text-nowrap">
+                      <td class="text-nowrap">
+                        @if (
+                          isAdmin &&
+                          theRecord.ideaStatusId !== IdeaStatus.Declined &&
+                          theRecord.ideaStatusId !== IdeaStatus.Implemented
+                        ) {
                           <a
                             class="btn actionbtn editBtn"
                             title="Update this submission"
@@ -234,8 +238,8 @@
                           >
                             <fa-icon [icon]="faPencil" />
                           </a>
-                        </td>
-                      }
+                        }
+                      </td>
                     </tr>
                   }
                 </tbody>

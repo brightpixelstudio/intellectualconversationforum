@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiServiceIdeas } from '../../services/ideaservice';
 import { GlobalService } from '../../services/globalservice';
@@ -18,7 +18,8 @@ import { FormIdeaUpdate } from '../../models/ideas/formideaupdate';
   styleUrl: './ideas.css',
 })
 export class Ideas {
-  isAdmin = false;
+  @Input({ required: true }) isAdmin!: boolean;
+
   loggedInUserGuid: string = '';
   getIdeas: any = {
     getIdeaStatuses: [],
@@ -54,8 +55,6 @@ export class Ideas {
   ) {}
 
   ngOnInit(): void {
-    // Check administrator status
-    this.isAdmin = this.apiAuthService.getUserTypeId() === UserType.Admin;
     this.loggedInUserGuid = this.apiAuthService.getUserGuid() ?? '';
 
     // Set default dates
@@ -119,8 +118,6 @@ export class Ideas {
       ideaStatusId: this.ideastatusnewid,
       response: this.response,
     };
-
-    console.log(model);
 
     this.apiServiceIdeas.updateIdea(model).subscribe({
       next: (data) => {
