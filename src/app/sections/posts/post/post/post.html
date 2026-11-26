@@ -51,7 +51,11 @@
             <span class="badge bg-secondary ms-2"> {{ post.type }} </span>
             <span class="posttitleinfo">
               {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
+              {{ post.rating | number: '1.1-1' }} rating
+              <!-- 
+              {{ post.catagory }}, {{ post.dateadded | date: 'mediumDate' }},
               {{ getTimePassed(post.dateadded) }}, {{ post.rating | number: '1.1-1' }} rating
+               -->
             </span>
           </p>
         </div>
@@ -123,9 +127,12 @@
                   <reportpost [post]="post" [comment]="comment"></reportpost>
                   <span class="badge bg-secondary ms-2"> {{ comment.type }} </span>
                   <span class="posttitleinfo">
+                    {{ comment.dateadded | date: 'mediumDate' }}, {{ comment.rating }} rating
+                    <!-- 
                     {{ comment.dateadded | date: 'medium' }},
                     {{ globalService.getTimePassed(comment.dateadded) }},
                     {{ comment.rating }} rating
+                     -->
                   </span>
                 </p>
 

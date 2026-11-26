@@ -111,7 +111,9 @@
                         </a>
                       </td>
                       <td>{{ theMember.username }}</td>
-                      <td>{{ theMember.state }}. {{ theMember.city }}</td>
+                      <td>
+                        {{ theMember?.city }}, {{ theMember?.state }}. {{ theMember?.zipcode }}
+                      </td>
                       <td>{{ theMember.postcount }}</td>
                       <td>
                         {{ theMember.profile }}
@@ -222,7 +224,9 @@
                         </a>
                       </td>
                       <td>{{ theMember.username }}</td>
-                      <td>{{ theMember.state }}. {{ theMember.city }}</td>
+                      <td>
+                        {{ theMember?.city }}, {{ theMember?.state }}. {{ theMember?.zipcode }}
+                      </td>
                       <td>{{ theMember.count }}</td>
                       <td>
                         {{ theMember.profile }}
@@ -334,7 +338,9 @@
                         </a>
                       </td>
                       <td>{{ theMember.username }}</td>
-                      <td>{{ theMember.state }}. {{ theMember.city }}</td>
+                      <td>
+                        {{ theMember?.city }}, {{ theMember?.state }}. {{ theMember?.zipcode }}
+                      </td>
                       <td>{{ theMember.count }}</td>
                       <td>
                         {{ theMember.profile }}
@@ -445,7 +451,9 @@
                         </a>
                       </td>
                       <td>{{ theMember.username }}</td>
-                      <td>{{ theMember.state }}. {{ theMember.city }}</td>
+                      <td>
+                        {{ theMember?.city }}, {{ theMember?.state }}. {{ theMember?.zipcode }}
+                      </td>
                       <td>{{ theMember.count }}</td>
                       <td>
                         {{ theMember.profile }}
