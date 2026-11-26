@@ -5,6 +5,8 @@ export interface GetMostPostsMembers {
   username: string;
   email: string;
   zipcode: number;
+  city: string;
+  state: string;
   profile: string;
   dateadded: Date;
   datelastlogin: Date;

@@ -86,12 +86,6 @@ export class Members implements OnInit {
     switch (value) {
       case 'all':
         this.reportType = MemberReportType.All;
-        /*
-        this.apiService.getAllProfileMembers().subscribe((data: GetAllProfileMembers[]) => {
-          this.memberListGetAllProfile = data;
-          this.cdr.detectChanges();
-        });
-        */
         break;
 
       case 'newest':

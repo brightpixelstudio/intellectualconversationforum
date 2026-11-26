@@ -9,6 +9,8 @@ export interface GetProfileMember {
   username: string;
   email: string;
   zipcode: number;
+  city: string;
+  state: string;
   count: number;
   profile: string;
   datelastpost: Date | null;

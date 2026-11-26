@@ -5,6 +5,8 @@ export interface GetNewestMembers {
   email: string;
   name: string;
   zipcode: number;
+  city: string;
+  state: string;
   usertypeid: number;
   type: string;
   accountstatusid: number;

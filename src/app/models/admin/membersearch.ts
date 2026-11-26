@@ -9,6 +9,8 @@ export interface MemberSearch {
   username: string;
   email: string;
   zipcode: number;
+  city: string;
+  state: string;
   postcount: number;
   profile: string;
   datelastpost: Date;
