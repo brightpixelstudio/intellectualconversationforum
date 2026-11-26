@@ -29,10 +29,10 @@
               </a>
 
               @if (post.city || post.state) {
-                <small class="text-muted location-text">
-                  <i class="fa-solid fa-location-dot me-1"></i>
-                  {{ post.city }}{{ post.city && post.state ? ', ' : '' }}{{ post.state }}
-                </small>
+                <p class="text-muted location-text">
+                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                  {{ post.city }}, {{ post.state }}
+                </p>
               }
             </span>
 
@@ -137,11 +137,10 @@
                     <strong>{{ comment.name }}</strong>
 
                     @if (comment.city || comment.state) {
-                      <small class="text-muted location-text">
-                        <i class="fa-solid fa-location-dot me-1"></i>
-                        {{ comment.city }}{{ comment.city && comment.state ? ', ' : ''
-                        }}{{ comment.state }}
-                      </small>
+                      <p class="text-muted location-text">
+                        <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                        {{ comment.city }}, {{ comment.state }}
+                      </p>
                     }
                   </span>
 

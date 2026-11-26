@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angu
 import { DatePipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { UserType } from './../../../../enums/usertype';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { faThumbtack, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiServiceUser } from './../../../../services/userservice';
 import { ApiServicePost } from './../../../../services/postservice';
@@ -48,6 +48,7 @@ export class PostComponent {
   UserType = UserType;
 
   faThumbtack = faThumbtack;
+  faMapMarkerAlt = faMapMarkerAlt;
   errorMsg = '';
 
   constructor(
