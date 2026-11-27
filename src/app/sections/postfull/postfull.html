@@ -8,10 +8,8 @@
             <h3 class="pb-3">Post</h3>
             <p>View the post below:</p>
             <hr />
-
-            <p class="title">
-              <!-- Member profile image, name, and location -->
-              <span class="d-inline-flex align-items-center me-2">
+            <div class="row">
+              <div class="col-1">
                 <a
                   class="btn actionbtn profileBtn"
                   title="View this member's profile"
@@ -22,67 +20,79 @@
                   <img
                     [src]="thePost?.profileimageurl || '/images/default-profile.png'"
                     [alt]="thePost?.name + ' profile image'"
-                    class="post-profile-image me-2"
+                    class="post-profile-image"
                     width="40"
                     height="40"
                   />
                 </a>
+              </div>
+              <div class="col-10">
+                <div class="row">
+                  <div class="col-12">
+                    <a
+                      class="btn actionbtn profileBtn"
+                      style="color: rgb(16, 138, 245)"
+                      title="View this member's profile"
+                      [attr.href]="
+                        '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
+                      "
+                    >
+                      <strong>{{ thePost?.name }}</strong>
+                    </a>
+                    <!-- Pin -->
+                    @if (isAdmin) {
+                      <button
+                        type="button"
+                        class="title-button me-2"
+                        (click)="togglePinPost()"
+                        [title]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
+                        [attr.aria-label]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
+                      >
+                        <fa-icon
+                          [icon]="faThumbtack"
+                          [class.text-primary]="thePost?.ispinned"
+                          [class.text-secondary]="!thePost?.ispinned"
+                          [rotate]="thePost?.ispinned ? undefined : 180"
+                        ></fa-icon>
+                      </button>
+                    } @else if (thePost?.ispinned) {
+                      <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
+                    }
 
-                <span class="d-inline-flex flex-column align-items-start">
-                  <a
-                    class="btn actionbtn profileBtn"
-                    style="color: rgb(16, 138, 245)"
-                    title="View this member's profile"
-                    [attr.href]="
-                      '/viewprofile?userguid=' + thePost?.userguid + '&userid=' + thePost?.userid
-                    "
-                  >
-                    <strong>{{ thePost?.name }}</strong>
-                  </a>
+                    <!-- Ratings -->
+                    @if (thePost!.ratingcount > 0) {
+                      <ratingsview [post]="thePost!"></ratingsview>
+                    }
 
-                  @if (thePost?.city || thePost?.state) {
-                    <span class="text-muted location-text">
-                      <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
-                      {{ thePost?.city }}, {{ thePost?.state }}, {{ thePost?.zipcode }}
+                    <!-- Report -->
+                    <reportpost [post]="thePost!"></reportpost>
+
+                    <!-- Post type -->
+                    <span class="badge bg-secondary ms-2">
+                      {{ thePost!.type }}
                     </span>
-                  }
-                </span>
-              </span>
 
-              @if (isAdmin) {
-                <button
-                  type="button"
-                  class="title-button me-2"
-                  (click)="togglePinPost()"
-                  [title]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
-                  [attr.aria-label]="thePost?.ispinned ? 'Unpin post' : 'Pin post'"
-                >
-                  <fa-icon
-                    [icon]="faThumbtack"
-                    [class.text-primary]="thePost?.ispinned"
-                    [class.text-secondary]="!thePost?.ispinned"
-                    [rotate]="thePost?.ispinned ? undefined : 180"
-                  ></fa-icon>
-                </button>
-              } @else if (thePost?.ispinned) {
-                <fa-icon class="text-primary" [icon]="faThumbtack"></fa-icon>
-              }
-
-              @if (thePost!.ratingcount > 0) {
-                <ratingsview [post]="thePost!"></ratingsview>
-              }
-
-              <reportpost [post]="thePost!"></reportpost>
-
-              <span class="badge bg-secondary ms-2">
-                {{ thePost!.type }}
-              </span>
-
-              <i>
-                {{ thePost?.catagory }}, {{ thePost!.dateadded | date: 'mediumDate' }},
-                {{ thePost?.rating | number: '1.1-1' }} rating
-              </i>
-            </p>
+                    <!-- Post metadata -->
+                    <span class="post-metadata">
+                      <i>
+                        {{ thePost?.catagory }}, {{ thePost!.dateadded | date: 'mediumDate' }},
+                        {{ thePost?.rating | number: '1.1-1' }} rating
+                      </i>
+                    </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    @if (thePost?.city || thePost?.state) {
+                      <span class="text-muted location-text">
+                        <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                        {{ thePost?.city }}, {{ thePost?.state }}, {{ thePost?.zipcode }}
+                      </span>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <hr />
             <div class="row">
