@@ -279,6 +279,28 @@ select::placeholder {
 }
 
 /* bootstrap specific */
+.accordion-button:not(.collapsed) {
+  background-color: #0066cc;
+  box-shadow: none;
+  color: white;
+  font-size: 16px !important
+}
+
+.accordion-button {
+  background-color: #5a5a5a;
+  color: #ffffff;
+  font-size: 16px !important
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed):hover,
+.accordion-button:hover {
+  background-color: #0066cc !important;
+}
+
 .card-header {
   background-color: #646464;
   color: white;

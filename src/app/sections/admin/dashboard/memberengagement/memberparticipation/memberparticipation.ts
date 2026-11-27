@@ -10,11 +10,5 @@ export class MemberParticipation implements OnChanges {
   @Input({ required: true }) startDate!: string;
   @Input({ required: true }) endDate!: string;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['startDate'] || changes['endDate']) {
-      console.log('Member Participation - Dates Updated');
-      console.log('Start Date:', this.startDate);
-      console.log('End Date:', this.endDate);
-    }
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 }
