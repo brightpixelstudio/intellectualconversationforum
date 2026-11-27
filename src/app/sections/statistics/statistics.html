@@ -115,7 +115,7 @@
                           <th scope="col">Name</th>
                           <th scope="col">Username</th>
                           <th scope="col">Email</th>
-                          <th scope="col">Zipcode</th>
+                          <th scope="col">Location</th>
                           <th style="width: 500px" scope="col">Profile</th>
                           <th scope="col">Join Date</th>
                           <th scope="col">Last Login</th>
@@ -159,7 +159,7 @@
                             </td>
                             <td>{{ theStat.username }}</td>
                             <td>{{ theStat.email }}</td>
-                            <td>{{ theStat.zipcode }}</td>
+                            <td>{{ theStat.city }}, {{ theStat.state }}. {{ theStat.zipcode }}</td>
                             <td>{{ theStat.profile }}</td>
                             <td>{{ theStat.dateadded | date: 'shortDate' }}</td>
                             <td>{{ theStat.datelastlogin | date: 'shortDate' }}</td>
