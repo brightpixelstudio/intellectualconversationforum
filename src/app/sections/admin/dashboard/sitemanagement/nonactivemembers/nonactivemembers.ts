@@ -68,8 +68,8 @@ export class NonActiveMembers implements OnInit {
     return this.apiGlobalService.formatDate(date);
   }
 
-  invalidDateRange(): boolean {
-    this.showError = this.apiGlobalService.invalidDateRange(this.startDate, this.endDate);
+  invalidDateRange(startDate: string, endDate: string): boolean {
+    this.showError = this.apiGlobalService.invalidDateRange(startDate, endDate);
     return this.showError;
   }
 }

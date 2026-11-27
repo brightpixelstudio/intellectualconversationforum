@@ -1,26 +1,25 @@
-@if (!getNonActiveMembers || !getNonActiveMembers.length) {
-  <i>There are non active members based on your date range</i><br /><br />
-} @else {
-  <div class="row">
-    <div class="col-6 mb-3">
-      <input id="startdate" type="date" style="width: 30%" [(ngModel)]="startDate" />
-      to
-      <input id="enddate" type="date" style="width: 30%" [(ngModel)]="endDate" />
+<div class="row">
+  <div class="col-6 mb-3">
+    <input id="startdate" type="date" style="width: 30%" [(ngModel)]="startDate" />
+    to
+    <input id="enddate" type="date" style="width: 30%" [(ngModel)]="endDate" />
 
-      <button
-        type="button"
-        [disabled]="invalidDateRange"
-        class="btn btn-primary editcommentbtn mt-1 ms-3"
-        (click)="loadNonActiveMembers()"
-      >
-        Get Non-Active Users
-      </button>
-      @if (showError == true) {
-        <div class="errormsg">{{ errorMsg }}</div>
-      }
-    </div>
+    <button
+      type="button"
+      [disabled]="invalidDateRange(startDate, endDate)"
+      class="btn btn-primary editcommentbtn mt-1 ms-3"
+      (click)="loadNonActiveMembers()"
+    >
+      Get Non-Active Users
+    </button>
+    @if (showError == true) {
+      <div class="errormsg">{{ errorMsg }}</div>
+    }
   </div>
-
+</div>
+@if (!getNonActiveMembers || !getNonActiveMembers.length) {
+  <i>There are no non-active members based on your date range</i><br /><br />
+} @else {
   <table class="table table-striped table-hover">
     <thead class="custom-thead">
       <tr>

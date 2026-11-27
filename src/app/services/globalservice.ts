@@ -26,15 +26,15 @@ export class GlobalService {
     const start = new Date(`${startDate}T00:00:00`);
     const end = new Date(`${endDate}T00:00:00`);
 
+    // Start date cannot be after end date
     if (start > end) {
       return true;
     }
 
+    // Maximum date range is one year
     const oneYearLater = new Date(start);
     oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-    if (end > oneYearLater) {
-      return true;
-    }
+
     return end > oneYearLater;
   }
 

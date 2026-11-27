@@ -1,0 +1,32 @@
+<div class="row mb-5">
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Total Posts, Comments</div>
+      <div class="card-body text-left">
+        Total Posts: <strong>{{ communityOverview?.totalPosts }}</strong>
+        <hr />
+        Total Comments: <strong>{{ communityOverview?.totalComments }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Total, Active and New Members</div>
+      <div class="card-body text-left">
+        Total Members: <strong>{{ communityOverview?.totalMembers }}</strong>
+        <hr />
+        Total Active Members: <strong>{{ communityOverview?.activeMembers }}</strong>
+        <hr />
+        Total New Members: <strong>{{ communityOverview?.newMembers }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">Members Commenting</div>
+      <div class="card-body text-left">
+        Members Commenting: <strong>{{ communityOverview?.membersCommenting }}</strong>
+      </div>
+    </div>
+  </div>
+</div>
