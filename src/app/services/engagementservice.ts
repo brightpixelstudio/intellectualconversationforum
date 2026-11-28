@@ -24,12 +24,9 @@ export class EngagementService {
     );
   }
 
-  getEngagementMemberParticipation(request: {
-    startDate: string;
-    endDate: string;
-  }): Observable<EngagementMemberParticipationResponse> {
+  getEngagementMemberParticipation(request: { startDate: string; endDate: string }) {
     return this.http.post<EngagementMemberParticipationResponse>(
-      `${this.apiUrl}/Engagement/GetEngagementMemberParticipation`,
+      `${this.apiUrl}/GetEngagementMemberParticipation`,
       request,
     );
   }
