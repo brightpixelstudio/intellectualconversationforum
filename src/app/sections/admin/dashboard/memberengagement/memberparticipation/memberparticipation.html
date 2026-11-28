@@ -19,12 +19,49 @@
       data-bs-parent="#accordionExample"
     >
       <div class="accordion-body">
-        <strong>This is the first item's accordion body.</strong> It is shown by default, until the
-        collapse plugin adds the appropriate classes that we use to style each element. These
-        classes control the overall appearance, as well as the showing and hiding via CSS
-        transitions. You can modify any of this with custom CSS or overriding our default variables.
-        It's also worth noting that just about any HTML can go within the
-        <code>.accordion-body</code>, though the transition does limit overflow.
+        @if (engagementMemberParticipation; as participation) {
+          <div class="row mb-5">
+            <div class="col-4">
+              <div class="card">
+                <div class="card-header">Total Members, Posts, Comments</div>
+                <div class="card-body text-left">
+                  Total Posts: <strong>{{ participation.summary.totalMembers }}</strong>
+                  <hr />
+                  Total Posts: <strong>{{ participation.summary.totalPosts }}</strong>
+                  <hr />
+                  Total Comments: <strong>{{ participation.summary.totalComments }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-header">Member Participation</div>
+                <div class="card-body text-left">
+                  Post Only Members: <strong>{{ participation.summary.postOnlyMembers }}</strong>
+                  <hr />
+                  Comment Only Members:
+                  <strong>{{ participation.summary.commentOnlyMembers }}</strong>
+                  <hr />
+                  Members Who Posted: <strong>{{ participation.summary.membersWhoPosted }}</strong>
+                  <hr />
+                  Members Who Commented:
+                  <strong>{{ participation.summary.membersWhoCommented }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-header">Members Non-Participation</div>
+                <div class="card-body text-left">
+                  Never Participated Members :
+                  <strong>{{ participation.summary.neverParticipatedMembers }}</strong>
+                  <hr />
+                  Inactive Members: <strong>{{ participation.summary.inactiveMembers }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   </div>

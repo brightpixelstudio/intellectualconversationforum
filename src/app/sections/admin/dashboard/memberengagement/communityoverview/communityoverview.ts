@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { EngagementService } from '../../../../../services/engagementservice';
-import { CommunityOverviewModel } from '../../../../../models/engagement/engagement';
+import { CommunityOverviewModel } from '../../../../../models/engagement/communityoverviewmodel';
 
 @Component({
   selector: 'communityoverview',
