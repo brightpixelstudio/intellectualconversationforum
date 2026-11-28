@@ -25,7 +25,9 @@
               <div class="card">
                 <div class="card-header">Total Members, Posts, Comments</div>
                 <div class="card-body text-left">
-                  Total Posts: <strong>{{ participation.summary.totalMembers }}</strong>
+                  Total Members: <strong>{{ participation.summary.totalMembers }}</strong>
+                  <hr />
+                  Total Active Members: <strong>{{ participation.summary.activeMembers }}</strong>
                   <hr />
                   Total Posts: <strong>{{ participation.summary.totalPosts }}</strong>
                   <hr />
@@ -53,10 +55,13 @@
               <div class="card">
                 <div class="card-header">Members Non-Participation</div>
                 <div class="card-body text-left">
-                  Never Participated Members :
+                  Never Participated Members:
+                  <!-- no post or comments ever -->
                   <strong>{{ participation.summary.neverParticipatedMembers }}</strong>
                   <hr />
-                  Inactive Members: <strong>{{ participation.summary.inactiveMembers }}</strong>
+                  Inactive Members:
+                  <!-- posts or comments just not in the date range -->
+                  <strong>{{ participation.summary.inactiveMembers }}</strong>
                 </div>
               </div>
             </div>
